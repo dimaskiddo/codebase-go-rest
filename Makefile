@@ -16,6 +16,7 @@ go-dep:
 
 go-build:
 	make go-dep
+	make clean-go
 	CGO_ENABLED=0 GOOS=linux go build -a -o ./build/$(GO_OUTPUT) *.go
 
 go-run:
