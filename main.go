@@ -7,9 +7,9 @@ import (
 	"strings"
 	"syscall"
 
-	"controllers"
-	"dbs"
-	"utils"
+	"github.com/dimaskiddo/frame-go/controllers"
+	"github.com/dimaskiddo/frame-go/dbs"
+	"github.com/dimaskiddo/frame-go/utils"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"

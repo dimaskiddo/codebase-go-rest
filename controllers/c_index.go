@@ -3,7 +3,7 @@ package controllers
 import (
 	"net/http"
 
-	"routers"
+	"github.com/dimaskiddo/frame-go/routers"
 )
 
 // Function to Show API Information

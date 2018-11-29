@@ -39,7 +39,7 @@ func DatabaseInitialize() {
 			len(MongoConfig.Name) != 0 {
 
 			// Do Mongo Database Connection
-			MongoSesion, Mongo = MongoConnect()
+			MongoSession, Mongo = MongoConnect()
 		}
 	}
 }

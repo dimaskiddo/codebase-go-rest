@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"models"
+	"github.com/dimaskiddo/frame-go/models"
 )
 
 type ResponseGetUser struct {

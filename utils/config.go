@@ -75,8 +75,7 @@ func ConfigLoadFile() {
 	// Load Configuration File
 	err := Config.ReadInConfig()
 	if err != nil {
-		log.Println(err)
-		log.Println("Loading Default Configuration")
+		log.Println("Failed to Load Configuration file!")
 	}
 }
 

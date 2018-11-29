@@ -11,7 +11,7 @@ git-push:
 	git push origin master
 
 go-dep:
-	dep ensure
+	dep ensure -v
 
 go-build:
 	make go-dep
@@ -19,7 +19,7 @@ go-build:
 
 go-run:
 	make go-dep
-	go run main.go
+	CONFIG_PATH="./build/config" go run main.go
 
 docker-build:
 	docker build -t $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION) .

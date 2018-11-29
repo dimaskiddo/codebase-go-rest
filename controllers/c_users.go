@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"models"
-	"routers"
+	"github.com/dimaskiddo/frame-go/models"
+	"github.com/dimaskiddo/frame-go/routers"
 
 	"github.com/gorilla/mux"
 )
