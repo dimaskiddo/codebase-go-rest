@@ -6,14 +6,22 @@ import (
 	"strconv"
 
 	"github.com/dimaskiddo/frame-go/models"
-	"github.com/dimaskiddo/frame-go/routers"
+	"github.com/dimaskiddo/frame-go/utils"
 
 	"github.com/gorilla/mux"
 )
 
+// Get User Response Structure
+type ResponseGetUser struct {
+	Status  bool          `json:"status"`
+	Code    int           `json:"code"`
+	Message string        `json:"message"`
+	Data    []models.User `json:"data"`
+}
+
 // Function to Get User
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	var response routers.ResponseGetUser
+	var response ResponseGetUser
 
 	// Set Response Data
 	response.Status = true
@@ -22,7 +30,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	response.Data = models.Users
 
 	// Write Response Data to HTTP
-	routers.ResponseWrite(w, response.Code, response)
+	utils.ResponseWrite(w, response.Code, response)
 }
 
 // Function to Get User By ID
@@ -32,13 +40,13 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 
 	// Handle Error If Parameters ID is Empty
 	if len(params["id"]) == 0 {
-		routers.ResponseBadRequest(w)
+		utils.ResponseBadRequest(w)
 	} else {
 		// Get ID Parameters From URI Then Convert it to Integer
 		userID, err := strconv.Atoi(params["id"])
 		if err == nil {
 			var user []models.User
-			var response routers.ResponseGetUser
+			var response ResponseGetUser
 
 			// Convert Selected User from Users Array to Single User Array
 			user = append(user, models.Users[userID-1])
@@ -50,9 +58,9 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 			response.Data = user
 
 			// Write Response Data to HTTP
-			routers.ResponseWrite(w, response.Code, response)
+			utils.ResponseWrite(w, response.Code, response)
 		} else {
-			routers.ResponseInternalError(w)
+			utils.ResponseInternalError(w)
 		}
 	}
 }
@@ -60,7 +68,7 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 // Function to Add User
 func AddUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
-	var response routers.Response
+	var response utils.Response
 
 	// Decode JSON from Request Body to User Data
 	// Use _ As Temporary Variable
@@ -78,7 +86,7 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	response.Message = "Success"
 
 	// Write Response Data to HTTP
-	routers.ResponseWrite(w, response.Code, response)
+	utils.ResponseWrite(w, response.Code, response)
 }
 
 // Function to Update User By ID
@@ -88,13 +96,13 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 
 	// Handle Error If Parameters ID is Empty
 	if len(params["id"]) == 0 {
-		routers.ResponseBadRequest(w)
+		utils.ResponseBadRequest(w)
 	} else {
 		// Get ID Parameters From URI Then Convert it to Integer
 		userID, err := strconv.Atoi(params["id"])
 		if err == nil {
 			var user models.User
-			var response routers.Response
+			var response utils.Response
 
 			// Decode JSON from Request Body to User Data
 			// Use _ As Temporary Variable
@@ -110,9 +118,9 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 			response.Message = "Success"
 
 			// Write Response Data to HTTP
-			routers.ResponseWrite(w, response.Code, response)
+			utils.ResponseWrite(w, response.Code, response)
 		} else {
-			routers.ResponseInternalError(w)
+			utils.ResponseInternalError(w)
 		}
 	}
 }
@@ -124,12 +132,12 @@ func DelUserById(w http.ResponseWriter, r *http.Request) {
 
 	// Handle Error If Parameters ID is Empty
 	if len(params["id"]) == 0 {
-		routers.ResponseBadRequest(w)
+		utils.ResponseBadRequest(w)
 	} else {
 		// Get ID Parameters From URI Then Convert it to Integer
 		userID, err := strconv.Atoi(params["id"])
 		if err == nil {
-			var response routers.Response
+			var response utils.Response
 
 			// Delete User Data from Users Array
 			models.Users = append(models.Users[:userID-1], models.Users[userID:]...)
@@ -140,9 +148,9 @@ func DelUserById(w http.ResponseWriter, r *http.Request) {
 			response.Message = "Success"
 
 			// Write Response Data to HTTP
-			routers.ResponseWrite(w, response.Code, response)
+			utils.ResponseWrite(w, response.Code, response)
 		} else {
-			routers.ResponseInternalError(w)
+			utils.ResponseInternalError(w)
 		}
 	}
 }

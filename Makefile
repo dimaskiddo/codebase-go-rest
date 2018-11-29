@@ -15,11 +15,11 @@ go-dep:
 
 go-build:
 	make go-dep
-	CGO_ENABLED=0 GOOS=linux go build -a -o ./build/$(GO_OUTPUT) main.go
+	CGO_ENABLED=0 GOOS=linux go build -a -o ./build/$(GO_OUTPUT) *.go
 
 go-run:
 	make go-dep
-	CONFIG_PATH="./build/config" go run main.go
+	CONFIG_PATH="./build/config" go run *.go
 
 docker-build:
 	docker build -t $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION) .

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/dimaskiddo/frame-go/routers"
 	"github.com/dimaskiddo/frame-go/utils"
 )
 
@@ -18,7 +17,7 @@ func GetAuthentication(w http.ResponseWriter, r *http.Request) {
 
 	// Make Sure Username and Password is Not Empty
 	if len(creds.Username) == 0 || len(creds.Password) == 0 {
-		routers.ResponseBadRequest(w)
+		utils.ResponseBadRequest(w)
 		return
 	}
 
@@ -27,7 +26,7 @@ func GetAuthentication(w http.ResponseWriter, r *http.Request) {
 		// Get JWT Token From Pre-Defined Function
 		token, err := utils.GetJWTToken(creds.Username)
 		if err != nil {
-			routers.ResponseInternalError(w)
+			utils.ResponseInternalError(w)
 		} else {
 			var response utils.JWTResponse
 
@@ -35,9 +34,9 @@ func GetAuthentication(w http.ResponseWriter, r *http.Request) {
 			response.Code = http.StatusOK
 			response.Token = token
 
-			routers.ResponseWrite(w, response.Code, response)
+			utils.ResponseWrite(w, response.Code, response)
 		}
 	} else {
-		routers.ResponseUnauthorized(w)
+		utils.ResponseUnauthorized(w)
 	}
 }

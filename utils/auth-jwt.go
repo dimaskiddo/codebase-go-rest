@@ -6,8 +6,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/dimaskiddo/frame-go/routers"
-
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
@@ -70,14 +68,14 @@ func AuthJWT(nextHandlerFunc http.HandlerFunc) http.Handler {
 		token := r.Header.Get("Authorization")
 		token = strings.Replace(token, "Bearer ", "", 1)
 		if len(token) == 0 {
-			routers.ResponseUnauthorized(w)
+			ResponseUnauthorized(w)
 			return
 		}
 
 		// Get Claims From JWT Token
 		claims, err := GetJWTClaims(token)
 		if err != nil {
-			routers.ResponseUnauthorized(w)
+			ResponseUnauthorized(w)
 			return
 		}
 

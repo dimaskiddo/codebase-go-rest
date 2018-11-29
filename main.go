@@ -7,12 +7,8 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/dimaskiddo/frame-go/controllers"
 	"github.com/dimaskiddo/frame-go/dbs"
 	"github.com/dimaskiddo/frame-go/utils"
-
-	"github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
 )
 
 func main() {
@@ -20,35 +16,21 @@ func main() {
 	signalOS := make(chan os.Signal, 1)
 
 	// Initialize Configuration
-	utils.ConfigInitialize()
+	utils.InitConfig()
 
 	// Initialize Database
-	dbs.DatabaseInitialize()
+	if len(utils.Config.GetString("DB_DRIVER")) != 0 {
+		utils.InitDB()
+	}
 
 	// Initialize Router
-	router := mux.NewRouter()
+	utils.InitRouter()
 
-	// Initialize Router Endpoint
-	router.HandleFunc("/", controllers.GetIndex).Methods("GET")
+	// Initialize Routes
+	InitRoutes()
 
-	// Initialize Router Endpoint Secured With Basic Auth
-	router.Handle("/auth", utils.AuthBasic(controllers.GetAuthentication)).Methods("GET", "POST")
-
-	// Initialize Router Endpoint Secured With Authorization
-	router.Handle("/users", utils.AuthJWT(controllers.GetUser)).Methods("GET")
-	router.Handle("/users", utils.AuthJWT(controllers.AddUser)).Methods("POST")
-	router.Handle("/users/{id}", utils.AuthJWT(controllers.GetUserById)).Methods("GET")
-	router.Handle("/users/{id}", utils.AuthJWT(controllers.PutUserById)).Methods("PUT", "PATCH")
-	router.Handle("/users/{id}", utils.AuthJWT(controllers.DelUserById)).Methods("DELETE")
-
-	// Set Router Handler with Logging & CORS Support
-	routerHandler := handlers.LoggingHandler(os.Stdout, handlers.CORS(
-		handlers.AllowedHeaders(utils.RouterCORS.Headers),
-		handlers.AllowedOrigins(utils.RouterCORS.Origins),
-		handlers.AllowedMethods(utils.RouterCORS.Methods))(router))
-
-	// Initialize Server With Initialized Router
-	server := utils.NewServer(routerHandler)
+	// Initialize Server
+	server := utils.NewServer(utils.RouterHandler)
 
 	// Starting Server
 	server.Start()
@@ -60,7 +42,7 @@ func main() {
 	<-signalOS
 
 	// Add Some Spaces When Done
-	fmt.Println("Stopping Service")
+	fmt.Println(" Stopping Server ")
 
 	// Defer Some Function Before End
 	defer server.Stop()

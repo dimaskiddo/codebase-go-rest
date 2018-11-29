@@ -8,21 +8,11 @@ import (
 	"github.com/spf13/viper"
 )
 
-// Router CORS Configuration Struct
-type RouterCORSConfiguration struct {
-	Headers []string
-	Origins []string
-	Methods []string
-}
-
-// Router CORS Configuration Variable
-var RouterCORS RouterCORSConfiguration
-
 // Configurator Variable
 var Config *viper.Viper
 
 // Configuration Initialize Function
-func ConfigInitialize() {
+func InitConfig() {
 	// Set Configuration Path Value
 	configPath := os.Getenv("CONFIG_PATH")
 	if len(configPath) == 0 {

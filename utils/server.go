@@ -46,7 +46,7 @@ func (s *Server) Start() {
 
 	// Start The Server
 	go func() {
-		fmt.Println("Service Started at", ServerConfig.IP+":"+ServerConfig.Port)
+		fmt.Println("Server Started at", ServerConfig.IP+":"+ServerConfig.Port)
 		s.srv.ListenAndServe()
 
 		s.wg.Done()
@@ -65,10 +65,10 @@ func (s *Server) Stop() {
 	// Hanlde Any Error While Stopping Server
 	if err := s.srv.Shutdown(ctx); err != nil {
 		if err = s.srv.Close(); err != nil {
-			fmt.Printf(fmt.Sprintf("Stopping Service Got an Error %v\n", err))
+			fmt.Printf(fmt.Sprintf("Stopping Server Got an Error %v\n", err))
 			return
 		}
 	}
 	s.wg.Wait()
-	fmt.Println("Service Stopped from", ServerConfig.IP+":"+ServerConfig.Port)
+	fmt.Println("Server Stopped from", ServerConfig.IP+":"+ServerConfig.Port)
 }

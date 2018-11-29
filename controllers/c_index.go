@@ -3,16 +3,16 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/dimaskiddo/frame-go/routers"
+	"github.com/dimaskiddo/frame-go/utils"
 )
 
 // Function to Show API Information
 func GetIndex(w http.ResponseWriter, r *http.Request) {
-	var response routers.Response
+	var response utils.Response
 
 	response.Status = true
 	response.Code = http.StatusOK
 	response.Message = "Simple Go Programming Example (API Simple)"
 
-	routers.ResponseWrite(w, response.Code, response)
+	utils.ResponseWrite(w, response.Code, response)
 }

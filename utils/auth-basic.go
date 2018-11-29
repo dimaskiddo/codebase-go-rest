@@ -5,8 +5,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
-
-	"github.com/dimaskiddo/frame-go/routers"
 )
 
 // Function Basic Authentication as Middleware
@@ -20,7 +18,7 @@ func AuthBasic(nextHandlerFunc http.HandlerFunc) http.Handler {
 		// Authorization Section Length Should Be 2
 		// The First Authorization Section Should Be "Basic"
 		if len(authHeader) != 2 || authHeader[0] != "Basic" {
-			routers.ResponseAuthenticate(w)
+			ResponseAuthenticate(w)
 			return
 		}
 
@@ -34,7 +32,7 @@ func AuthBasic(nextHandlerFunc http.HandlerFunc) http.Handler {
 		// Check Credentials Section
 		// It Should Have 2 Section, Username and Password
 		if len(authCredentials) != 2 {
-			routers.ResponseAuthenticate(w)
+			ResponseAuthenticate(w)
 			return
 		}
 

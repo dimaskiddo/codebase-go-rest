@@ -1,14 +1,47 @@
-package routers
+package utils
 
 import (
 	"encoding/json"
 	"net/http"
+	"os"
+
+	"github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
 )
 
+// Default Response Structure
 type Response struct {
 	Status  bool   `json:"status"`
 	Code    int    `json:"code"`
 	Message string `json:"message"`
+}
+
+// Router CORS Configuration Struct
+type RouterCORSConfiguration struct {
+	Headers []string
+	Origins []string
+	Methods []string
+}
+
+// Router CORS Configuration Variable
+var RouterCORS RouterCORSConfiguration
+
+// Router Handler Variable
+var RouterHandler http.Handler
+
+// Router Variable
+var Router *mux.Router
+
+// Router Initialize Function
+func InitRouter() {
+	// Initialize Router
+	Router = mux.NewRouter()
+
+	// Set Router Handler with Logging & CORS Support
+	RouterHandler = handlers.LoggingHandler(os.Stdout, handlers.CORS(
+		handlers.AllowedHeaders(RouterCORS.Headers),
+		handlers.AllowedOrigins(RouterCORS.Origins),
+		handlers.AllowedMethods(RouterCORS.Methods))(Router))
 }
 
 // Write Response to HTTP Writer
