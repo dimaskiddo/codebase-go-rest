@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/dimaskiddo/frame-go/helpers"
 	"github.com/dimaskiddo/frame-go/routers"
+	"github.com/dimaskiddo/frame-go/utils"
 )
 
 // Function to Get Authentication Using JWT
 func GetAuthentication(w http.ResponseWriter, r *http.Request) {
-	var creds helpers.JWTCredentials
+	var creds utils.JWTCredentials
 
 	// Decode JSON from Request Body to User Data
 	// Use _ As Temporary Variable
@@ -25,11 +25,11 @@ func GetAuthentication(w http.ResponseWriter, r *http.Request) {
 	// Some Business Logic Here to Match The Username and Password
 	if creds.Username == "user" && creds.Password == "password" {
 		// Get JWT Token From Pre-Defined Function
-		token, err := helpers.GetJWTToken(creds.Username)
+		token, err := utils.GetJWTToken(creds.Username)
 		if err != nil {
 			routers.ResponseInternalError(w)
 		} else {
-			var response helpers.JWTResponse
+			var response utils.JWTResponse
 
 			response.Status = true
 			response.Code = http.StatusOK

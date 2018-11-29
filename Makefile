@@ -10,12 +10,15 @@ git-push:
 	git commit -am "$(COMMIT_MSG)"
 	git push origin master
 
-go-build:
+go-dep:
 	dep ensure
+
+go-build:
+	make go-dep
 	CGO_ENABLED=0 GOOS=linux go build -a -o ./build/$(GO_OUTPUT) main.go
 
 go-run:
-	dep ensure
+	make go-dep
 	go run main.go
 
 docker-build:
