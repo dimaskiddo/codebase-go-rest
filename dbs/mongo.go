@@ -1,4 +1,4 @@
-package drivers
+package dbs
 
 import (
 	"log"
@@ -8,12 +8,6 @@ import (
 	// With It's Repository
 	mgo "gopkg.in/mgo.v2"
 )
-
-// Database Connection Variable
-var MongoSession *mgo.Session
-
-// Database Connection Variable
-var MongoDB *mgo.Database
 
 // Database Configuration Struct
 type MongoConfiguration struct {
@@ -26,6 +20,12 @@ type MongoConfiguration struct {
 
 // Database Configuration Variable
 var MongoConfig MongoConfiguration
+
+// Database Connection Variable
+var MongoSession *mgo.Session
+
+// Database Connection Variable
+var Mongo *mgo.Database
 
 // Database Connect Function
 func MongoConnect() (*mgo.Session, *mgo.Database) {

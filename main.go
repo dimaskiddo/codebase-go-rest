@@ -7,9 +7,9 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/dimaskiddo/frame-go/controllers"
-	"github.com/dimaskiddo/frame-go/drivers"
-	"github.com/dimaskiddo/frame-go/utils"
+	"controllers"
+	"dbs"
+	"utils"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -23,7 +23,7 @@ func main() {
 	utils.ConfigInitialize()
 
 	// Initialize Database
-	utils.DBInitialize()
+	dbs.DatabaseInitialize()
 
 	// Initialize Router
 	router := mux.NewRouter()
@@ -60,14 +60,14 @@ func main() {
 	<-signalOS
 
 	// Add Some Spaces When Done
-	fmt.Println("")
+	fmt.Println("Stopping Service")
 
 	// Defer Some Function Before End
 	defer server.Stop()
 	switch strings.ToLower(utils.Config.GetString("DB_DRIVER")) {
 	case "mysql":
-		defer drivers.MySQLDB.Close()
+		defer dbs.MySQL.Close()
 	case "mongo":
-		defer drivers.MongoSession.Close()
+		defer dbs.MongoSession.Close()
 	}
 }

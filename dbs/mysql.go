@@ -1,4 +1,4 @@
-package drivers
+package dbs
 
 import (
 	"database/sql"
@@ -9,9 +9,6 @@ import (
 	// For MySQL Driver
 	_ "github.com/go-sql-driver/mysql"
 )
-
-// Database Connection Variable
-var MySQLDB *sql.DB
 
 // Database Configuration Struct
 type MySQLConfiguration struct {
@@ -24,6 +21,9 @@ type MySQLConfiguration struct {
 
 // Database Configuration Variable
 var MySQLConfig MySQLConfiguration
+
+// Database Connection Variable
+var MySQL *sql.DB
 
 // Database Connect Function
 func MySQLConnect() *sql.DB {

@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/dimaskiddo/frame-go/models"
-	"github.com/dimaskiddo/frame-go/routers"
-	"github.com/dimaskiddo/frame-go/utils"
+	"dbs"
+	"models"
+	"routers"
 
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
@@ -19,7 +19,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	var response routers.ResponseGetUser
 
 	// Database Query
-	err := utils.DB.C("users").Find(bson.M{}).All(&users)
+	err := dbs.Mongo.C("users").Find(bson.M{}).All(&users)
 	if err != nil {
 		log.Print(err)
 	}
@@ -48,7 +48,7 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 		var response routers.ResponseGetUser
 
 		// Database Query
-		err := utils.DB.C("users").FindId(bson.ObjectIdHex(params["id"])).One(&user)
+		err := dbs.Mongo.C("users").FindId(bson.ObjectIdHex(params["id"])).One(&user)
 		if err != nil {
 			log.Print(err)
 		}
@@ -80,7 +80,7 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	user.ID = bson.NewObjectId()
 
 	// Database Query
-	err := utils.DB.C("users").Insert(&user)
+	err := dbs.Mongo.C("users").Insert(&user)
 	if err != nil {
 		log.Print(err)
 	}
@@ -111,7 +111,7 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 		_ = json.NewDecoder(r.Body).Decode(&user)
 
 		// Database Query
-		err := utils.DB.C("users").UpdateId(params["id"], &user)
+		err := dbs.Mongo.C("users").UpdateId(params["id"], &user)
 		if err != nil {
 			log.Print(err)
 		}
@@ -139,13 +139,13 @@ func DelUserById(w http.ResponseWriter, r *http.Request) {
 		var response routers.Response
 
 		// Database Query Get User By ID
-		err := utils.DB.C("users").FindId(bson.ObjectIdHex(params["id"])).One(&user)
+		err := dbs.Mongo.C("users").FindId(bson.ObjectIdHex(params["id"])).One(&user)
 		if err != nil {
 			log.Print(err)
 		}
 
 		// Database Query Delete User
-		err = utils.DB.C("users").Remove(&user)
+		err = dbs.Mongo.C("users").Remove(&user)
 		if err != nil {
 			log.Print(err)
 		}

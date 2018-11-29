@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/dimaskiddo/frame-go/routers"
-	"github.com/dimaskiddo/frame-go/utils"
+	"routers"
+	"utils"
 )
 
 // Function to Get Authentication Using JWT
