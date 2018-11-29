@@ -1,6 +1,6 @@
 GO_OUTPUT ?= main
 GO_EXPOSE_PORT ?= 3000
-DOCKER_IMAGE_NAME ?= dimaskiddo/go-frame
+DOCKER_IMAGE_NAME ?= go-frame
 DOCKER_IMAGE_VERSION ?= latest
 
 git-push:
