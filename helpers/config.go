@@ -5,8 +5,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/dimaskiddo/frame-go/drivers"
-
 	"github.com/spf13/viper"
 )
 
@@ -20,6 +18,10 @@ type RouterCORSConfiguration struct {
 // Router CORS Configuration Variable
 var RouterCORS RouterCORSConfiguration
 
+// Configurator Variable
+var Config *viper.Viper
+
+// Configuration Initialize Function
 func ConfigInitialize() {
 	// Set Configuration Path Value
 	configPath := os.Getenv("CONFIG_PATH")
@@ -46,83 +48,60 @@ func ConfigInitialize() {
 	}
 
 	// Initialize Configuratior
-	cfg := viper.New()
+	Config = viper.New()
 
 	// Set Configuratior Configuration
-	cfg.SetConfigName(configFile)
-	cfg.SetConfigType(configType)
-	cfg.AddConfigPath(configPath)
+	Config.SetConfigName(configFile)
+	Config.SetConfigType(configType)
+	Config.AddConfigPath(configPath)
 
 	// Set Configurator Environment
-	cfg.SetEnvPrefix(configPrefix)
-	cfg.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	Config.SetEnvPrefix(configPrefix)
+	Config.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 
 	// Set Configurator to Auto Bind Configuration Variables to
 	// Environment Variables
-	cfg.AutomaticEnv()
+	Config.AutomaticEnv()
 
 	// Set Configurator to Load Configuration File
-	ConfigLoadFile(cfg)
+	ConfigLoadFile()
 
 	// Set Configurator to Set Default Value and
 	// Parse Configuration Variables
-	ConfigLoadValues(cfg)
+	ConfigLoadValues()
 }
 
-func ConfigLoadFile(cfg *viper.Viper) {
+func ConfigLoadFile() {
 	// Load Configuration File
-	err := cfg.ReadInConfig()
+	err := Config.ReadInConfig()
 	if err != nil {
 		log.Println(err)
+		log.Println("Loading Default Configuration")
 	}
 }
 
-func ConfigLoadValues(cfg *viper.Viper) {
-	if cfg != nil {
-		// Service IP Value
-		cfg.SetDefault("SERVICE_IP", "0.0.0.0")
-		ServerConfig.IP = cfg.GetString("SERVICE_IP")
+func ConfigLoadValues() {
+	// Service IP Value
+	Config.SetDefault("SERVICE_IP", "0.0.0.0")
+	ServerConfig.IP = Config.GetString("SERVICE_IP")
 
-		// Service Port Value
-		cfg.SetDefault("SERVICE_PORT", "3000")
-		ServerConfig.Port = cfg.GetString("SERVICE_PORT")
+	// Service Port Value
+	Config.SetDefault("SERVICE_PORT", "3000")
+	ServerConfig.Port = Config.GetString("SERVICE_PORT")
 
-		// CORS Allowed Header Value
-		cfg.SetDefault("CORS_ALLOWED_HEADER", "X-Requested-With")
-		RouterCORS.Headers = []string{cfg.GetString("CORS_ALLOWED_HEADER")}
+	// CORS Allowed Header Value
+	Config.SetDefault("CORS_ALLOWED_HEADER", "X-Requested-With")
+	RouterCORS.Headers = []string{Config.GetString("CORS_ALLOWED_HEADER")}
 
-		// CORS Allowed Origin Value
-		cfg.SetDefault("CORS_ALLOWED_ORIGIN", "*")
-		RouterCORS.Origins = []string{cfg.GetString("CORS_ALLOWED_ORIGIN")}
+	// CORS Allowed Origin Value
+	Config.SetDefault("CORS_ALLOWED_ORIGIN", "*")
+	RouterCORS.Origins = []string{Config.GetString("CORS_ALLOWED_ORIGIN")}
 
-		// CORS Allowed Method Value
-		cfg.SetDefault("CORS_ALLOWED_METHOD", "'HEAD', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'")
-		RouterCORS.Methods = []string{cfg.GetString("CORS_ALLOWED_METHOD")}
+	// CORS Allowed Method Value
+	Config.SetDefault("CORS_ALLOWED_METHOD", "'HEAD', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'")
+	RouterCORS.Methods = []string{Config.GetString("CORS_ALLOWED_METHOD")}
 
-		// JWT Signing Key Value
-		cfg.SetDefault("JWT_SIGNING_KEY", "secrets")
-		JWTSigningKey = cfg.GetString("JWT_SIGNING_KEY")
-
-		// Database Configuration Value
-		// If Database Driver is Set
-		switch strings.ToLower(cfg.GetString("DB_DRIVER")) {
-		case "mysql":
-			cfg.SetDefault("DB_PORT", "3306")
-			drivers.MySQLConfig.Host = cfg.GetString("DB_HOST")
-			drivers.MySQLConfig.Port = cfg.GetString("DB_PORT")
-			drivers.MySQLConfig.User = cfg.GetString("DB_USER")
-			drivers.MySQLConfig.Password = cfg.GetString("DB_PASSWORD")
-			drivers.MySQLConfig.Name = cfg.GetString("DB_NAME")
-		case "mongo":
-			cfg.SetDefault("DB_PORT", "27017")
-			drivers.MongoConfig.Host = cfg.GetString("DB_HOST")
-			drivers.MongoConfig.Port = cfg.GetString("DB_PORT")
-			drivers.MongoConfig.User = cfg.GetString("DB_USER")
-			drivers.MongoConfig.Password = cfg.GetString("DB_PASSWORD")
-			drivers.MongoConfig.Name = cfg.GetString("DB_NAME")
-		}
-	} else {
-		// Log Fatal If Configuratior Not Found
-		log.Fatal("Error, Configurator Not Found!")
-	}
+	// JWT Signing Key Value
+	Config.SetDefault("JWT_SIGNING_KEY", "secrets")
+	JWTSigningKey = Config.GetString("JWT_SIGNING_KEY")
 }

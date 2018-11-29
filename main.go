@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	"github.com/dimaskiddo/frame-go/controllers"
+	"github.com/dimaskiddo/frame-go/drivers"
 	"github.com/dimaskiddo/frame-go/helpers"
 
 	"github.com/gorilla/handlers"
@@ -20,10 +22,8 @@ func main() {
 	// Initialize Configuration
 	helpers.ConfigInitialize()
 
-	// Initialize CORS Configurataion
-	corsHeaders := handlers.AllowedHeaders(helpers.RouterCORS.Headers)
-	corsOrigins := handlers.AllowedOrigins(helpers.RouterCORS.Origins)
-	corsMethods := handlers.AllowedMethods(helpers.RouterCORS.Methods)
+	// Initialize Database
+	helpers.DBInitialize()
 
 	// Initialize Router
 	router := mux.NewRouter()
@@ -42,14 +42,16 @@ func main() {
 	router.Handle("/users/{id}", helpers.AuthJWT(controllers.DelUserById)).Methods("DELETE")
 
 	// Set Router Handler with Logging & CORS Support
-	routerHandler := handlers.LoggingHandler(os.Stdout, handlers.CORS(corsHeaders, corsOrigins, corsMethods)(router))
+	routerHandler := handlers.LoggingHandler(os.Stdout, handlers.CORS(
+		handlers.AllowedHeaders(helpers.RouterCORS.Headers),
+		handlers.AllowedOrigins(helpers.RouterCORS.Origins),
+		handlers.AllowedMethods(helpers.RouterCORS.Methods))(router))
 
 	// Initialize Server With Initialized Router
 	server := helpers.NewServer(routerHandler)
 
 	// Starting Server
 	server.Start()
-	defer server.Stop()
 
 	// Catch OS Signal from Channel
 	signal.Notify(signalOS, os.Interrupt, syscall.SIGTERM)
@@ -59,4 +61,13 @@ func main() {
 
 	// Add Some Spaces When Done
 	fmt.Println("")
+
+	// Defer Some Function Before End
+	defer server.Stop()
+	switch strings.ToLower(helpers.Config.GetString("DB_DRIVER")) {
+	case "mysql":
+		defer drivers.MySQLDB.Close()
+	case "mongo":
+		defer drivers.MongoSession.Close()
+	}
 }
