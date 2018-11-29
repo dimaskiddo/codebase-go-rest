@@ -12,7 +12,7 @@ import (
 var Config *viper.Viper
 
 // Configuration Initialize Function
-func InitConfig() {
+func initConfig() {
 	// Set Configuration Path Value
 	configPath := os.Getenv("CONFIG_PATH")
 	if len(configPath) == 0 {
@@ -54,14 +54,14 @@ func InitConfig() {
 	Config.AutomaticEnv()
 
 	// Set Configurator to Load Configuration File
-	ConfigLoadFile()
+	configLoadFile()
 
 	// Set Configurator to Set Default Value and
 	// Parse Configuration Variables
-	ConfigLoadValues()
+	configLoadValues()
 }
 
-func ConfigLoadFile() {
+func configLoadFile() {
 	// Load Configuration File
 	err := Config.ReadInConfig()
 	if err != nil {
@@ -69,28 +69,28 @@ func ConfigLoadFile() {
 	}
 }
 
-func ConfigLoadValues() {
+func configLoadValues() {
 	// Service IP Value
 	Config.SetDefault("SERVICE_IP", "0.0.0.0")
-	ServerConfig.IP = Config.GetString("SERVICE_IP")
+	serverCfg.IP = Config.GetString("SERVICE_IP")
 
 	// Service Port Value
 	Config.SetDefault("SERVICE_PORT", "3000")
-	ServerConfig.Port = Config.GetString("SERVICE_PORT")
+	serverCfg.Port = Config.GetString("SERVICE_PORT")
 
 	// CORS Allowed Header Value
 	Config.SetDefault("CORS_ALLOWED_HEADER", "X-Requested-With")
-	RouterCORS.Headers = []string{Config.GetString("CORS_ALLOWED_HEADER")}
+	routerCORSCfg.Headers = []string{Config.GetString("CORS_ALLOWED_HEADER")}
 
 	// CORS Allowed Origin Value
 	Config.SetDefault("CORS_ALLOWED_ORIGIN", "*")
-	RouterCORS.Origins = []string{Config.GetString("CORS_ALLOWED_ORIGIN")}
+	routerCORSCfg.Origins = []string{Config.GetString("CORS_ALLOWED_ORIGIN")}
 
 	// CORS Allowed Method Value
 	Config.SetDefault("CORS_ALLOWED_METHOD", "'HEAD', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'")
-	RouterCORS.Methods = []string{Config.GetString("CORS_ALLOWED_METHOD")}
+	routerCORSCfg.Methods = []string{Config.GetString("CORS_ALLOWED_METHOD")}
 
 	// JWT Signing Key Value
 	Config.SetDefault("JWT_SIGNING_KEY", "secrets")
-	JWTSigningKey = Config.GetString("JWT_SIGNING_KEY")
+	jwtSigningKey = Config.GetString("JWT_SIGNING_KEY")
 }

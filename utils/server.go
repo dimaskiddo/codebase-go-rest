@@ -15,20 +15,20 @@ type Server struct {
 }
 
 // Server Configuration Struct
-type ServerConfiguration struct {
+type serverConfig struct {
 	IP   string
 	Port string
 }
 
 // Server Configuration Variable
-var ServerConfig ServerConfiguration
+var serverCfg serverConfig
 
 // Function to Initialize New Server
 func NewServer(handler http.Handler) *Server {
 	// Initialize New Server
 	return &Server{
 		srv: &http.Server{
-			Addr:    fmt.Sprintf("%s:%s", ServerConfig.IP, ServerConfig.Port),
+			Addr:    fmt.Sprintf("%s:%s", serverCfg.IP, serverCfg.Port),
 			Handler: handler,
 		},
 	}
@@ -46,7 +46,7 @@ func (s *Server) Start() {
 
 	// Start The Server
 	go func() {
-		fmt.Println("Server Started at", ServerConfig.IP+":"+ServerConfig.Port)
+		fmt.Println("Server Started at", serverCfg.IP+":"+serverCfg.Port)
 		s.srv.ListenAndServe()
 
 		s.wg.Done()
@@ -70,5 +70,5 @@ func (s *Server) Stop() {
 		}
 	}
 	s.wg.Wait()
-	fmt.Println("Server Stopped from", ServerConfig.IP+":"+ServerConfig.Port)
+	fmt.Println("Server Stopped from", serverCfg.IP+":"+serverCfg.Port)
 }

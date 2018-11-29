@@ -8,7 +8,7 @@ import (
 )
 
 // Function to Get Authentication Using JWT
-func GetAuthentication(w http.ResponseWriter, r *http.Request) {
+func GetAuth(w http.ResponseWriter, r *http.Request) {
 	var creds utils.JWTCredentials
 
 	// Decode JSON from Request Body to User Data

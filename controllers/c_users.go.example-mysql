@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/dimaskiddo/frame-go/dbs"
 	"github.com/dimaskiddo/frame-go/models"
 	"github.com/dimaskiddo/frame-go/utils"
 
@@ -28,7 +27,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	var response ResponseGetUser
 
 	// Database Query
-	rows, err := dbs.MySQL.Query("SELECT * FROM users")
+	rows, err := utils.MySQL.Query("SELECT * FROM users")
 	if err != nil {
 		log.Print(err)
 	}
@@ -72,7 +71,7 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 			var response ResponseGetUser
 
 			// Database Query
-			rows, err := dbs.MySQL.Query("SELECT * FROM users WHERE id=? LIMIT 1", userID)
+			rows, err := utils.MySQL.Query("SELECT * FROM users WHERE id=? LIMIT 1", userID)
 			if err != nil {
 				log.Print(err)
 			}
@@ -113,7 +112,7 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewDecoder(r.Body).Decode(&user)
 
 	// Database Query
-	_, err := dbs.MySQL.Exec("INSERT INTO users (name, email) VALUE (?, ?)", user.Name, user.Email)
+	_, err := utils.MySQL.Exec("INSERT INTO users (name, email) VALUE (?, ?)", user.Name, user.Email)
 	if err != nil {
 		log.Print(err)
 	}
@@ -147,7 +146,7 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 			_ = json.NewDecoder(r.Body).Decode(&user)
 
 			// Database Query
-			_, err := dbs.MySQL.Exec("UPDATE users SET name=?, email=? WHERE id=? LIMIT 1", user.Name, user.Email, userID)
+			_, err := utils.MySQL.Exec("UPDATE users SET name=?, email=? WHERE id=? LIMIT 1", user.Name, user.Email, userID)
 			if err != nil {
 				log.Print(err)
 			}
@@ -180,7 +179,7 @@ func DelUserById(w http.ResponseWriter, r *http.Request) {
 			var response utils.Response
 
 			// Database Query
-			_, err := dbs.MySQL.Query("DELETE FROM users WHERE id=? LIMIT 1", userID)
+			_, err := utils.MySQL.Query("DELETE FROM users WHERE id=? LIMIT 1", userID)
 			if err != nil {
 				log.Print(err)
 			}

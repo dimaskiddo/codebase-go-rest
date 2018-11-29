@@ -20,11 +20,11 @@ type JWTResponse struct {
 	Token  string `json:"token"`
 }
 
-var JWTSigningKey string
+var jwtSigningKey string
 
 func GetJWTToken(data interface{}) (string, error) {
 	// Convert Signing Key in Byte Format
-	signingKey := []byte(JWTSigningKey)
+	signingKey := []byte(jwtSigningKey)
 
 	// Create JWT Token With HS256 Method and Set Claims
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
@@ -41,7 +41,7 @@ func GetJWTToken(data interface{}) (string, error) {
 
 func GetJWTClaims(data string) (jwt.MapClaims, error) {
 	// Convert Signing Key in Byte Format
-	signingKey := []byte(JWTSigningKey)
+	signingKey := []byte(jwtSigningKey)
 
 	// Parse JWT Token, If Token is Not Valid Then Return The Signing Key
 	token, err := jwt.Parse(data, func(token *jwt.Token) (interface{}, error) {

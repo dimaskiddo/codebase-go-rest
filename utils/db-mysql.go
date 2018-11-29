@@ -1,4 +1,4 @@
-package dbs
+package utils
 
 import (
 	"database/sql"
@@ -11,7 +11,7 @@ import (
 )
 
 // Database Configuration Struct
-type MySQLConfiguration struct {
+type mysqlConfig struct {
 	Host     string
 	Port     string
 	User     string
@@ -20,7 +20,7 @@ type MySQLConfiguration struct {
 }
 
 // Database Configuration Variable
-var MySQLConfig MySQLConfiguration
+var mysqlCfg mysqlConfig
 
 // Database Connection Variable
 var MySQL *sql.DB
@@ -28,7 +28,7 @@ var MySQL *sql.DB
 // Database Connect Function
 func MySQLConnect() *sql.DB {
 	// Get Database Connection
-	db, err := sql.Open("mysql", MySQLConfig.User+":"+MySQLConfig.Password+"@tcp("+MySQLConfig.Host+":"+MySQLConfig.Port+")/"+MySQLConfig.Name)
+	db, err := sql.Open("mysql", mysqlCfg.User+":"+mysqlCfg.Password+"@tcp("+mysqlCfg.Host+":"+mysqlCfg.Port+")/"+mysqlCfg.Name)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -6,12 +6,12 @@ import (
 )
 
 // Routes Initialization Function
-func InitRoutes() {
+func LoadRoutes() {
 	// Initialize Router Endpoint
 	utils.Router.HandleFunc("/", controllers.GetIndex).Methods("GET")
 
 	// Initialize Router Endpoint Secured With Basic Auth
-	utils.Router.Handle("/auth", utils.AuthBasic(controllers.GetAuthentication)).Methods("GET", "POST")
+	utils.Router.Handle("/auth", utils.AuthBasic(controllers.GetAuth)).Methods("GET", "POST")
 
 	// Initialize Router Endpoint Secured With Authorization
 	utils.Router.Handle("/users", utils.AuthJWT(controllers.GetUser)).Methods("GET")

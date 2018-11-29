@@ -1,4 +1,4 @@
-package dbs
+package utils
 
 import (
 	"log"
@@ -10,7 +10,7 @@ import (
 )
 
 // Database Configuration Struct
-type MongoConfiguration struct {
+type mongoConfig struct {
 	Host     string
 	Port     string
 	User     string
@@ -19,7 +19,7 @@ type MongoConfiguration struct {
 }
 
 // Database Configuration Variable
-var MongoConfig MongoConfiguration
+var mongoCfg mongoConfig
 
 // Database Connection Variable
 var MongoSession *mgo.Session
@@ -30,7 +30,7 @@ var Mongo *mgo.Database
 // Database Connect Function
 func MongoConnect() (*mgo.Session, *mgo.Database) {
 	// Get Session Connection
-	sess, err := mgo.Dial(MongoConfig.User + ":" + MongoConfig.Password + "@" + MongoConfig.Host + ":" + MongoConfig.Port + "/" + MongoConfig.Name)
+	sess, err := mgo.Dial(mongoCfg.User + ":" + mongoCfg.Password + "@" + mongoCfg.Host + ":" + mongoCfg.Port + "/" + mongoCfg.Name)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -45,5 +45,5 @@ func MongoConnect() (*mgo.Session, *mgo.Database) {
 	sess.SetMode(mgo.Monotonic, true)
 
 	// Return Current Session & Database
-	return sess, sess.DB(MongoConfig.Name)
+	return sess, sess.DB(mongoCfg.Name)
 }

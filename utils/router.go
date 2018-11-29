@@ -17,14 +17,14 @@ type Response struct {
 }
 
 // Router CORS Configuration Struct
-type RouterCORSConfiguration struct {
+type routerCORSConfig struct {
 	Headers []string
 	Origins []string
 	Methods []string
 }
 
 // Router CORS Configuration Variable
-var RouterCORS RouterCORSConfiguration
+var routerCORSCfg routerCORSConfig
 
 // Router Handler Variable
 var RouterHandler http.Handler
@@ -33,15 +33,15 @@ var RouterHandler http.Handler
 var Router *mux.Router
 
 // Router Initialize Function
-func InitRouter() {
+func initRouter() {
 	// Initialize Router
 	Router = mux.NewRouter()
 
 	// Set Router Handler with Logging & CORS Support
 	RouterHandler = handlers.LoggingHandler(os.Stdout, handlers.CORS(
-		handlers.AllowedHeaders(RouterCORS.Headers),
-		handlers.AllowedOrigins(RouterCORS.Origins),
-		handlers.AllowedMethods(RouterCORS.Methods))(Router))
+		handlers.AllowedHeaders(routerCORSCfg.Headers),
+		handlers.AllowedOrigins(routerCORSCfg.Origins),
+		handlers.AllowedMethods(routerCORSCfg.Methods))(Router))
 }
 
 // Write Response to HTTP Writer

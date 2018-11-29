@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/dimaskiddo/frame-go/dbs"
 	"github.com/dimaskiddo/frame-go/models"
 	"github.com/dimaskiddo/frame-go/utils"
 
@@ -27,7 +26,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	var response ResponseGetUser
 
 	// Database Query
-	err := dbs.Mongo.C("users").Find(bson.M{}).All(&users)
+	err := utils.Mongo.C("users").Find(bson.M{}).All(&users)
 	if err != nil {
 		log.Print(err)
 	}
@@ -56,7 +55,7 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 		var response ResponseGetUser
 
 		// Database Query
-		err := dbs.Mongo.C("users").FindId(bson.ObjectIdHex(params["id"])).One(&user)
+		err := utils.Mongo.C("users").FindId(bson.ObjectIdHex(params["id"])).One(&user)
 		if err != nil {
 			log.Print(err)
 		}
@@ -88,7 +87,7 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	user.ID = bson.NewObjectId()
 
 	// Database Query
-	err := dbs.Mongo.C("users").Insert(&user)
+	err := utils.Mongo.C("users").Insert(&user)
 	if err != nil {
 		log.Print(err)
 	}
@@ -119,7 +118,7 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 		_ = json.NewDecoder(r.Body).Decode(&user)
 
 		// Database Query
-		err := dbs.Mongo.C("users").UpdateId(params["id"], &user)
+		err := utils.Mongo.C("users").UpdateId(params["id"], &user)
 		if err != nil {
 			log.Print(err)
 		}
@@ -147,13 +146,13 @@ func DelUserById(w http.ResponseWriter, r *http.Request) {
 		var response utils.Response
 
 		// Database Query Get User By ID
-		err := dbs.Mongo.C("users").FindId(bson.ObjectIdHex(params["id"])).One(&user)
+		err := utils.Mongo.C("users").FindId(bson.ObjectIdHex(params["id"])).One(&user)
 		if err != nil {
 			log.Print(err)
 		}
 
 		// Database Query Delete User
-		err = dbs.Mongo.C("users").Remove(&user)
+		err = utils.Mongo.C("users").Remove(&user)
 		if err != nil {
 			log.Print(err)
 		}

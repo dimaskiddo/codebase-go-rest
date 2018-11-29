@@ -7,7 +7,6 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/dimaskiddo/frame-go/dbs"
 	"github.com/dimaskiddo/frame-go/utils"
 )
 
@@ -15,25 +14,18 @@ func main() {
 	// Initialize Channel for OS Signal
 	signalOS := make(chan os.Signal, 1)
 
-	// Initialize Configuration
-	utils.InitConfig()
+	// Bootstrap
+	utils.Bootstrap()
 
-	// Initialize Database
-	if len(utils.Config.GetString("DB_DRIVER")) != 0 {
-		utils.InitDB()
-	}
-
-	// Initialize Router
-	utils.InitRouter()
-
-	// Initialize Routes
-	InitRoutes()
+	// Load Routes
+	LoadRoutes()
 
 	// Initialize Server
 	server := utils.NewServer(utils.RouterHandler)
 
 	// Starting Server
 	server.Start()
+	defer server.Stop()
 
 	// Catch OS Signal from Channel
 	signal.Notify(signalOS, os.Interrupt, syscall.SIGTERM)
@@ -41,15 +33,14 @@ func main() {
 	// Return OS Signal as Exit Code
 	<-signalOS
 
-	// Add Some Spaces When Done
+	// Give Information for Server Stop
 	fmt.Println(" Stopping Server ")
 
-	// Defer Some Function Before End
-	defer server.Stop()
+	// Close Any Database Connections
 	switch strings.ToLower(utils.Config.GetString("DB_DRIVER")) {
 	case "mysql":
-		defer dbs.MySQL.Close()
+		defer utils.MySQL.Close()
 	case "mongo":
-		defer dbs.MongoSession.Close()
+		defer utils.MongoSession.Close()
 	}
 }
