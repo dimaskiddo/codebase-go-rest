@@ -12,6 +12,7 @@ git-push:
 
 go-dep:
 	dep ensure -v
+	dep check
 
 go-build:
 	make go-dep
