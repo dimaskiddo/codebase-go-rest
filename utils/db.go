@@ -7,7 +7,6 @@ import (
 // Database Initialize Function
 func initDB() {
 	// Database Configuration Value
-	// If Database Driver is Set
 	switch strings.ToLower(Config.GetString("DB_DRIVER")) {
 	case "mysql":
 		Config.SetDefault("DB_PORT", "3306")
