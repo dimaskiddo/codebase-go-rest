@@ -14,14 +14,6 @@ git-push:
 git-pull:
 	git pull origin master
 
-go-rebase:
-	find ./controllers -type f -name '*.go' -print0 | xargs -0 echo
-	find ./controllers -type f -name '*.go.example*' -print0 | xargs -0 echo
-	find ./models -type f -name '*.go' -print0 | xargs -0 sed -i -e
-	find ./models -type f -name '*.go.example*' -print0 | xargs -0 echo
-	echo routes.go
-	echo main.go
-
 go-dep:
 	rm -rf ./vendor
 	rm -f Gopkg.toml Gopkg.lock
