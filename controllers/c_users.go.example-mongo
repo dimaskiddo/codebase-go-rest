@@ -28,7 +28,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	// Database Query
 	err := utils.Mongo.C("users").Find(bson.M{}).All(&users)
 	if err != nil {
-		log.Print(err)
+		log.Println(err)
 	}
 
 	// Set Response Data
@@ -57,7 +57,7 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 		// Database Query
 		err := utils.Mongo.C("users").FindId(bson.ObjectIdHex(params["id"])).One(&user)
 		if err != nil {
-			log.Print(err)
+			log.Println(err)
 		}
 
 		// Convert Selected User from Users Array to Single User Array
@@ -89,7 +89,7 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	// Database Query
 	err := utils.Mongo.C("users").Insert(&user)
 	if err != nil {
-		log.Print(err)
+		log.Println(err)
 	}
 
 	// Set Response Data
@@ -120,7 +120,7 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 		// Database Query
 		err := utils.Mongo.C("users").UpdateId(params["id"], &user)
 		if err != nil {
-			log.Print(err)
+			log.Println(err)
 		}
 
 		// Set Response Data
@@ -148,13 +148,13 @@ func DelUserById(w http.ResponseWriter, r *http.Request) {
 		// Database Query Get User By ID
 		err := utils.Mongo.C("users").FindId(bson.ObjectIdHex(params["id"])).One(&user)
 		if err != nil {
-			log.Print(err)
+			log.Println(err)
 		}
 
 		// Database Query Delete User
 		err = utils.Mongo.C("users").Remove(&user)
 		if err != nil {
-			log.Print(err)
+			log.Println(err)
 		}
 
 		// Set Response Data

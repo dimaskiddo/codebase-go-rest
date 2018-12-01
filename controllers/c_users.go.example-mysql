@@ -29,7 +29,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	// Database Query
 	rows, err := utils.MySQL.Query("SELECT * FROM users")
 	if err != nil {
-		log.Print(err)
+		log.Println(err)
 	}
 	defer rows.Close()
 
@@ -73,7 +73,7 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 			// Database Query
 			rows, err := utils.MySQL.Query("SELECT * FROM users WHERE id=? LIMIT 1", userID)
 			if err != nil {
-				log.Print(err)
+				log.Println(err)
 			}
 			defer rows.Close()
 
@@ -114,7 +114,7 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	// Database Query
 	_, err := utils.MySQL.Exec("INSERT INTO users (name, email) VALUE (?, ?)", user.Name, user.Email)
 	if err != nil {
-		log.Print(err)
+		log.Println(err)
 	}
 
 	// Set Response Data
@@ -148,7 +148,7 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 			// Database Query
 			_, err := utils.MySQL.Exec("UPDATE users SET name=?, email=? WHERE id=? LIMIT 1", user.Name, user.Email, userID)
 			if err != nil {
-				log.Print(err)
+				log.Println(err)
 			}
 
 			// Set Response Data
@@ -181,7 +181,7 @@ func DelUserById(w http.ResponseWriter, r *http.Request) {
 			// Database Query
 			_, err := utils.MySQL.Query("DELETE FROM users WHERE id=? LIMIT 1", userID)
 			if err != nil {
-				log.Print(err)
+				log.Println(err)
 			}
 
 			// Set Response Data
