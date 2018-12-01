@@ -28,7 +28,7 @@ go-build:
 
 go-run:
 	make go-dep
-	CONFIG_PATH="./build/config" go run *.go
+	CONFIG_PATH="./build/config" go run *.go || true
 
 docker-build:
 	make go-build
@@ -51,7 +51,7 @@ clean-vendor:
 	touch ./vendor/.gitkeep
 
 clean-docker:
-	docker rmi -f $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
+	docker rmi -f $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION) || true
 
 clean-all:
 	make clean-go

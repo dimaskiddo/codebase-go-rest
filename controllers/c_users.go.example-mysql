@@ -28,30 +28,59 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	// Database Query
 	rows, err := utils.MySQL.Query("SELECT * FROM users")
-	if err != nil {
-		log.Println(err)
-	}
 	defer rows.Close()
 
-	// Populate Data
-	for rows.Next() {
-		// Match / Binding Database Field with Struct
-		if err := rows.Scan(&user.ID, &user.Name, &user.Email); err != nil {
-			log.Fatal(err.Error())
-		} else {
-			// Append User Struct to Users Array of Struct
-			users = append(users, user)
+	if err == nil {
+		// Populate Data
+		for rows.Next() {
+			// Match / Binding Database Field with Struct
+			err := rows.Scan(&user.ID, &user.Name, &user.Email)
+			if err == nil {
+				// Append User Struct to Users Array of Struct
+				users = append(users, user)
+			} else {
+				utils.ResponseInternalError(w)
+				log.Println(err.Error())
+			}
 		}
+
+		// Set Response Data
+		response.Status = true
+		response.Code = http.StatusOK
+		response.Message = "Success"
+		response.Data = users
+
+		// Write Response Data to HTTP
+		utils.ResponseWrite(w, response.Code, response)
+	} else {
+		utils.ResponseInternalError(w)
+		log.Println(err.Error())
 	}
+}
 
-	// Set Response Data
-	response.Status = true
-	response.Code = http.StatusOK
-	response.Message = "Success"
-	response.Data = users
+// Function to Add User
+func AddUser(w http.ResponseWriter, r *http.Request) {
+	var user models.User
+	var response utils.Response
 
-	// Write Response Data to HTTP
-	utils.ResponseWrite(w, response.Code, response)
+	// Decode JSON from Request Body to User Data
+	// Use _ As Temporary Variable
+	_ = json.NewDecoder(r.Body).Decode(&user)
+
+	// Database Query
+	_, err := utils.MySQL.Exec("INSERT INTO users (name, email) VALUE (?, ?)", user.Name, user.Email)
+	if err == nil {
+		// Set Response Data
+		response.Status = true
+		response.Code = http.StatusCreated
+		response.Message = "Success"
+
+		// Write Response Data to HTTP
+		utils.ResponseWrite(w, response.Code, response)
+	} else {
+		utils.ResponseInternalError(w)
+		log.Println(err.Error())
+	}
 }
 
 // Function to Get User By ID
@@ -72,58 +101,39 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 
 			// Database Query
 			rows, err := utils.MySQL.Query("SELECT * FROM users WHERE id=? LIMIT 1", userID)
-			if err != nil {
-				log.Println(err)
-			}
 			defer rows.Close()
 
-			// Populate Data
-			for rows.Next() {
-				// Match / Binding Database Field with Struct
-				if err := rows.Scan(&user.ID, &user.Name, &user.Email); err != nil {
-					log.Fatal(err.Error())
-				} else {
-					// Append User Struct to Users Array of Struct
-					users = append(users, user)
+			if err == nil {
+				// Populate Data
+				for rows.Next() {
+					// Match / Binding Database Field with Struct
+					err := rows.Scan(&user.ID, &user.Name, &user.Email)
+					if err == nil {
+						// Append User Struct to Users Array of Struct
+						users = append(users, user)
+					} else {
+						utils.ResponseInternalError(w)
+						log.Println(err.Error())
+					}
 				}
+
+				// Set Response Data
+				response.Status = true
+				response.Code = http.StatusOK
+				response.Message = "Success"
+				response.Data = users
+
+				// Write Response Data to HTTP
+				utils.ResponseWrite(w, response.Code, response)
+			} else {
+				utils.ResponseInternalError(w)
+				log.Println(err.Error())
 			}
-
-			// Set Response Data
-			response.Status = true
-			response.Code = http.StatusOK
-			response.Message = "Success"
-			response.Data = users
-
-			// Write Response Data to HTTP
-			utils.ResponseWrite(w, response.Code, response)
 		} else {
 			utils.ResponseInternalError(w)
+			log.Println(err.Error())
 		}
 	}
-}
-
-// Function to Add User
-func AddUser(w http.ResponseWriter, r *http.Request) {
-	var user models.User
-	var response utils.Response
-
-	// Decode JSON from Request Body to User Data
-	// Use _ As Temporary Variable
-	_ = json.NewDecoder(r.Body).Decode(&user)
-
-	// Database Query
-	_, err := utils.MySQL.Exec("INSERT INTO users (name, email) VALUE (?, ?)", user.Name, user.Email)
-	if err != nil {
-		log.Println(err)
-	}
-
-	// Set Response Data
-	response.Status = true
-	response.Code = http.StatusCreated
-	response.Message = "Success"
-
-	// Write Response Data to HTTP
-	utils.ResponseWrite(w, response.Code, response)
 }
 
 // Function to Update User By ID
@@ -147,19 +157,21 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 
 			// Database Query
 			_, err := utils.MySQL.Exec("UPDATE users SET name=?, email=? WHERE id=? LIMIT 1", user.Name, user.Email, userID)
-			if err != nil {
-				log.Println(err)
+			if err == nil {
+				// Set Response Data
+				response.Status = true
+				response.Code = http.StatusCreated
+				response.Message = "Success"
+
+				// Write Response Data to HTTP
+				utils.ResponseWrite(w, response.Code, response)
+			} else {
+				utils.ResponseInternalError(w)
+				log.Println(err.Error())
 			}
-
-			// Set Response Data
-			response.Status = true
-			response.Code = http.StatusCreated
-			response.Message = "Success"
-
-			// Write Response Data to HTTP
-			utils.ResponseWrite(w, response.Code, response)
 		} else {
 			utils.ResponseInternalError(w)
+			log.Println(err.Error())
 		}
 	}
 }
@@ -180,19 +192,21 @@ func DelUserById(w http.ResponseWriter, r *http.Request) {
 
 			// Database Query
 			_, err := utils.MySQL.Query("DELETE FROM users WHERE id=? LIMIT 1", userID)
-			if err != nil {
-				log.Println(err)
+			if err == nil {
+				// Set Response Data
+				response.Status = true
+				response.Code = http.StatusOK
+				response.Message = "Success"
+
+				// Write Response Data to HTTP
+				utils.ResponseWrite(w, response.Code, response)
+			} else {
+				utils.ResponseInternalError(w)
+				log.Println(err.Error())
 			}
-
-			// Set Response Data
-			response.Status = true
-			response.Code = http.StatusOK
-			response.Message = "Success"
-
-			// Write Response Data to HTTP
-			utils.ResponseWrite(w, response.Code, response)
 		} else {
 			utils.ResponseInternalError(w)
+			log.Println(err.Error())
 		}
 	}
 }

@@ -27,42 +27,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	// Database Query
 	err := utils.Mongo.C("users").Find(bson.M{}).All(&users)
-	if err != nil {
-		log.Println(err)
-	}
-
-	// Set Response Data
-	response.Status = true
-	response.Code = http.StatusOK
-	response.Message = "Success"
-	response.Data = users
-
-	// Write Response Data to HTTP
-	utils.ResponseWrite(w, response.Code, response)
-}
-
-// Function to Get User By ID
-func GetUserById(w http.ResponseWriter, r *http.Request) {
-	// Get Parameters From URI
-	params := mux.Vars(r)
-
-	// Handle Error If Parameters ID is Empty
-	if len(params["id"]) == 0 {
-		utils.ResponseBadRequest(w)
-	} else {
-		var user models.User
-		var users []models.User
-		var response ResponseGetUser
-
-		// Database Query
-		err := utils.Mongo.C("users").FindId(bson.ObjectIdHex(params["id"])).One(&user)
-		if err != nil {
-			log.Println(err)
-		}
-
-		// Convert Selected User from Users Array to Single User Array
-		users = append(users, user)
-
+	if err == nil {
 		// Set Response Data
 		response.Status = true
 		response.Code = http.StatusOK
@@ -71,6 +36,9 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 
 		// Write Response Data to HTTP
 		utils.ResponseWrite(w, response.Code, response)
+	} else {
+		utils.ResponseInternalError(w)
+		log.Println(err.Error())
 	}
 }
 
@@ -88,17 +56,52 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 
 	// Database Query
 	err := utils.Mongo.C("users").Insert(&user)
-	if err != nil {
-		log.Println(err)
+	if err == nil {
+		// Set Response Data
+		response.Status = true
+		response.Code = http.StatusCreated
+		response.Message = "Success"
+
+		// Write Response Data to HTTP
+		utils.ResponseWrite(w, response.Code, response)
+	} else {
+		utils.ResponseInternalError(w)
+		log.Println(err.Error())
 	}
+}
 
-	// Set Response Data
-	response.Status = true
-	response.Code = http.StatusCreated
-	response.Message = "Success"
+// Function to Get User By ID
+func GetUserById(w http.ResponseWriter, r *http.Request) {
+	// Get Parameters From URI
+	params := mux.Vars(r)
 
-	// Write Response Data to HTTP
-	utils.ResponseWrite(w, response.Code, response)
+	// Handle Error If Parameters ID is Empty
+	if len(params["id"]) == 0 {
+		utils.ResponseBadRequest(w)
+	} else {
+		var user models.User
+		var users []models.User
+		var response ResponseGetUser
+
+		// Database Query
+		err := utils.Mongo.C("users").FindId(bson.ObjectIdHex(params["id"])).One(&user)
+		if err == nil {
+			// Convert Selected User from Users Array to Single User Array
+			users = append(users, user)
+
+			// Set Response Data
+			response.Status = true
+			response.Code = http.StatusOK
+			response.Message = "Success"
+			response.Data = users
+
+			// Write Response Data to HTTP
+			utils.ResponseWrite(w, response.Code, response)
+		} else {
+			utils.ResponseInternalError(w)
+			log.Println(err.Error())
+		}
+	}
 }
 
 // Function to Update User By ID
@@ -119,17 +122,18 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 
 		// Database Query
 		err := utils.Mongo.C("users").UpdateId(params["id"], &user)
-		if err != nil {
-			log.Println(err)
+		if err == nil {
+			// Set Response Data
+			response.Status = true
+			response.Code = http.StatusCreated
+			response.Message = "Success"
+
+			// Write Response Data to HTTP
+			utils.ResponseWrite(w, response.Code, response)
+		} else {
+			utils.ResponseInternalError(w)
+			log.Println(err.Error())
 		}
-
-		// Set Response Data
-		response.Status = true
-		response.Code = http.StatusCreated
-		response.Message = "Success"
-
-		// Write Response Data to HTTP
-		utils.ResponseWrite(w, response.Code, response)
 	}
 }
 
@@ -147,22 +151,24 @@ func DelUserById(w http.ResponseWriter, r *http.Request) {
 
 		// Database Query Get User By ID
 		err := utils.Mongo.C("users").FindId(bson.ObjectIdHex(params["id"])).One(&user)
-		if err != nil {
-			log.Println(err)
+		if err == nil {
+			// Database Query Delete User
+			err = utils.Mongo.C("users").Remove(&user)
+			if err == nil {
+				// Set Response Data
+				response.Status = true
+				response.Code = http.StatusOK
+				response.Message = "Success"
+
+				// Write Response Data to HTTP
+				utils.ResponseWrite(w, response.Code, response)
+			} else {
+				utils.ResponseInternalError(w)
+				log.Println(err.Error())
+			}
+		} else {
+			utils.ResponseInternalError(w)
+			log.Println(err.Error())
 		}
-
-		// Database Query Delete User
-		err = utils.Mongo.C("users").Remove(&user)
-		if err != nil {
-			log.Println(err)
-		}
-
-		// Set Response Data
-		response.Status = true
-		response.Code = http.StatusOK
-		response.Message = "Success"
-
-		// Write Response Data to HTTP
-		utils.ResponseWrite(w, response.Code, response)
 	}
 }
