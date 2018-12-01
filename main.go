@@ -36,11 +36,20 @@ func main() {
 	// Give Information for Server Stop
 	fmt.Println(" Stopping Server ")
 
+	// Close Any Cache Connections
+	if len(utils.Config.GetString("CACHE_DRIVER")) != 0 {
+		switch strings.ToLower(utils.Config.GetString("CACHE_DRIVER")) {
+		case "redis":
+			defer utils.Redis.Close()
+	}
+
 	// Close Any Database Connections
-	switch strings.ToLower(utils.Config.GetString("DB_DRIVER")) {
-	case "mysql":
-		defer utils.MySQL.Close()
-	case "mongo":
-		defer utils.MongoSession.Close()
+	if len(utils.Config.GetString("DB_DRIVER")) != 0 {
+		switch strings.ToLower(utils.Config.GetString("DB_DRIVER")) {
+		case "mysql":
+			defer utils.MySQL.Close()
+		case "mongo":
+			defer utils.MongoSession.Close()
+		}
 	}
 }

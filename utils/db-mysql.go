@@ -26,7 +26,7 @@ var mysqlCfg mysqlConfig
 var MySQL *sql.DB
 
 // Database Connect Function
-func MySQLConnect() *sql.DB {
+func mysqlConnect() *sql.DB {
 	// Get Database Connection
 	db, err := sql.Open("mysql", mysqlCfg.User+":"+mysqlCfg.Password+"@tcp("+mysqlCfg.Host+":"+mysqlCfg.Port+")/"+mysqlCfg.Name)
 	if err != nil {

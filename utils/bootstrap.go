@@ -9,6 +9,11 @@ func Bootstrap() {
 		initDB()
 	}
 
+	// Initialize Cache
+	if len(Config.GetString("CACHE_DRIVER")) != 0 {
+		initCache()
+	}
+
 	// Initialize Router
 	initRouter()
 }

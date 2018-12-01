@@ -22,16 +22,5 @@ func initCache() {
 			// Do Redis Cache Connection
 			Redis = RedisConnect()
 		}
-	case "memcache":
-		Config.SetDefault("CACHE_PORT", "11211")
-
-		memcacheCfg.Host = Config.GetString("CACHE_HOST")
-		memcacheCfg.Port = Config.GetString("CACHE_PORT")
-
-		if len(memcacheCfg.Host) != 0 && len(memcacheCfg.Port) != 0 {
-
-			// Do Memcache Cache Connection
-			Memcache = memcacheConnect()
-		}
 	}
 }

@@ -22,7 +22,7 @@ func initDB() {
 			len(mysqlCfg.Name) != 0 {
 
 			// Do MySQL Database Connection
-			MySQL = MySQLConnect()
+			MySQL = mysqlConnect()
 		}
 	case "mongo":
 		Config.SetDefault("DB_PORT", "27017")
@@ -38,7 +38,7 @@ func initDB() {
 			len(mongoCfg.Name) != 0 {
 
 			// Do Mongo Database Connection
-			MongoSession, Mongo = MongoConnect()
+			MongoSession, Mongo = mongoConnect()
 		}
 	}
 }

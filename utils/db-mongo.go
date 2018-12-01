@@ -28,7 +28,7 @@ var MongoSession *mgo.Session
 var Mongo *mgo.Database
 
 // Database Connect Function
-func MongoConnect() (*mgo.Session, *mgo.Database) {
+func mongoConnect() (*mgo.Session, *mgo.Database) {
 	// Get Session Connection
 	sess, err := mgo.Dial(mongoCfg.User + ":" + mongoCfg.Password + "@" + mongoCfg.Host + ":" + mongoCfg.Port + "/" + mongoCfg.Name)
 	if err != nil {
