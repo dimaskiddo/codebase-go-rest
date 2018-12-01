@@ -4,6 +4,7 @@ DOCKER_IMAGE_NAME ?= go-frame
 DOCKER_IMAGE_VERSION ?= latest
 
 git-push:
+	make go-dep
 	make clean-go
 	make clean-vendor
 	git add .
@@ -11,6 +12,9 @@ git-push:
 	git push origin master
 
 go-dep:
+	rm -rf ./vendor
+	rm -f Gopkg.toml Gopkg.lock
+	dep init -v
 	dep ensure -v
 	dep check
 
