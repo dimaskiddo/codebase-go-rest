@@ -1,6 +1,6 @@
 GO_OUTPUT ?= main
 GO_EXPOSE_PORT ?= 3000
-DOCKER_IMAGE_NAME ?= go-frame
+DOCKER_IMAGE_NAME ?= frame-go
 DOCKER_IMAGE_VERSION ?= latest
 
 git-push:
@@ -10,6 +10,17 @@ git-push:
 	git add .
 	git commit -am "$(COMMIT_MSG)"
 	git push origin master
+
+git-pull:
+	git pull origin master
+
+go-rebase:
+	find ./controllers -type f -name '*.go' -print0 | xargs -0 echo
+	find ./controllers -type f -name '*.go.example*' -print0 | xargs -0 echo
+	find ./models -type f -name '*.go' -print0 | xargs -0 sed -i -e
+	find ./models -type f -name '*.go.example*' -print0 | xargs -0 echo
+	echo routes.go
+	echo main.go
 
 go-dep:
 	rm -rf ./vendor
@@ -28,6 +39,7 @@ go-run:
 	CONFIG_PATH="./build/config" go run *.go
 
 docker-build:
+	make go-build
 	docker build -t $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION) .
 
 docker-run:

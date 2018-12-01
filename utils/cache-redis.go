@@ -11,7 +11,7 @@ type redisConfig struct {
 	Host     string
 	Port     string
 	Password string
-	Name     string
+	Name     int
 }
 
 // Cache Configuration Variable
@@ -22,11 +22,6 @@ var Redis *redis.Client
 
 // Cache Connect Function
 func redisConnect() *redis.Client {
-	// Set Default Redis Cache Name if Empty
-	if len(redisCfg.Name) == 0 {
-		redisCfg.Name = 0
-	}
-
 	// Get Cache Connection
 	cache := redis.NewClient(&redis.Options{
 		Addr:     redisCfg.Host + ":" + redisCfg.Port,
@@ -34,8 +29,8 @@ func redisConnect() *redis.Client {
 		DB:       redisCfg.Name,
 	})
 
-	// Test Database Connection
-	pong, err := cache.Ping().Result()
+	// Test Cache Connection
+	_, err := cache.Ping().Result()
 	if err != nil {
 		log.Fatal(err)
 	}

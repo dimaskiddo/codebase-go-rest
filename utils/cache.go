@@ -14,13 +14,12 @@ func initCache() {
 		redisCfg.Host = Config.GetString("CACHE_HOST")
 		redisCfg.Port = Config.GetString("CACHE_PORT")
 		redisCfg.Password = Config.GetString("CACHE_PASSWORD")
-		redisCfg.Name = Config.GetString("CACHE_NAME")
+		redisCfg.Name = Config.GetInt("CACHE_NAME")
 
-		if len(redisCfg.Host) != 0 && len(redisCfg.Port) != 0 &&
-			len(redisCfg.Password) != 0 len(redisCfg.Name) != 0 {
+		if len(redisCfg.Host) != 0 && len(redisCfg.Port) != 0 {
 
 			// Do Redis Cache Connection
-			Redis = RedisConnect()
+			Redis = redisConnect()
 		}
 	}
 }

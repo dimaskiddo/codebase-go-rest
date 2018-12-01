@@ -41,6 +41,7 @@ func main() {
 		switch strings.ToLower(utils.Config.GetString("CACHE_DRIVER")) {
 		case "redis":
 			defer utils.Redis.Close()
+		}
 	}
 
 	// Close Any Database Connections
