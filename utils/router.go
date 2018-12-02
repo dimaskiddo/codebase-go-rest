@@ -55,26 +55,36 @@ func ResponseWrite(w http.ResponseWriter, responseCode int, responseData interfa
 }
 
 // Write Response Bad Request
-func ResponseBadRequest(w http.ResponseWriter) {
+func ResponseBadRequest(w http.ResponseWriter, m string) {
 	var response Response
+
+	// Set Default Message
+	if len(m) == 0 {
+		m = "Bad Request"
+	}
 
 	// Set Response Data
 	response.Status = false
 	response.Code = http.StatusBadRequest
-	response.Message = "Bad Request"
+	response.Message = m
 
 	// Set Response Data to HTTP
 	ResponseWrite(w, response.Code, response)
 }
 
 // Write Response Internal Server Error
-func ResponseInternalError(w http.ResponseWriter) {
+func ResponseInternalError(w http.ResponseWriter, m string) {
 	var response Response
+
+	// Set Default Message
+	if len(m) == 0 {
+		m = "Internal Server Error"
+	}
 
 	// Set Response Data
 	response.Status = false
 	response.Code = http.StatusInternalServerError
-	response.Message = "Internal Server Error"
+	response.Message = m
 
 	// Set Response Data to HTTP
 	ResponseWrite(w, response.Code, response)

@@ -70,13 +70,13 @@ func configLoadFile() {
 }
 
 func configLoadValues() {
-	// Service IP Value
-	Config.SetDefault("SERVICE_IP", "0.0.0.0")
-	serverCfg.IP = Config.GetString("SERVICE_IP")
+	// Server IP Value
+	Config.SetDefault("SERVER_IP", "0.0.0.0")
+	serverCfg.IP = Config.GetString("SERVER_IP")
 
-	// Service Port Value
-	Config.SetDefault("SERVICE_PORT", "3000")
-	serverCfg.Port = Config.GetString("SERVICE_PORT")
+	// Server Port Value
+	Config.SetDefault("SERVER_PORT", "3000")
+	serverCfg.Port = Config.GetString("SERVER_PORT")
 
 	// CORS Allowed Header Value
 	Config.SetDefault("CORS_ALLOWED_HEADER", "X-Requested-With")

@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/dimaskiddo/frame-go/models"
 	"github.com/dimaskiddo/frame-go/utils"
@@ -62,35 +64,32 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 	// Get Parameters From URI
 	params := mux.Vars(r)
 
-	// Handle Error If Parameters ID is Empty
-	if len(params["id"]) == 0 {
-		utils.ResponseBadRequest(w)
-	} else {
-		// Get ID Parameters From URI Then Convert it to Integer
-		userID, err := strconv.Atoi(params["id"])
-		if err == nil {
+	// Get ID Parameters From URI Then Convert it to Integer
+	userID, err := strconv.Atoi(params["id"])
+	if err == nil {
+		// Check if Requested Data in User Array Range
+		if len(models.Users) > 0 && userID <= len(models.Users) {
 			var user []models.User
 			var response ResponseGetUser
 
-			// Check if Requested Data in User Array Range
-			if len(models.Users) > 0 && userID <= len(models.Users) {
-				// Convert Selected User from Users Array to Single User Array
-				user = append(user, models.Users[userID-1])
+			// Convert Selected User from Users Array to Single User Array
+			user = append(user, models.Users[userID-1])
 
-				// Set Response Data
-				response.Status = true
-				response.Code = http.StatusOK
-				response.Message = "Success"
-				response.Data = user
+			// Set Response Data
+			response.Status = true
+			response.Code = http.StatusOK
+			response.Message = "Success"
+			response.Data = user
 
-				// Write Response Data to HTTP
-				utils.ResponseWrite(w, response.Code, response)
-			} else {
-				utils.ResponseBadRequest(w)
-			}
+			// Write Response Data to HTTP
+			utils.ResponseWrite(w, response.Code, response)
 		} else {
-			utils.ResponseInternalError(w)
+			utils.ResponseBadRequest(w, "Error, Invalid Array Index!")
+			log.Println("Error, Invalid Array Index!")
 		}
+	} else {
+		utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
+		log.Println("Error, " + strings.Title(err.Error()) + "!")
 	}
 }
 
@@ -99,39 +98,36 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 	// Get Parameters From URI
 	params := mux.Vars(r)
 
-	// Handle Error If Parameters ID is Empty
-	if len(params["id"]) == 0 {
-		utils.ResponseBadRequest(w)
-	} else {
-		// Get ID Parameters From URI Then Convert it to Integer
-		userID, err := strconv.Atoi(params["id"])
-		if err == nil {
+	// Get ID Parameters From URI Then Convert it to Integer
+	userID, err := strconv.Atoi(params["id"])
+	if err == nil {
+		// Check if Requested Data in User Array Range
+		if len(models.Users) > 0 && userID <= len(models.Users) {
 			var user models.User
 			var response utils.Response
 
-			// Check if Requested Data in User Array Range
-			if len(models.Users) > 0 && userID <= len(models.Users) {
-				// Decode JSON from Request Body to User Data
-				// Use _ As Temporary Variable
-				_ = json.NewDecoder(r.Body).Decode(&user)
+			// Decode JSON from Request Body to User Data
+			// Use _ As Temporary Variable
+			_ = json.NewDecoder(r.Body).Decode(&user)
 
-				// Update User to Users Array
-				models.Users[userID-1].Name = user.Name
-				models.Users[userID-1].Email = user.Email
+			// Update User to Users Array
+			models.Users[userID-1].Name = user.Name
+			models.Users[userID-1].Email = user.Email
 
-				// Set Response Data
-				response.Status = true
-				response.Code = http.StatusCreated
-				response.Message = "Success"
+			// Set Response Data
+			response.Status = true
+			response.Code = http.StatusOK
+			response.Message = "Success"
 
-				// Write Response Data to HTTP
-				utils.ResponseWrite(w, response.Code, response)
-			} else {
-				utils.ResponseBadRequest(w)
-			}
+			// Write Response Data to HTTP
+			utils.ResponseWrite(w, response.Code, response)
 		} else {
-			utils.ResponseInternalError(w)
+			utils.ResponseBadRequest(w, "Error, Invalid Array Index!")
+			log.Println("Error, Invalid Array Index!")
 		}
+	} else {
+		utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
+		log.Println("Error, " + strings.Title(err.Error()) + "!")
 	}
 }
 
@@ -140,32 +136,29 @@ func DelUserById(w http.ResponseWriter, r *http.Request) {
 	// Get Parameters From URI
 	params := mux.Vars(r)
 
-	// Handle Error If Parameters ID is Empty
-	if len(params["id"]) == 0 {
-		utils.ResponseBadRequest(w)
-	} else {
-		// Get ID Parameters From URI Then Convert it to Integer
-		userID, err := strconv.Atoi(params["id"])
-		if err == nil {
+	// Get ID Parameters From URI Then Convert it to Integer
+	userID, err := strconv.Atoi(params["id"])
+	if err == nil {
+		// Check if Requested Data in User Array Range
+		if len(models.Users) > 0 && userID <= len(models.Users) {
 			var response utils.Response
 
-			// Check if Requested Data in User Array Range
-			if len(models.Users) > 0 && userID <= len(models.Users) {
-				// Delete User Data from Users Array
-				models.Users = append(models.Users[:userID-1], models.Users[userID:]...)
+			// Delete User Data from Users Array
+			models.Users = append(models.Users[:userID-1], models.Users[userID:]...)
 
-				// Set Response Data
-				response.Status = true
-				response.Code = http.StatusOK
-				response.Message = "Success"
+			// Set Response Data
+			response.Status = true
+			response.Code = http.StatusOK
+			response.Message = "Success"
 
-				// Write Response Data to HTTP
-				utils.ResponseWrite(w, response.Code, response)
-			} else {
-				utils.ResponseBadRequest(w)
-			}
+			// Write Response Data to HTTP
+			utils.ResponseWrite(w, response.Code, response)
 		} else {
-			utils.ResponseInternalError(w)
+			utils.ResponseBadRequest(w, "Error, Invalid Array Index!")
+			log.Println("Error, Invalid Array Index!")
 		}
+	} else {
+		utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
+		log.Println("Error, " + strings.Title(err.Error()) + "!")
 	}
 }

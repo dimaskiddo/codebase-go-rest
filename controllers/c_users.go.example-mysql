@@ -160,7 +160,7 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 			if err == nil {
 				// Set Response Data
 				response.Status = true
-				response.Code = http.StatusCreated
+				response.Code = http.StatusOK
 				response.Message = "Success"
 
 				// Write Response Data to HTTP
