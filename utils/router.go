@@ -55,36 +55,36 @@ func ResponseWrite(w http.ResponseWriter, responseCode int, responseData interfa
 }
 
 // Write Response Bad Request
-func ResponseBadRequest(w http.ResponseWriter, m string) {
+func ResponseBadRequest(w http.ResponseWriter, msg string) {
 	var response Response
 
 	// Set Default Message
-	if len(m) == 0 {
-		m = "Bad Request"
+	if len(msg) == 0 {
+		msg = "bad request"
 	}
 
 	// Set Response Data
 	response.Status = false
 	response.Code = http.StatusBadRequest
-	response.Message = m
+	response.Message = msg
 
 	// Set Response Data to HTTP
 	ResponseWrite(w, response.Code, response)
 }
 
 // Write Response Internal Server Error
-func ResponseInternalError(w http.ResponseWriter, m string) {
+func ResponseInternalError(w http.ResponseWriter, msg string) {
 	var response Response
 
 	// Set Default Message
-	if len(m) == 0 {
-		m = "Internal Server Error"
+	if len(msg) == 0 {
+		msg = "internal server error"
 	}
 
 	// Set Response Data
 	response.Status = false
 	response.Code = http.StatusInternalServerError
-	response.Message = m
+	response.Message = msg
 
 	// Set Response Data to HTTP
 	ResponseWrite(w, response.Code, response)
@@ -97,7 +97,7 @@ func ResponseUnauthorized(w http.ResponseWriter) {
 	// Set Response Data
 	response.Status = false
 	response.Code = http.StatusUnauthorized
-	response.Message = "Unauthorized"
+	response.Message = "unauthorized"
 
 	// Set Response Data to HTTP
 	ResponseWrite(w, response.Code, response)
@@ -110,7 +110,7 @@ func ResponseAuthenticate(w http.ResponseWriter) {
 	// Set Response Data
 	response.Status = false
 	response.Code = http.StatusUnauthorized
-	response.Message = "Unauthorized"
+	response.Message = "unauthorized"
 
 	// Write Response
 	w.Header().Set("WWW-Authenticate", `Basic realm="Authorization Required"`)

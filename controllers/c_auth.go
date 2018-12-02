@@ -19,8 +19,10 @@ func GetAuth(w http.ResponseWriter, r *http.Request) {
 
 	// Make Sure Username and Password is Not Empty
 	if len(creds.Username) == 0 || len(creds.Password) == 0 {
-		utils.ResponseBadRequest(w, "Error, Invalid Authorization Data!")
-		log.Println("Error, Invalid Authorization Data!")
+		errMessage := strings.ToLower("invalid authorization")
+
+		utils.ResponseBadRequest(w, errMessage)
+		log.Println(errMessage)
 		return
 	}
 
@@ -29,8 +31,10 @@ func GetAuth(w http.ResponseWriter, r *http.Request) {
 		// Get JWT Token From Pre-Defined Function
 		token, err := utils.GetJWTToken(creds.Username)
 		if err != nil {
-			utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
-			log.Println("Error, " + strings.Title(err.Error()) + "!")
+			errMessage := strings.ToLower(err.Error())
+
+			utils.ResponseInternalError(w, errMessage)
+			log.Println(errMessage)
 		} else {
 			var response utils.JWTResponse
 

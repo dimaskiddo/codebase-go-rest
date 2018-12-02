@@ -67,7 +67,7 @@ func (s *Server) Stop() {
 	// Hanlde Any Error While Stopping Server
 	if err := s.srv.Shutdown(ctx); err != nil {
 		if err = s.srv.Close(); err != nil {
-			log.Fatal("Error, " + strings.Title(err.Error()) + "!")
+			log.Println(strings.ToLower(err.Error()))
 			return
 		}
 	}

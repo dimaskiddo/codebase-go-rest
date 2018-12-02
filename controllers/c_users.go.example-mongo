@@ -33,17 +33,20 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		// Set Response Data
 		response.Status = true
 		response.Code = http.StatusOK
-		response.Message = "Success"
+		response.Message = "success"
 		response.Data = users
 
 		// Write Response Data to HTTP
 		utils.ResponseWrite(w, response.Code, response)
 	} else {
+		// Lower Case Error Message
+		errMessage := strings.ToLower(err.Error())
+
 		// Write Error Response Data to HTTP
-		utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
+		utils.ResponseInternalError(w, errMessage)
 
 		// Print Log Error to Router Log Handler
-		log.Println("Error, " + strings.Title(err.Error()) + "!")
+		log.Println(errMessage)
 	}
 }
 
@@ -65,17 +68,20 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 
 		// Set Response Data
 		response.Status = true
-		response.Code = http.StatusCreated
-		response.Message = "Success"
+		response.Code = http.StatusOK
+		response.Message = "success"
 
 		// Write Response Data to HTTP
 		utils.ResponseWrite(w, response.Code, response)
 	} else {
+		// Lower Case Error Message
+		errMessage := strings.ToLower(err.Error())
+
 		// Write Error Response Data to HTTP
-		utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
+		utils.ResponseInternalError(w, errMessage)
 
 		// Print Log Error to Router Log Handler
-		log.Println("Error, " + strings.Title(err.Error()) + "!")
+		log.Println(errMessage)
 	}
 }
 
@@ -100,24 +106,30 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 			// Set Response Data
 			response.Status = true
 			response.Code = http.StatusOK
-			response.Message = "Success"
+			response.Message = "success"
 			response.Data = users
 
 			// Write Response Data to HTTP
 			utils.ResponseWrite(w, response.Code, response)
 		} else {
+			// Lower Case Error Message
+			errMessage := strings.ToLower(err.Error())
+
 			// Write Error Response Data to HTTP
-			utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
+			utils.ResponseInternalError(w, errMessage)
 
 			// Print Log Error to Router Log Handler
-			log.Println("Error, " + strings.Title(err.Error()) + "!")
+			log.Println(errMessage)
 		}
 	} else {
+		// Lower Case Error Message
+		errMessage := strings.ToLower("invalid object id's")
+
 		// Write Error Response Data to HTTP
-		utils.ResponseBadRequest(w, "Error, Invalid ObjectIDs!")
+		utils.ResponseBadRequest(w, errMessage)
 
 		// Print Log Error to Router Log Handler
-		log.Println("Error, Invalid ObjectIDs!")
+		log.Println(errMessage)
 	}
 }
 
@@ -145,23 +157,29 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 			// Set Response Data
 			response.Status = true
 			response.Code = http.StatusOK
-			response.Message = "Success"
+			response.Message = "success"
 
 			// Write Response Data to HTTP
 			utils.ResponseWrite(w, response.Code, response)
 		} else {
+			// Lower Case Error Message
+			errMessage := strings.ToLower(err.Error())
+
 			// Write Error Response Data to HTTP
-			utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
+			utils.ResponseInternalError(w, errMessage)
 
 			// Print Log Error to Router Log Handler
-			log.Println("Error, " + strings.Title(err.Error()) + "!")
+			log.Println(errMessage)
 		}
 	} else {
+		// Lower Case Error Message
+		errMessage := strings.ToLower("invalid object id's")
+
 		// Write Error Response Data to HTTP
-		utils.ResponseBadRequest(w, "Error, Invalid ObjectIDs!")
+		utils.ResponseBadRequest(w, errMessage)
 
 		// Print Log Error to Router Log Handler
-		log.Println("Error, Invalid ObjectIDs!")
+		log.Println(errMessage)
 	}
 }
 
@@ -180,22 +198,28 @@ func DelUserById(w http.ResponseWriter, r *http.Request) {
 			// Set Response Data
 			response.Status = true
 			response.Code = http.StatusOK
-			response.Message = "Success"
+			response.Message = "success"
 
 			// Write Response Data to HTTP
 			utils.ResponseWrite(w, response.Code, response)
 		} else {
+			// Lower Case Error Message
+			errMessage := strings.ToLower(err.Error())
+
 			// Write Error Response Data to HTTP
-			utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
+			utils.ResponseInternalError(w, errMessage)
 
 			// Print Log Error to Router Log Handler
-			log.Println("Error, " + strings.Title(err.Error()) + "!")
+			log.Println(errMessage)
 		}
 	} else {
+		// Lower Case Error Message
+		errMessage := strings.ToLower("invalid object id's")
+
 		// Write Error Response Data to HTTP
-		utils.ResponseBadRequest(w, "Error, Invalid ObjectIDs!")
+		utils.ResponseBadRequest(w, errMessage)
 
 		// Print Log Error to Router Log Handler
-		log.Println("Error, Invalid ObjectIDs!")
+		log.Println(errMessage)
 	}
 }

@@ -28,7 +28,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	// Set Response Data
 	response.Status = true
 	response.Code = http.StatusOK
-	response.Message = "Success"
+	response.Message = "success"
 	response.Data = models.Users
 
 	// Write Response Data to HTTP
@@ -52,8 +52,8 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 
 	// Set Response Data
 	response.Status = true
-	response.Code = http.StatusCreated
-	response.Message = "Success"
+	response.Code = http.StatusOK
+	response.Message = "success"
 
 	// Write Response Data to HTTP
 	utils.ResponseWrite(w, response.Code, response)
@@ -69,27 +69,39 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 	if err == nil {
 		// Check if Requested Data in User Array Range
 		if len(models.Users) > 0 && userID <= len(models.Users) {
-			var user []models.User
+			var users []models.User
 			var response ResponseGetUser
 
 			// Convert Selected User from Users Array to Single User Array
-			user = append(user, models.Users[userID-1])
+			users = append(users, models.Users[userID-1])
 
 			// Set Response Data
 			response.Status = true
 			response.Code = http.StatusOK
-			response.Message = "Success"
-			response.Data = user
+			response.Message = "success"
+			response.Data = users
 
 			// Write Response Data to HTTP
 			utils.ResponseWrite(w, response.Code, response)
 		} else {
-			utils.ResponseBadRequest(w, "Error, Invalid Array Index!")
-			log.Println("Error, Invalid Array Index!")
+			// Lower Case Error Message
+			errMessage := strings.ToLower("invalid array index")
+
+			// Write Error Response Data to HTTP
+			utils.ResponseBadRequest(w, errMessage)
+
+			// Print Log Error to Router Log Handler
+			log.Println(errMessage)
 		}
 	} else {
-		utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
-		log.Println("Error, " + strings.Title(err.Error()) + "!")
+		// Lower Case Error Message
+		errMessage := strings.ToLower(err.Error())
+
+		// Write Error Response Data to HTTP
+		utils.ResponseInternalError(w, errMessage)
+
+		// Print Log Error to Router Log Handler
+		log.Println(errMessage)
 	}
 }
 
@@ -117,17 +129,29 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 			// Set Response Data
 			response.Status = true
 			response.Code = http.StatusOK
-			response.Message = "Success"
+			response.Message = "success"
 
 			// Write Response Data to HTTP
 			utils.ResponseWrite(w, response.Code, response)
 		} else {
-			utils.ResponseBadRequest(w, "Error, Invalid Array Index!")
-			log.Println("Error, Invalid Array Index!")
+			// Lower Case Error Message
+			errMessage := strings.ToLower("invalid array index")
+
+			// Write Error Response Data to HTTP
+			utils.ResponseBadRequest(w, errMessage)
+
+			// Print Log Error to Router Log Handler
+			log.Println(errMessage)
 		}
 	} else {
-		utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
-		log.Println("Error, " + strings.Title(err.Error()) + "!")
+		// Lower Case Error Message
+		errMessage := strings.ToLower(err.Error())
+
+		// Write Error Response Data to HTTP
+		utils.ResponseInternalError(w, errMessage)
+
+		// Print Log Error to Router Log Handler
+		log.Println(errMessage)
 	}
 }
 
@@ -149,16 +173,28 @@ func DelUserById(w http.ResponseWriter, r *http.Request) {
 			// Set Response Data
 			response.Status = true
 			response.Code = http.StatusOK
-			response.Message = "Success"
+			response.Message = "success"
 
 			// Write Response Data to HTTP
 			utils.ResponseWrite(w, response.Code, response)
 		} else {
-			utils.ResponseBadRequest(w, "Error, Invalid Array Index!")
-			log.Println("Error, Invalid Array Index!")
+			// Lower Case Error Message
+			errMessage := strings.ToLower("invalid array index")
+
+			// Write Error Response Data to HTTP
+			utils.ResponseBadRequest(w, errMessage)
+
+			// Print Log Error to Router Log Handler
+			log.Println(errMessage)
 		}
 	} else {
-		utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
-		log.Println("Error, " + strings.Title(err.Error()) + "!")
+		// Lower Case Error Message
+		errMessage := strings.ToLower(err.Error())
+
+		// Write Error Response Data to HTTP
+		utils.ResponseInternalError(w, errMessage)
+
+		// Print Log Error to Router Log Handler
+		log.Println(errMessage)
 	}
 }

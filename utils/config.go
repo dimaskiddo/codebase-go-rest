@@ -65,7 +65,7 @@ func configLoadFile() {
 	// Load Configuration File
 	err := Config.ReadInConfig()
 	if err != nil {
-		log.Fatal("Error, " + strings.Title(err.Error()) + "!")
+		log.Println(strings.ToLower(err.Error()))
 	}
 }
 
