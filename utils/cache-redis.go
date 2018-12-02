@@ -2,6 +2,7 @@ package utils
 
 import (
 	"log"
+	"strings"
 
 	"github.com/go-redis/redis"
 )
@@ -32,7 +33,7 @@ func redisConnect() *redis.Client {
 	// Test Cache Connection
 	_, err := cache.Ping().Result()
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatal("Error, " + strings.Title(err.Error()) + "!")
 	}
 
 	// Return Current Connection

@@ -25,7 +25,6 @@ func main() {
 
 	// Starting Server
 	server.Start()
-	defer server.Stop()
 
 	// Catch OS Signal from Channel
 	signal.Notify(signalOS, os.Interrupt, syscall.SIGTERM)
@@ -35,6 +34,9 @@ func main() {
 
 	// Give Information for Server Stop
 	fmt.Println(" Stopping Server ")
+
+	// Stopping Server
+	defer server.Stop()
 
 	// Close Any Cache Connections
 	if len(utils.Config.GetString("CACHE_DRIVER")) != 0 {

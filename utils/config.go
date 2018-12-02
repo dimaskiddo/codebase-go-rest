@@ -22,7 +22,7 @@ func initConfig() {
 	// Set Configuration File Value
 	configFile := os.Getenv("CONFIG_FILE")
 	if len(configFile) == 0 {
-		configFile = "config"
+		configFile = "production"
 	}
 
 	// Set Configuration Type Value
@@ -65,7 +65,7 @@ func configLoadFile() {
 	// Load Configuration File
 	err := Config.ReadInConfig()
 	if err != nil {
-		log.Println("Failed to Load Configuration file!")
+		log.Fatal("Error, " + strings.Title(err.Error()) + "!")
 	}
 }
 

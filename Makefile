@@ -28,7 +28,7 @@ go-build:
 
 go-run:
 	make go-dep
-	CONFIG_PATH="./build/config" go run *.go
+	CONFIG_PATH="./build/config" CONFIG_FILE="development" go run *.go
 
 docker-build:
 	make go-build

@@ -3,7 +3,9 @@ package utils
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
+	"strings"
 	"sync"
 	"time"
 )
@@ -65,7 +67,7 @@ func (s *Server) Stop() {
 	// Hanlde Any Error While Stopping Server
 	if err := s.srv.Shutdown(ctx); err != nil {
 		if err = s.srv.Close(); err != nil {
-			fmt.Printf(fmt.Sprintf("Stopping Server Got an Error %v\n", err))
+			log.Fatal("Error, " + strings.Title(err.Error()) + "!")
 			return
 		}
 	}

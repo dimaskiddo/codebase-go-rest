@@ -3,6 +3,7 @@ package utils
 import (
 	"database/sql"
 	"log"
+	"strings"
 
 	// Set Alias for MySQL Driver Package
 	// To _ Since This Package Only Used in
@@ -30,13 +31,13 @@ func mysqlConnect() *sql.DB {
 	// Get Database Connection
 	db, err := sql.Open("mysql", mysqlCfg.User+":"+mysqlCfg.Password+"@tcp("+mysqlCfg.Host+":"+mysqlCfg.Port+")/"+mysqlCfg.Name)
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatal("Error, " + strings.Title(err.Error()) + "!")
 	}
 
 	// Test Database Connection
 	err = db.Ping()
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatal("Error, " + strings.Title(err.Error()) + "!")
 	}
 
 	// Return Current Connection

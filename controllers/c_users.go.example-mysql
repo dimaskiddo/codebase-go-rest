@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/dimaskiddo/frame-go/models"
 	"github.com/dimaskiddo/frame-go/utils"
@@ -24,13 +25,12 @@ type ResponseGetUser struct {
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 	var users []models.User
-	var response ResponseGetUser
 
 	// Database Query
 	rows, err := utils.MySQL.Query("SELECT * FROM users")
-	defer rows.Close()
-
 	if err == nil {
+		var response ResponseGetUser
+
 		// Populate Data
 		for rows.Next() {
 			// Match / Binding Database Field with Struct
@@ -39,10 +39,11 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 				// Append User Struct to Users Array of Struct
 				users = append(users, user)
 			} else {
-				utils.ResponseInternalError(w)
-				log.Println(err.Error())
+				// Print Log Error to Router Log Handler
+				log.Println("Error, " + strings.Title(err.Error()) + "!")
 			}
 		}
+		defer rows.Close()
 
 		// Set Response Data
 		response.Status = true
@@ -53,15 +54,17 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		// Write Response Data to HTTP
 		utils.ResponseWrite(w, response.Code, response)
 	} else {
-		utils.ResponseInternalError(w)
-		log.Println(err.Error())
+		// Write Error Response Data to HTTP
+		utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
+
+		// Print Log Error to Router Log Handler
+		log.Println("Error, " + strings.Title(err.Error()) + "!")
 	}
 }
 
 // Function to Add User
 func AddUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
-	var response utils.Response
 
 	// Decode JSON from Request Body to User Data
 	// Use _ As Temporary Variable
@@ -70,6 +73,8 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	// Database Query
 	_, err := utils.MySQL.Exec("INSERT INTO users (name, email) VALUE (?, ?)", user.Name, user.Email)
 	if err == nil {
+		var response utils.Response
+
 		// Set Response Data
 		response.Status = true
 		response.Code = http.StatusCreated
@@ -78,8 +83,11 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 		// Write Response Data to HTTP
 		utils.ResponseWrite(w, response.Code, response)
 	} else {
-		utils.ResponseInternalError(w)
-		log.Println(err.Error())
+		// Write Error Response Data to HTTP
+		utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
+
+		// Print Log Error to Router Log Handler
+		log.Println("Error, " + strings.Title(err.Error()) + "!")
 	}
 }
 
@@ -88,51 +96,52 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 	// Get Parameters From URI
 	params := mux.Vars(r)
 
-	// Handle Error If Parameters ID is Empty
-	if len(params["id"]) == 0 {
-		utils.ResponseBadRequest(w)
-	} else {
-		// Get ID Parameters From URI Then Convert it to Integer
-		userID, err := strconv.Atoi(params["id"])
+	// Get ID Parameters From URI Then Convert it to Integer
+	userID, err := strconv.Atoi(params["id"])
+	if err == nil {
+		var user models.User
+		var users []models.User
+
+		// Database Query
+		rows, err := utils.MySQL.Query("SELECT * FROM users WHERE id=? LIMIT 1", userID)
 		if err == nil {
-			var user models.User
-			var users []models.User
 			var response ResponseGetUser
 
-			// Database Query
-			rows, err := utils.MySQL.Query("SELECT * FROM users WHERE id=? LIMIT 1", userID)
+			// Populate Data
+			for rows.Next() {
+				// Match / Binding Database Field with Struct
+				err := rows.Scan(&user.ID, &user.Name, &user.Email)
+				if err == nil {
+					// Append User Struct to Users Array of Struct
+					users = append(users, user)
+				} else {
+					// Print Log Error to Router Log Handler
+					log.Println("Error, " + strings.Title(err.Error()) + "!")
+				}
+			}
 			defer rows.Close()
 
-			if err == nil {
-				// Populate Data
-				for rows.Next() {
-					// Match / Binding Database Field with Struct
-					err := rows.Scan(&user.ID, &user.Name, &user.Email)
-					if err == nil {
-						// Append User Struct to Users Array of Struct
-						users = append(users, user)
-					} else {
-						utils.ResponseInternalError(w)
-						log.Println(err.Error())
-					}
-				}
+			// Set Response Data
+			response.Status = true
+			response.Code = http.StatusOK
+			response.Message = "Success"
+			response.Data = users
 
-				// Set Response Data
-				response.Status = true
-				response.Code = http.StatusOK
-				response.Message = "Success"
-				response.Data = users
-
-				// Write Response Data to HTTP
-				utils.ResponseWrite(w, response.Code, response)
-			} else {
-				utils.ResponseInternalError(w)
-				log.Println(err.Error())
-			}
+			// Write Response Data to HTTP
+			utils.ResponseWrite(w, response.Code, response)
 		} else {
-			utils.ResponseInternalError(w)
-			log.Println(err.Error())
+			// Write Error Response Data to HTTP
+			utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
+
+			// Print Log Error to Router Log Handler
+			log.Println("Error, " + strings.Title(err.Error()) + "!")
 		}
+	} else {
+		// Write Error Response Data to HTTP
+		utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
+
+		// Print Log Error to Router Log Handler
+		log.Println("Error, " + strings.Title(err.Error()) + "!")
 	}
 }
 
@@ -141,38 +150,40 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 	// Get Parameters From URI
 	params := mux.Vars(r)
 
-	// Handle Error If Parameters ID is Empty
-	if len(params["id"]) == 0 {
-		utils.ResponseBadRequest(w)
-	} else {
-		// Get ID Parameters From URI Then Convert it to Integer
-		userID, err := strconv.Atoi(params["id"])
+	// Get ID Parameters From URI Then Convert it to Integer
+	userID, err := strconv.Atoi(params["id"])
+	if err == nil {
+		var user models.User
+
+		// Decode JSON from Request Body to User Data
+		// Use _ As Temporary Variable
+		_ = json.NewDecoder(r.Body).Decode(&user)
+
+		// Database Query
+		_, err := utils.MySQL.Exec("UPDATE users SET name=?, email=? WHERE id=? LIMIT 1", user.Name, user.Email, userID)
 		if err == nil {
-			var user models.User
 			var response utils.Response
 
-			// Decode JSON from Request Body to User Data
-			// Use _ As Temporary Variable
-			_ = json.NewDecoder(r.Body).Decode(&user)
+			// Set Response Data
+			response.Status = true
+			response.Code = http.StatusOK
+			response.Message = "Success"
 
-			// Database Query
-			_, err := utils.MySQL.Exec("UPDATE users SET name=?, email=? WHERE id=? LIMIT 1", user.Name, user.Email, userID)
-			if err == nil {
-				// Set Response Data
-				response.Status = true
-				response.Code = http.StatusOK
-				response.Message = "Success"
-
-				// Write Response Data to HTTP
-				utils.ResponseWrite(w, response.Code, response)
-			} else {
-				utils.ResponseInternalError(w)
-				log.Println(err.Error())
-			}
+			// Write Response Data to HTTP
+			utils.ResponseWrite(w, response.Code, response)
 		} else {
-			utils.ResponseInternalError(w)
-			log.Println(err.Error())
+			// Write Error Response Data to HTTP
+			utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
+
+			// Print Log Error to Router Log Handler
+			log.Println("Error, " + strings.Title(err.Error()) + "!")
 		}
+	} else {
+		// Write Error Response Data to HTTP
+		utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
+
+		// Print Log Error to Router Log Handler
+		log.Println("Error, " + strings.Title(err.Error()) + "!")
 	}
 }
 
@@ -181,32 +192,33 @@ func DelUserById(w http.ResponseWriter, r *http.Request) {
 	// Get Parameters From URI
 	params := mux.Vars(r)
 
-	// Handle Error If Parameters ID is Empty
-	if len(params["id"]) == 0 {
-		utils.ResponseBadRequest(w)
-	} else {
-		// Get ID Parameters From URI Then Convert it to Integer
-		userID, err := strconv.Atoi(params["id"])
+	// Get ID Parameters From URI Then Convert it to Integer
+	userID, err := strconv.Atoi(params["id"])
+	if err == nil {
+		// Database Query
+		_, err := utils.MySQL.Query("DELETE FROM users WHERE id=? LIMIT 1", userID)
 		if err == nil {
 			var response utils.Response
 
-			// Database Query
-			_, err := utils.MySQL.Query("DELETE FROM users WHERE id=? LIMIT 1", userID)
-			if err == nil {
-				// Set Response Data
-				response.Status = true
-				response.Code = http.StatusOK
-				response.Message = "Success"
+			// Set Response Data
+			response.Status = true
+			response.Code = http.StatusOK
+			response.Message = "Success"
 
-				// Write Response Data to HTTP
-				utils.ResponseWrite(w, response.Code, response)
-			} else {
-				utils.ResponseInternalError(w)
-				log.Println(err.Error())
-			}
+			// Write Response Data to HTTP
+			utils.ResponseWrite(w, response.Code, response)
 		} else {
-			utils.ResponseInternalError(w)
-			log.Println(err.Error())
+			// Write Error Response Data to HTTP
+			utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
+
+			// Print Log Error to Router Log Handler
+			log.Println("Error, " + strings.Title(err.Error()) + "!")
 		}
+	} else {
+		// Write Error Response Data to HTTP
+		utils.ResponseInternalError(w, "Error, "+strings.Title(err.Error())+"!")
+
+		// Print Log Error to Router Log Handler
+		log.Println("Error, " + strings.Title(err.Error()) + "!")
 	}
 }
