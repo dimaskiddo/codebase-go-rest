@@ -10,12 +10,14 @@ import (
 	"github.com/dimaskiddo/frame-go/utils"
 )
 
+func init() {
+	// Bootstrap
+	utils.Bootstrap()
+}
+
 func main() {
 	// Initialize Channel for OS Signal
 	signalOS := make(chan os.Signal, 1)
-
-	// Bootstrap
-	utils.Bootstrap()
 
 	// Load Routes
 	LoadRoutes()
