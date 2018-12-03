@@ -22,7 +22,7 @@ func initConfig() {
 	// Set Configuration File Value
 	configFile := os.Getenv("CONFIG_FILE")
 	if len(configFile) == 0 {
-		configFile = "production"
+		configFile = "dev"
 	}
 
 	// Set Configuration Type Value
