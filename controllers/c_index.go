@@ -12,7 +12,7 @@ func GetIndex(w http.ResponseWriter, r *http.Request) {
 
 	response.Status = true
 	response.Code = http.StatusOK
-	response.Message = "Simple Go Framework is running"
+	response.Message = "Simple API Go Framework is running"
 
 	utils.ResponseWrite(w, response.Code, response)
 }

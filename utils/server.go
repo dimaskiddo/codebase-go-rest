@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
 	"sync"
 	"time"
 )
@@ -67,7 +66,7 @@ func (s *Server) Stop() {
 	// Hanlde Any Error While Stopping Server
 	if err := s.srv.Shutdown(ctx); err != nil {
 		if err = s.srv.Close(); err != nil {
-			log.Println(strings.ToLower(err.Error()))
+			log.Println(err)
 			return
 		}
 	}

@@ -14,9 +14,9 @@ var Config *viper.Viper
 // Configuration Initialize Function
 func initConfig() {
 	// Set Configuration Path Value
-	configPath := os.Getenv("CONFIG_PATH")
+	configPath := os.Getenv("CONFIG_PATH") + "/configs"
 	if len(configPath) == 0 {
-		configPath = "./config"
+		configPath = "." + "/configs"
 	}
 
 	// Set Configuration File Value

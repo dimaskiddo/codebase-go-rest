@@ -27,7 +27,7 @@
 
 [[constraint]]
   name = "github.com/aws/aws-sdk-go"
-  version = "1.15.89"
+  version = "1.15.90"
 
 [[constraint]]
   name = "github.com/dgrijalva/jwt-go"

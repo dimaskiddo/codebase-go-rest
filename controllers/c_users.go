@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"strings"
 
 	"github.com/dimaskiddo/frame-go/models"
 	"github.com/dimaskiddo/frame-go/utils"
@@ -84,24 +83,12 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 			// Write Response Data to HTTP
 			utils.ResponseWrite(w, response.Code, response)
 		} else {
-			// Lower Case Error Message
-			errMessage := strings.ToLower("invalid array index")
-
-			// Write Error Response Data to HTTP
-			utils.ResponseBadRequest(w, errMessage)
-
-			// Print Log Error to Router Log Handler
-			log.Println(errMessage)
+			utils.ResponseBadRequest(w, "Invalid array index")
+			log.Println("Invalid array index")
 		}
 	} else {
-		// Lower Case Error Message
-		errMessage := strings.ToLower(err.Error())
-
-		// Write Error Response Data to HTTP
-		utils.ResponseInternalError(w, errMessage)
-
-		// Print Log Error to Router Log Handler
-		log.Println(errMessage)
+		utils.ResponseInternalError(w, err.Error())
+		log.Println(err.Error())
 	}
 }
 
@@ -134,24 +121,12 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 			// Write Response Data to HTTP
 			utils.ResponseWrite(w, response.Code, response)
 		} else {
-			// Lower Case Error Message
-			errMessage := strings.ToLower("invalid array index")
-
-			// Write Error Response Data to HTTP
-			utils.ResponseBadRequest(w, errMessage)
-
-			// Print Log Error to Router Log Handler
-			log.Println(errMessage)
+			utils.ResponseBadRequest(w, "Invalid array index")
+			log.Println("Invalid array index")
 		}
 	} else {
-		// Lower Case Error Message
-		errMessage := strings.ToLower(err.Error())
-
-		// Write Error Response Data to HTTP
-		utils.ResponseInternalError(w, errMessage)
-
-		// Print Log Error to Router Log Handler
-		log.Println(errMessage)
+		utils.ResponseInternalError(w, err.Error())
+		log.Println(err.Error())
 	}
 }
 
@@ -178,23 +153,11 @@ func DelUserById(w http.ResponseWriter, r *http.Request) {
 			// Write Response Data to HTTP
 			utils.ResponseWrite(w, response.Code, response)
 		} else {
-			// Lower Case Error Message
-			errMessage := strings.ToLower("invalid array index")
-
-			// Write Error Response Data to HTTP
-			utils.ResponseBadRequest(w, errMessage)
-
-			// Print Log Error to Router Log Handler
-			log.Println(errMessage)
+			utils.ResponseBadRequest(w, "Invalid array index")
+			log.Println("Invalid array index")
 		}
 	} else {
-		// Lower Case Error Message
-		errMessage := strings.ToLower(err.Error())
-
-		// Write Error Response Data to HTTP
-		utils.ResponseInternalError(w, errMessage)
-
-		// Print Log Error to Router Log Handler
-		log.Println(errMessage)
+		utils.ResponseInternalError(w, err.Error())
+		log.Println(err.Error())
 	}
 }

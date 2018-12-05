@@ -19,4 +19,7 @@ func LoadRoutes() {
 	utils.Router.Handle("/users/{id}", utils.AuthJWT(controllers.GetUserById)).Methods("GET")
 	utils.Router.Handle("/users/{id}", utils.AuthJWT(controllers.PutUserById)).Methods("PUT", "PATCH")
 	utils.Router.Handle("/users/{id}", utils.AuthJWT(controllers.DelUserById)).Methods("DELETE")
+
+	// Initialize Router Endpoint for Upload Without Security Access
+	utils.Router.HandleFunc("/uploads", controllers.AddUpload).Methods("POST")
 }

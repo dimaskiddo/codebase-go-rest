@@ -2,7 +2,6 @@ package utils
 
 import (
 	"log"
-	"strings"
 
 	// Set Alias for Mongo Driver Package
 	// To mgo Since This Package Has Different Name
@@ -33,13 +32,13 @@ func mongoConnect() (*mgo.Session, *mgo.Database) {
 	// Get Session Connection
 	sess, err := mgo.Dial(mongoCfg.User + ":" + mongoCfg.Password + "@" + mongoCfg.Host + ":" + mongoCfg.Port + "/" + mongoCfg.Name)
 	if err != nil {
-		log.Fatal(strings.ToLower(err.Error()))
+		log.Fatal(err)
 	}
 
 	// Test Session Connection
 	err = sess.Ping()
 	if err != nil {
-		log.Fatal(strings.ToLower(err.Error()))
+		log.Fatal(err)
 	}
 
 	// Set Mongo Session to Monotonic
