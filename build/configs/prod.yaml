@@ -1,8 +1,8 @@
 ## Server Configuration
-# SERVER_IP: "0.0.0.0"
-# SERVER_PORT: "3000"
-# SERVER_UPLOAD_PATH: "./uploads"
-# SERVER_UPLOAD_LIMIT: 25
+SERVER_IP: "0.0.0.0"
+SERVER_PORT: "3000"
+SERVER_UPLOAD_PATH: "./uploads"
+SERVER_UPLOAD_LIMIT: 25
 
 ## Database Configuration
 # DB_DRIVER: "mongo"
@@ -18,3 +18,12 @@
 # CACHE_PORT: "6379"
 # CACHE_PASSWORD: "password"
 # CACHE_NAME: 0
+
+## Storage Configuration
+# STORAGE_DRIVER: "minio"
+# STORAGE_USE_SSL: true
+# STORAGE_ENDPOINT: ""
+# STORAGE_ACCESS_KEY: ""
+# STORAGE_SECRET_KEY: ""
+# STORAGE_REGION: ""
+# STORAGE_BUCKET: ""

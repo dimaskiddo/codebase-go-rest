@@ -32,7 +32,7 @@ func redisConnect() *redis.Client {
 	// Test Cache Connection
 	_, err := cache.Ping().Result()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalln(err)
 	}
 
 	// Return Current Connection

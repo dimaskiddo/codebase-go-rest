@@ -30,13 +30,13 @@ func mysqlConnect() *sql.DB {
 	// Get Database Connection
 	db, err := sql.Open("mysql", mysqlCfg.User+":"+mysqlCfg.Password+"@tcp("+mysqlCfg.Host+":"+mysqlCfg.Port+")/"+mysqlCfg.Name)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalln(err)
 	}
 
 	// Test Database Connection
 	err = db.Ping()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalln(err)
 	}
 
 	// Return Current Connection

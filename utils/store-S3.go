@@ -3,112 +3,96 @@ package utils
 import (
 	"errors"
 	"log"
-	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/credentials"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/s3/s3manager"
+	minio "github.com/minio/minio-go"
 )
 
 // Storage Configuration Struct
 type storeS3Config struct {
-	AccessKey  string
-	SecretKey  string
-	Region     string
-	Bucket     string
-	Endpoint   string
-	DisableSSL bool
+	UseSSL    bool
+	Endpoint  string
+	AccessKey string
+	SecretKey string
+	Region    string
+	Bucket    string
 }
 
 // Storage Configuration Variable
 var storeS3Cfg storeS3Config
 
 // Storage Connection Variable
-var StoreS3 *session.Session
+var StoreS3 *minio.Client
 
 // Storage Connect Function
-func storeS3Connect() *session.Session {
-	var config *aws.Config
-
-	// Create S3 Connection
+func storeS3Connect() *minio.Client {
+	// Get Storage Connection
 	switch strings.ToLower(Config.GetString("STORAGE_DRIVER")) {
 	case "aws":
-		config = &aws.Config{
-			Credentials: credentials.NewStaticCredentials(storeS3Cfg.AccessKey, storeS3Cfg.SecretKey, ""),
-			Region:      aws.String(storeS3Cfg.Region),
+		client, err := minio.New("s3.amazonaws.com", storeS3Cfg.AccessKey, storeS3Cfg.SecretKey, storeS3Cfg.UseSSL)
+		if err != nil {
+			log.Fatalln(err)
 		}
-
+		return client
 	case "minio":
-		// Set Endpoint URL Based On SSL Support
-		var endpoint string
-		if storeS3Cfg.DisableSSL {
-			endpoint = "http://" + storeS3Cfg.Endpoint
-		} else {
-			endpoint = "https://" + storeS3Cfg.Endpoint
+		client, err := minio.New(storeS3Cfg.Endpoint, storeS3Cfg.AccessKey, storeS3Cfg.SecretKey, storeS3Cfg.UseSSL)
+		if err != nil {
+			log.Fatalln(err)
 		}
-
-		config = &aws.Config{
-			Credentials:      credentials.NewStaticCredentials(storeS3Cfg.AccessKey, storeS3Cfg.SecretKey, ""),
-			Endpoint:         aws.String(endpoint),
-			Region:           aws.String(storeS3Cfg.Region),
-			DisableSSL:       aws.Bool(storeS3Cfg.DisableSSL),
-			S3ForcePathStyle: aws.Bool(true),
-		}
+		return client
 	}
 
-	// Return Session
-	return session.New(config)
+	return nil
 }
 
-func StoreS3GetFileLink(fileName string) (string, error) {
+func StoreS3UploadFile(fileName string, contentType string) error {
+	// Check If Storage Driver Declared
 	if len(strings.ToLower(Config.GetString("STORAGE_DRIVER"))) != 0 {
-		// Return Composed URL Based on Storage Driver
-		switch strings.ToLower(Config.GetString("STORAGE_DRIVER")) {
-		case "aws":
-			return "https://s3." + storeS3Cfg.Region + ".amazonaws.com/" + storeS3Cfg.Bucket + "/" + fileName, nil
-		case "minio":
-			if storeS3Cfg.DisableSSL {
-				return "http://" + storeS3Cfg.Endpoint + "/" + storeS3Cfg.Bucket + "/" + fileName, nil
+		// Check If Bucket Exists
+		bucketExists, err := StoreS3.BucketExists(storeS3Cfg.Bucket)
+		if err != nil {
+			return err
+		} else {
+			if !bucketExists {
+				// If Bucket Not Exists Then Create Bucket
+				err := StoreS3.MakeBucket(storeS3Cfg.Bucket, storeS3Cfg.Region)
+				if err != nil {
+					return err
+				}
 			} else {
-				return "https://" + storeS3Cfg.Endpoint + "/" + storeS3Cfg.Bucket + "/" + fileName, nil
+				// If Bucket Exists Then Try to Upload File
+				_, err := StoreS3.FPutObject(storeS3Cfg.Bucket, filepath.Base(fileName), fileName, minio.PutObjectOptions{ContentType: contentType})
+				if err != nil {
+					return err
+				}
+
+				log.Println("Successfully uploaded " + filepath.Base(fileName))
+				return nil
 			}
 		}
 	}
 
-	return "", errors.New("No storage driver defined")
+	// Default Return
+	return errors.New("No storage driver defined")
 }
 
-func StoreS3UploadFile(fileName string) error {
+func StoreS3GetFileLink(fileName string) (string, error) {
+	// Check If Storage Driver Declared
 	if len(strings.ToLower(Config.GetString("STORAGE_DRIVER"))) != 0 {
-		// Open File for Upload
-		fileContent, err := os.Open(fileName)
-		if err != nil {
-			return err
+		// Return Composed URL Based on Storage Driver
+		switch strings.ToLower(Config.GetString("STORAGE_DRIVER")) {
+		case "aws":
+			return "https://s3.amazonaws.com/" + storeS3Cfg.Bucket + "/" + fileName, nil
+		case "minio":
+			if storeS3Cfg.UseSSL {
+				return "https://" + storeS3Cfg.Endpoint + "/" + storeS3Cfg.Bucket + "/" + fileName, nil
+			} else {
+				return "http://" + storeS3Cfg.Endpoint + "/" + storeS3Cfg.Bucket + "/" + fileName, nil
+			}
 		}
-		defer fileContent.Close()
-
-		// Create Uploader and Do Upload
-		uploader := s3manager.NewUploader(StoreS3)
-		result, err := uploader.Upload(&s3manager.UploadInput{
-			Bucket: aws.String(storeS3Cfg.Bucket),
-			Key:    aws.String(filepath.Base(fileName)),
-			Body:   fileContent,
-		})
-
-		// Check for Upload Error
-		if err != nil {
-			return err
-		}
-
-		// Upload Success
-		log.Println("File " + fileName + " successfully uploaded to " + result.Location)
-
-		// Return No Error
-		return nil
 	}
 
-	return errors.New("No storage driver defined")
+	// Default Return
+	return "", errors.New("No storage driver defined")
 }

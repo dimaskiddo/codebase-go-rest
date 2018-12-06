@@ -37,25 +37,25 @@ func AddUpload(w http.ResponseWriter, r *http.Request) {
 			if len(strings.ToLower(utils.Config.GetString("STORAGE_DRIVER"))) != 0 {
 				switch strings.ToLower(utils.Config.GetString("STORAGE_DRIVER")) {
 				case "aws", "minio":
-					err := utils.StoreS3UploadFile(utils.Config.GetString("SERVER_UPLOAD_PATH") + "/" + fileUploadName)
+					// Try to Upload File to Custom Storage
+					err := utils.StoreS3UploadFile(utils.Config.GetString("SERVER_UPLOAD_PATH")+"/"+fileUploadName, r.Header.Get("Content-Type"))
 					if err == nil {
-						// Remove File from Local Storage if File Successfully Uploaded
-						err := os.Remove(utils.Config.GetString("SERVER_UPLOAD_PATH") + "/" + fileUploadName)
-						if err == nil {
-							// Set Response Data
-							response.Status = true
-							response.Code = http.StatusOK
-							response.Message = "success"
+						// Set Response Data
+						response.Status = true
+						response.Code = http.StatusOK
+						response.Message = "success"
 
-							// Write Response Data to HTTP
-							utils.ResponseWrite(w, response.Code, response)
-						} else {
-							utils.ResponseInternalError(w, err.Error())
-							log.Println(err.Error())
-						}
+						// Write Response Data to HTTP
+						utils.ResponseWrite(w, response.Code, response)
 					} else {
 						utils.ResponseInternalError(w, err.Error())
 						log.Println(err.Error())
+					}
+
+					// Remove Uploaded File
+					err := os.Remove(utils.Config.GetString("SERVER_UPLOAD_PATH") + "/" + fileUploadName)
+					if err != nil {
+						log.Println(err)
 					}
 
 				default:

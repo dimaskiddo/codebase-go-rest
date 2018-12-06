@@ -32,13 +32,13 @@ func mongoConnect() (*mgo.Session, *mgo.Database) {
 	// Get Session Connection
 	sess, err := mgo.Dial(mongoCfg.User + ":" + mongoCfg.Password + "@" + mongoCfg.Host + ":" + mongoCfg.Port + "/" + mongoCfg.Name)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalln(err)
 	}
 
 	// Test Session Connection
 	err = sess.Ping()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalln(err)
 	}
 
 	// Set Mongo Session to Monotonic
