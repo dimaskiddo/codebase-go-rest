@@ -81,6 +81,9 @@ func configLoadValues() {
 	// Server Upload Path Value
 	Config.SetDefault("SERVER_UPLOAD_PATH", "./uploads")
 
+	// Server Upload Path Value
+	Config.SetDefault("SERVER_UPLOAD_LIMIT", 25)
+
 	// CORS Allowed Header Value
 	Config.SetDefault("CORS_ALLOWED_HEADER", "X-Requested-With")
 	routerCORSCfg.Headers = []string{Config.GetString("CORS_ALLOWED_HEADER")}

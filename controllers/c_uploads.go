@@ -3,6 +3,7 @@ package controllers
 import (
 	"io"
 	"log"
+	"math"
 	"net/http"
 	"os"
 	"strings"
@@ -12,6 +13,9 @@ import (
 
 // Function to Upload a File
 func AddUpload(w http.ResponseWriter, r *http.Request) {
+	// Limit Body Size with 1 MiB Margin
+	r.Body = http.MaxBytesReader(w, r.Body, (utils.Config.GetInt64("SERVER_UPLOAD_LIMIT")+1)*int64(math.Pow(1024, 2)))
+
 	// Get File Content from Multipart Data
 	fileUploadContent, fileUploadHeader, err := r.FormFile("fileUpload")
 	if err == nil {
