@@ -41,7 +41,7 @@ func initConfig() {
 	Config = viper.New()
 
 	// Set Configuratior Configuration
-	Config.SetConfigName(strings.ToUpper(configFile))
+	Config.SetConfigName(configFile)
 	Config.SetConfigType(configType)
 	Config.AddConfigPath(configPath)
 

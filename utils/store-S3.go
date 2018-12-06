@@ -3,7 +3,7 @@ package utils
 import (
 	"errors"
 	"log"
-	"path/filepath"
+	"mime/multipart"
 	"strings"
 
 	minio "github.com/minio/minio-go"
@@ -27,10 +27,9 @@ var StoreS3 *minio.Client
 
 // Storage Connect Function
 func storeS3Connect() *minio.Client {
-	// Get Storage Connection
 	switch strings.ToLower(Config.GetString("STORAGE_DRIVER")) {
 	case "aws":
-		client, err := minio.New("s3.amazonaws.com", storeS3Cfg.AccessKey, storeS3Cfg.SecretKey, storeS3Cfg.UseSSL)
+		client, err := minio.New("s3."+storeS3Cfg.Region+".amazonaws.com", storeS3Cfg.AccessKey, storeS3Cfg.SecretKey, storeS3Cfg.UseSSL)
 		if err != nil {
 			log.Fatalln(err)
 		}
@@ -46,7 +45,7 @@ func storeS3Connect() *minio.Client {
 	return nil
 }
 
-func StoreS3UploadFile(fileName string, contentType string) error {
+func StoreS3UploadFile(fileName string, fileSize int64, fileType string, fileStream multipart.File) error {
 	// Check If Storage Driver Declared
 	if len(strings.ToLower(Config.GetString("STORAGE_DRIVER"))) != 0 {
 		// Check If Bucket Exists
@@ -62,12 +61,11 @@ func StoreS3UploadFile(fileName string, contentType string) error {
 				}
 			} else {
 				// If Bucket Exists Then Try to Upload File
-				_, err := StoreS3.FPutObject(storeS3Cfg.Bucket, filepath.Base(fileName), fileName, minio.PutObjectOptions{ContentType: contentType})
+				n, err := StoreS3.PutObject(storeS3Cfg.Bucket, fileName, fileStream, fileSize, minio.PutObjectOptions{ContentType: fileType})
 				if err != nil {
 					return err
 				}
-
-				log.Println("Successfully uploaded " + filepath.Base(fileName))
+				log.Printf("Successfully uploaded '%s', with size %d\n", fileName, n)
 				return nil
 			}
 		}
@@ -83,7 +81,7 @@ func StoreS3GetFileLink(fileName string) (string, error) {
 		// Return Composed URL Based on Storage Driver
 		switch strings.ToLower(Config.GetString("STORAGE_DRIVER")) {
 		case "aws":
-			return "https://s3.amazonaws.com/" + storeS3Cfg.Bucket + "/" + fileName, nil
+			return "https://s3." + storeS3Cfg.Region + ".amazonaws.com/" + storeS3Cfg.Bucket + "/" + fileName, nil
 		case "minio":
 			if storeS3Cfg.UseSSL {
 				return "https://" + storeS3Cfg.Endpoint + "/" + storeS3Cfg.Bucket + "/" + fileName, nil
