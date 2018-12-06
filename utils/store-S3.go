@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"errors"
 	"log"
 	"os"
 	"path/filepath"
@@ -13,97 +14,101 @@ import (
 )
 
 // Storage Configuration Struct
-type storageS3Config struct {
-	DisableSSL bool
-	Endpoint   string
+type storeS3Config struct {
 	AccessKey  string
 	SecretKey  string
 	Region     string
 	Bucket     string
+	Endpoint   string
+	DisableSSL bool
 }
 
 // Storage Configuration Variable
-var storageS3Cfg storageS3Config
+var storeS3Cfg storeS3Config
 
 // Storage Connection Variable
-var StorageS3 *session.Session
+var StoreS3 *session.Session
 
 // Storage Connect Function
-func initStorageS3() {
+func storeS3Connect() *session.Session {
 	var config *aws.Config
 
 	// Create S3 Connection
 	switch strings.ToLower(Config.GetString("STORAGE_DRIVER")) {
 	case "aws":
 		config = &aws.Config{
-			Credentials: credentials.NewStaticCredentials(storageS3Cfg.AccessKey, storageS3Cfg.SecretKey, ""),
-			Region:      aws.String(storageS3Cfg.Region),
+			Credentials: credentials.NewStaticCredentials(storeS3Cfg.AccessKey, storeS3Cfg.SecretKey, ""),
+			Region:      aws.String(storeS3Cfg.Region),
 		}
+
 	case "minio":
 		// Set Endpoint URL Based On SSL Support
 		var endpoint string
-		if storageS3Cfg.DisableSSL {
-			endpoint = "http://" + storageS3Cfg.Endpoint
+		if storeS3Cfg.DisableSSL {
+			endpoint = "http://" + storeS3Cfg.Endpoint
 		} else {
-			endpoint = "https://" + storageS3Cfg.Endpoint
+			endpoint = "https://" + storeS3Cfg.Endpoint
 		}
 
 		config = &aws.Config{
-			Credentials:      credentials.NewStaticCredentials(storageS3Cfg.AccessKey, storageS3Cfg.SecretKey, ""),
+			Credentials:      credentials.NewStaticCredentials(storeS3Cfg.AccessKey, storeS3Cfg.SecretKey, ""),
 			Endpoint:         aws.String(endpoint),
-			Region:           aws.String(storageS3Cfg.Region),
-			DisableSSL:       aws.Bool(storageS3Cfg.DisableSSL),
+			Region:           aws.String(storeS3Cfg.Region),
+			DisableSSL:       aws.Bool(storeS3Cfg.DisableSSL),
 			S3ForcePathStyle: aws.Bool(true),
 		}
 	}
 
 	// Return Session
-	StorageS3 = session.New(config)
+	return session.New(config)
 }
 
-func StorageS3GetFileLink(fileName string) string {
+func StoreS3GetFileLink(fileName string) (string, error) {
 	if len(strings.ToLower(Config.GetString("STORAGE_DRIVER"))) != 0 {
 		// Return Composed URL Based on Storage Driver
 		switch strings.ToLower(Config.GetString("STORAGE_DRIVER")) {
 		case "aws":
-			return "https://s3." + storageS3Cfg.Region + ".amazonaws.com/" + storageS3Cfg.Bucket + "/" + fileName
+			return "https://s3." + storeS3Cfg.Region + ".amazonaws.com/" + storeS3Cfg.Bucket + "/" + fileName, nil
 		case "minio":
-			if storageS3Cfg.DisableSSL {
-				return "http://" + storageS3Cfg.Endpoint + "/" + storageS3Cfg.Bucket + "/" + fileName
+			if storeS3Cfg.DisableSSL {
+				return "http://" + storeS3Cfg.Endpoint + "/" + storeS3Cfg.Bucket + "/" + fileName, nil
 			} else {
-				return "https://" + storageS3Cfg.Endpoint + "/" + storageS3Cfg.Bucket + "/" + fileName
+				return "https://" + storeS3Cfg.Endpoint + "/" + storeS3Cfg.Bucket + "/" + fileName, nil
 			}
 		}
 	}
 
-	return ""
+	return "", errors.New("No storage driver defined")
 }
 
-func StorageS3UploadFile(fileName string) {
+func StoreS3UploadFile(fileName string) error {
 	if len(strings.ToLower(Config.GetString("STORAGE_DRIVER"))) != 0 {
 		// Open File for Upload
 		fileContent, err := os.Open(fileName)
 		if err != nil {
-			log.Println("failed to open file " + fileName)
-			return
+			return err
 		}
 		defer fileContent.Close()
 
 		// Create Uploader and Do Upload
-		uploader := s3manager.NewUploader(StorageS3)
+		uploader := s3manager.NewUploader(StoreS3)
 		result, err := uploader.Upload(&s3manager.UploadInput{
-			Bucket: aws.String(storageS3Cfg.Bucket),
+			Bucket: aws.String(storeS3Cfg.Bucket),
 			Key:    aws.String(filepath.Base(fileName)),
 			Body:   fileContent,
 		})
 
 		// Check for Upload Error
 		if err != nil {
-			log.Println("failed to upload file " + fileName + ", " + err.Error())
-			return
+			return err
 		}
 
 		// Upload Success
-		log.Println("successfully upload file " + fileName + " to " + result.Location)
+		log.Println("File " + fileName + " successfully uploaded to " + result.Location)
+
+		// Return No Error
+		return nil
 	}
+
+	return errors.New("No storage driver defined")
 }

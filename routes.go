@@ -9,6 +9,7 @@ import (
 func LoadRoutes() {
 	// Initialize Router Endpoint
 	utils.Router.HandleFunc("/", controllers.GetIndex).Methods("GET")
+	utils.Router.HandleFunc("/uploads", controllers.AddUpload).Methods("POST")
 
 	// Initialize Router Endpoint Secured With Basic Auth
 	utils.Router.Handle("/auth", utils.AuthBasic(controllers.GetAuth)).Methods("GET", "POST")
@@ -19,7 +20,4 @@ func LoadRoutes() {
 	utils.Router.Handle("/users/{id}", utils.AuthJWT(controllers.GetUserById)).Methods("GET")
 	utils.Router.Handle("/users/{id}", utils.AuthJWT(controllers.PutUserById)).Methods("PUT", "PATCH")
 	utils.Router.Handle("/users/{id}", utils.AuthJWT(controllers.DelUserById)).Methods("DELETE")
-
-	// Initialize Router Endpoint for Upload Without Security Access
-	utils.Router.HandleFunc("/uploads", controllers.AddUpload).Methods("POST")
 }

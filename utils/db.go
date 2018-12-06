@@ -24,6 +24,7 @@ func initDB() {
 			// Do MySQL Database Connection
 			MySQL = mysqlConnect()
 		}
+
 	case "mongo":
 		Config.SetDefault("DB_PORT", "27017")
 

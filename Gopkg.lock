@@ -2,7 +2,7 @@
 
 
 [[projects]]
-  digest = "1:c74cd495c1c67728e8c997748ae2eac7891faf68805669efa6b37a7b65ac179d"
+  digest = "1:ac74d00af6a5ffdf1d4df7caf76d0314f9be66d0eff5f5388603f517aaf1f514"
   name = "github.com/aws/aws-sdk-go"
   packages = [
     "aws",
@@ -14,6 +14,7 @@
     "aws/credentials",
     "aws/credentials/ec2rolecreds",
     "aws/credentials/endpointcreds",
+    "aws/credentials/processcreds",
     "aws/credentials/stscreds",
     "aws/csm",
     "aws/defaults",
@@ -42,8 +43,8 @@
     "service/sts",
   ]
   pruneopts = "UT"
-  revision = "ddc06f9fad886ea5daa5f828f3ca094084f8c2a7"
-  version = "v1.15.90"
+  revision = "8e2c30c1f0ce88ba42eff973f07ee5ebe521f1ee"
+  version = "v1.16.0"
 
 [[projects]]
   digest = "1:76dc72490af7174349349838f2fe118996381b31ea83243812a97e5a0fd5ed55"
@@ -196,12 +197,12 @@
   version = "v1.0.3"
 
 [[projects]]
-  digest = "1:214775c11fd26da94a100111a62daa25339198a4f9c57cb4aab352da889f5b93"
+  digest = "1:34c2a71c3317bd76711f66330d7846597bea8cd26c9df5bfd4603d156503e1bf"
   name = "github.com/spf13/viper"
   packages = ["."]
   pruneopts = "UT"
-  revision = "2c12c60302a5a0e62ee102ca9bc996277c2f64f5"
-  version = "v1.2.1"
+  revision = "41cd1c3aa32b2685fae6c296e6f044bc68922c0e"
+  version = "v1.3.0"
 
 [[projects]]
   branch = "master"

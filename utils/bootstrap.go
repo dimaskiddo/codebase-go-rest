@@ -1,6 +1,8 @@
 package utils
 
-import "strings"
+import (
+	"strings"
+)
 
 func Bootstrap() {
 	// Initialize Configuration
@@ -18,7 +20,7 @@ func Bootstrap() {
 
 	// Initialize Storage
 	if len(strings.ToLower(Config.GetString("STORAGE_DRIVER"))) != 0 {
-		initStorageS3()
+		initStore()
 	}
 
 	// Initialize Router

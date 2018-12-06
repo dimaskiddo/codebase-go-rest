@@ -13,16 +13,16 @@ var Config *viper.Viper
 
 // Configuration Initialize Function
 func initConfig() {
-	// Set Configuration Path Value
-	configPath := os.Getenv("CONFIG_PATH") + "/configs"
-	if len(configPath) == 0 {
-		configPath = "." + "/configs"
-	}
-
 	// Set Configuration File Value
 	configFile := os.Getenv("CONFIG_FILE")
 	if len(configFile) == 0 {
 		configFile = "dev"
+	}
+
+	// Set Configuration Path Value
+	configPath := os.Getenv("CONFIG_PATH")
+	if len(configPath) == 0 {
+		configPath = "."
 	}
 
 	// Set Configuration Type Value
@@ -41,7 +41,7 @@ func initConfig() {
 	Config = viper.New()
 
 	// Set Configuratior Configuration
-	Config.SetConfigName(configFile)
+	Config.SetConfigName(strings.ToUpper(configFile))
 	Config.SetConfigType(configType)
 	Config.AddConfigPath(configPath)
 
@@ -65,7 +65,7 @@ func configLoadFile() {
 	// Load Configuration File
 	err := Config.ReadInConfig()
 	if err != nil {
-		log.Println(strings.ToLower(err.Error()))
+		log.Println(err.Error())
 	}
 }
 
@@ -77,6 +77,9 @@ func configLoadValues() {
 	// Server Port Value
 	Config.SetDefault("SERVER_PORT", "3000")
 	serverCfg.Port = Config.GetString("SERVER_PORT")
+
+	// Server Upload Path Value
+	Config.SetDefault("SERVER_UPLOAD_PATH", "./uploads")
 
 	// CORS Allowed Header Value
 	Config.SetDefault("CORS_ALLOWED_HEADER", "X-Requested-With")
