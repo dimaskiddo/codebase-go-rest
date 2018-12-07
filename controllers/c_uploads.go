@@ -67,7 +67,7 @@ func AddUpload(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	} else {
-		utils.ResponseInternalError(w, err.Error())
+		utils.ResponseBadRequest(w, err.Error())
 		log.Println(err.Error())
 	}
 }
