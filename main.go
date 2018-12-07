@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/signal"
 	"strings"
@@ -10,43 +11,44 @@ import (
 	"github.com/dimaskiddo/frame-go/utils"
 )
 
+// Main Server Variable
+var mainServer *utils.Server
+
+// Main Init Function
 func init() {
-	// Bootstrap
-	utils.Bootstrap()
-}
+	// Initialize Utils
+	utils.Initialize()
 
-func main() {
-	// Initialize Channel for OS Signal
-	signalOS := make(chan os.Signal, 1)
-
-	// Load Routes
-	LoadRoutes()
+	// Initialize Routes
+	log.Println("Initialize - Routes")
+	initRoutes()
 
 	// Initialize Server
-	server := utils.NewServer(utils.RouterHandler)
+	log.Println("Initialize - Server")
+	mainServer = utils.NewServer(utils.RouterHandler)
+}
 
+// Main Function
+func main() {
 	// Starting Server
-	server.Start()
+	log.Println("Server - Starting")
+	mainServer.Start()
+
+	// Make Channel to Catch OS Signal
+	osSignal := make(chan os.Signal, 1)
 
 	// Catch OS Signal from Channel
-	signal.Notify(signalOS, os.Interrupt, syscall.SIGTERM)
+	signal.Notify(osSignal, os.Interrupt, syscall.SIGTERM)
 
 	// Return OS Signal as Exit Code
-	<-signalOS
+	<-osSignal
 
-	// Give Information for Server Stop
-	fmt.Println(" Stopping Server ")
+	// Termination Symbol Log Line
+	fmt.Println("")
 
 	// Stopping Server
-	defer server.Stop()
-
-	// Close Any Cache Connections
-	if len(utils.Config.GetString("CACHE_DRIVER")) != 0 {
-		switch strings.ToLower(utils.Config.GetString("CACHE_DRIVER")) {
-		case "redis":
-			defer utils.Redis.Close()
-		}
-	}
+	log.Println("Server - Stopping")
+	defer mainServer.Stop()
 
 	// Close Any Database Connections
 	if len(utils.Config.GetString("DB_DRIVER")) != 0 {
@@ -55,6 +57,14 @@ func main() {
 			defer utils.MySQL.Close()
 		case "mongo":
 			defer utils.MongoSession.Close()
+		}
+	}
+
+	// Close Any Cache Connections
+	if len(utils.Config.GetString("CACHE_DRIVER")) != 0 {
+		switch strings.ToLower(utils.Config.GetString("CACHE_DRIVER")) {
+		case "redis":
+			defer utils.Redis.Close()
 		}
 	}
 }

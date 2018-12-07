@@ -6,7 +6,7 @@ import (
 )
 
 // Routes Initialization Function
-func LoadRoutes() {
+func initRoutes() {
 	// Initialize Router Endpoint
 	utils.Router.HandleFunc("/", controllers.GetIndex).Methods("GET")
 	utils.Router.HandleFunc("/uploads", controllers.AddUpload).Methods("POST")

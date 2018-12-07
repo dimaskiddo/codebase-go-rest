@@ -2,7 +2,6 @@ package utils
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"sync"
@@ -29,7 +28,7 @@ func NewServer(handler http.Handler) *Server {
 	// Initialize New Server
 	return &Server{
 		srv: &http.Server{
-			Addr:    fmt.Sprintf("%s:%s", serverCfg.IP, serverCfg.Port),
+			Addr:    serverCfg.IP + ":" + serverCfg.Port,
 			Handler: handler,
 		},
 	}
@@ -47,7 +46,7 @@ func (s *Server) Start() {
 
 	// Start The Server
 	go func() {
-		fmt.Println("Server Started at", serverCfg.IP+":"+serverCfg.Port)
+		log.Println("Server - Started at " + serverCfg.IP + ":" + serverCfg.Port)
 		s.srv.ListenAndServe()
 
 		s.wg.Done()
@@ -71,5 +70,5 @@ func (s *Server) Stop() {
 		}
 	}
 	s.wg.Wait()
-	fmt.Println("Server Stopped from", serverCfg.IP+":"+serverCfg.Port)
+	log.Println("Server - Stopped from " + serverCfg.IP + ":" + serverCfg.Port)
 }

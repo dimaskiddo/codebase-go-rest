@@ -4,9 +4,9 @@ DOCKER_IMAGE_NAME ?= frame-go
 DOCKER_IMAGE_VERSION ?= latest
 
 git-push:
-	make go-dep
-	make clean-go
+	make go-dep-init
 	make clean-vendor
+	make clean-go
 	git add .
 	git commit -am "$(COMMIT_MSG)"
 	git push origin master
@@ -15,11 +15,12 @@ git-pull:
 	git pull origin master
 
 go-dep:
+	dep ensure -v
+
+go-dep-init:
 	rm -rf ./vendor
 	rm -f Gopkg.toml Gopkg.lock
 	dep init -v
-	dep ensure -v
-	dep check
 
 go-build:
 	make clean-go
