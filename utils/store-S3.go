@@ -29,7 +29,7 @@ var StoreS3 *minio.Client
 func storeS3Connect() *minio.Client {
 	switch strings.ToLower(Config.GetString("STORAGE_DRIVER")) {
 	case "aws":
-		client, err := minio.New("s3."+storeS3Cfg.Region+".amazonaws.com", storeS3Cfg.AccessKey, storeS3Cfg.SecretKey, storeS3Cfg.UseSSL)
+		client, err := minio.New("s3.amazonaws.com", storeS3Cfg.AccessKey, storeS3Cfg.SecretKey, storeS3Cfg.UseSSL)
 		if err != nil {
 			log.Fatalln(err)
 		}
@@ -81,7 +81,7 @@ func StoreS3GetFileLink(fileName string) (string, error) {
 		// Return Composed URL Based on Storage Driver
 		switch strings.ToLower(Config.GetString("STORAGE_DRIVER")) {
 		case "aws":
-			return "https://s3." + storeS3Cfg.Region + ".amazonaws.com/" + storeS3Cfg.Bucket + "/" + fileName, nil
+			return "https://s3-" + storeS3Cfg.Region + ".amazonaws.com/" + storeS3Cfg.Bucket + "/" + strings.Replace(fileName, " ", "+", -1), nil
 		case "minio":
 			if storeS3Cfg.UseSSL {
 				return "https://" + storeS3Cfg.Endpoint + "/" + storeS3Cfg.Bucket + "/" + fileName, nil
