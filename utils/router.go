@@ -64,7 +64,7 @@ func ResponseOK(w http.ResponseWriter, message string) {
 	}
 
 	// Set Response Data
-	response.Status = false
+	response.Status = true
 	response.Code = http.StatusOK
 	response.Message = message
 
