@@ -1,4 +1,1 @@
-build/uploads/*
-vendor/*
-
 !*.gitkeep
