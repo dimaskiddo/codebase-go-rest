@@ -40,7 +40,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 				users = append(users, user)
 			} else {
 				// Print Log Error to Router Log Handler
-				log.Println(strings.ToLower(err.Error()))
+				log.Println(err.Error())
 			}
 		}
 		defer rows.Close()
@@ -54,8 +54,8 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		// Write Response Data to HTTP
 		utils.ResponseWrite(w, response.Code, response)
 	} else {
-		utils.ResponseInternalError(w, err)
-		log.Println(err)
+		utils.ResponseInternalError(w, err.Error())
+		log.Println(err.Error())
 	}
 }
 
@@ -72,8 +72,8 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	if err == nil {
 		utils.ResponseOK(w, "")
 	} else {
-		utils.ResponseInternalError(w, err)
-		log.Println(err)
+		utils.ResponseInternalError(w, err.Error())
+		log.Println(err.Error())
 	}
 }
 
@@ -102,7 +102,7 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 					users = append(users, user)
 				} else {
 					// Print Log Error to Router Log Handler
-					log.Println(strings.ToLower(err.Error()))
+					log.Println(err.Error())
 				}
 			}
 			defer rows.Close()
@@ -116,12 +116,12 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 			// Write Response Data to HTTP
 			utils.ResponseWrite(w, response.Code, response)
 		} else {
-			utils.ResponseInternalError(w, err)
-			log.Println(err)
+			utils.ResponseInternalError(w, err.Error())
+			log.Println(err.Error())
 		}
 	} else {
-		utils.ResponseInternalError(w, err)
-		log.Println(err)
+		utils.ResponseInternalError(w, err.Error())
+		log.Println(err.Error())
 	}
 }
 
@@ -144,12 +144,12 @@ func PutUserByID(w http.ResponseWriter, r *http.Request) {
 		if err == nil {
 			utils.ResponseOK(w, "")
 		} else {
-			utils.ResponseInternalError(w, err)
-			log.Println(err)
+			utils.ResponseInternalError(w, err.Error())
+			log.Println(err.Error())
 		}
 	} else {
-		utils.ResponseInternalError(w, err)
-		log.Println(err)
+		utils.ResponseInternalError(w, err.Error())
+		log.Println(err.Error())
 	}
 }
 
@@ -166,11 +166,11 @@ func DelUserByID(w http.ResponseWriter, r *http.Request) {
 		if err == nil {
 			utils.ResponseOK(w, "")
 		} else {
-			utils.ResponseInternalError(w, err)
-			log.Println(err)
+			utils.ResponseInternalError(w, err.Error())
+			log.Println(err.Error())
 		}
 	} else {
-		utils.ResponseInternalError(w, err)
-		log.Println(err)
+		utils.ResponseInternalError(w, err.Error())
+		log.Println(err.Error())
 	}
 }
