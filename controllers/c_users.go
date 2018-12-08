@@ -12,7 +12,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// Get User Response Structure
+// ResponseGetUser Struct
 type ResponseGetUser struct {
 	Status  bool          `json:"status"`
 	Code    int           `json:"code"`
@@ -20,24 +20,23 @@ type ResponseGetUser struct {
 	Data    []models.User `json:"data"`
 }
 
-// Function to Get User
+// GetUser Function to Get All User Data
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	var response ResponseGetUser
 
 	// Set Response Data
 	response.Status = true
 	response.Code = http.StatusOK
-	response.Message = "success"
+	response.Message = "Success"
 	response.Data = models.Users
 
 	// Write Response Data to HTTP
 	utils.ResponseWrite(w, response.Code, response)
 }
 
-// Function to Add User
+// AddUser Function to Add User Data
 func AddUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
-	var response utils.Response
 
 	// Decode JSON from Request Body to User Data
 	// Use _ As Temporary Variable
@@ -49,17 +48,11 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	// Insert User to Users Array
 	models.Users = append(models.Users, user)
 
-	// Set Response Data
-	response.Status = true
-	response.Code = http.StatusOK
-	response.Message = "success"
-
-	// Write Response Data to HTTP
-	utils.ResponseWrite(w, response.Code, response)
+	utils.ResponseOK(w, "")
 }
 
-// Function to Get User By ID
-func GetUserById(w http.ResponseWriter, r *http.Request) {
+// GetUserByID Function to Get User Data By User ID
+func GetUserByID(w http.ResponseWriter, r *http.Request) {
 	// Get Parameters From URI
 	params := mux.Vars(r)
 
@@ -77,7 +70,7 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 			// Set Response Data
 			response.Status = true
 			response.Code = http.StatusOK
-			response.Message = "success"
+			response.Message = "Success"
 			response.Data = users
 
 			// Write Response Data to HTTP
@@ -92,8 +85,8 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Function to Update User By ID
-func PutUserById(w http.ResponseWriter, r *http.Request) {
+// PutUserByID Function to Update User Data By User ID
+func PutUserByID(w http.ResponseWriter, r *http.Request) {
 	// Get Parameters From URI
 	params := mux.Vars(r)
 
@@ -103,7 +96,6 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 		// Check if Requested Data in User Array Range
 		if len(models.Users) > 0 && userID <= len(models.Users) {
 			var user models.User
-			var response utils.Response
 
 			// Decode JSON from Request Body to User Data
 			// Use _ As Temporary Variable
@@ -113,13 +105,7 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 			models.Users[userID-1].Name = user.Name
 			models.Users[userID-1].Email = user.Email
 
-			// Set Response Data
-			response.Status = true
-			response.Code = http.StatusOK
-			response.Message = "success"
-
-			// Write Response Data to HTTP
-			utils.ResponseWrite(w, response.Code, response)
+			utils.ResponseOK(w, "")
 		} else {
 			utils.ResponseBadRequest(w, "Invalid array index")
 			log.Println("Invalid array index")
@@ -130,8 +116,8 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Function to Delete User By ID
-func DelUserById(w http.ResponseWriter, r *http.Request) {
+// DelUserByID Function to Delete User Data By User ID
+func DelUserByID(w http.ResponseWriter, r *http.Request) {
 	// Get Parameters From URI
 	params := mux.Vars(r)
 
@@ -140,18 +126,10 @@ func DelUserById(w http.ResponseWriter, r *http.Request) {
 	if err == nil {
 		// Check if Requested Data in User Array Range
 		if len(models.Users) > 0 && userID <= len(models.Users) {
-			var response utils.Response
-
 			// Delete User Data from Users Array
 			models.Users = append(models.Users[:userID-1], models.Users[userID:]...)
 
-			// Set Response Data
-			response.Status = true
-			response.Code = http.StatusOK
-			response.Message = "success"
-
-			// Write Response Data to HTTP
-			utils.ResponseWrite(w, response.Code, response)
+			utils.ResponseOK(w, "")
 		} else {
 			utils.ResponseBadRequest(w, "Invalid array index")
 			log.Println("Invalid array index")

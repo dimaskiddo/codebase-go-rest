@@ -8,9 +8,9 @@ import (
 	"github.com/dimaskiddo/frame-go/utils"
 )
 
-// Function to Get Authentication Using JWT
+// GetAuth Function to Get Authorization Token
 func GetAuth(w http.ResponseWriter, r *http.Request) {
-	var creds utils.JWTCredentials
+	var creds utils.BasicCredentials
 
 	// Decode JSON from Request Body to User Data
 	// Use _ As Temporary Variable
@@ -18,8 +18,8 @@ func GetAuth(w http.ResponseWriter, r *http.Request) {
 
 	// Make Sure Username and Password is Not Empty
 	if len(creds.Username) == 0 || len(creds.Password) == 0 {
-		utils.ResponseBadRequest(w, "Invalid authorization data")
-		log.Println("Invalid authorization data")
+		utils.ResponseBadRequest(w, "Invalid authorization")
+		log.Println("Invalid authorization")
 		return
 	}
 

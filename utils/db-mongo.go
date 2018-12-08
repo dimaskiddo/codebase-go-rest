@@ -9,7 +9,7 @@ import (
 	mgo "gopkg.in/mgo.v2"
 )
 
-// Database Configuration Struct
+// Mongo Configuration Struct
 type mongoConfig struct {
 	Host     string
 	Port     string
@@ -18,32 +18,32 @@ type mongoConfig struct {
 	Name     string
 }
 
-// Database Configuration Variable
+// Mongo Configuration Variable
 var mongoCfg mongoConfig
 
-// Database Connection Variable
+// MongoSession Variable
 var MongoSession *mgo.Session
 
-// Database Connection Variable
+// Mongo Variable
 var Mongo *mgo.Database
 
-// Database Connect Function
+// Mongo Connect Function
 func mongoConnect() (*mgo.Session, *mgo.Database) {
-	// Get Session Connection
-	sess, err := mgo.Dial(mongoCfg.User + ":" + mongoCfg.Password + "@" + mongoCfg.Host + ":" + mongoCfg.Port + "/" + mongoCfg.Name)
+	// Initialize Connection
+	conn, err := mgo.Dial(mongoCfg.User + ":" + mongoCfg.Password + "@" + mongoCfg.Host + ":" + mongoCfg.Port + "/" + mongoCfg.Name)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	// Test Session Connection
-	err = sess.Ping()
+	// Test Connection
+	err = conn.Ping()
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	// Set Mongo Session to Monotonic
-	sess.SetMode(mgo.Monotonic, true)
+	// Set Connection to Monotonic
+	conn.SetMode(mgo.Monotonic, true)
 
-	// Return Current Session & Database
-	return sess, sess.DB(mongoCfg.Name)
+	// Return Connection
+	return conn, conn.DB(mongoCfg.Name)
 }

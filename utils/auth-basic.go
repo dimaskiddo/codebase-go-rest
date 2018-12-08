@@ -7,9 +7,15 @@ import (
 	"strings"
 )
 
-// Function Basic Authentication as Middleware
+// BasicCredentials Struct
+type BasicCredentials struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+// AuthBasic Function as Midleware for Basic Authorization
 func AuthBasic(nextHandlerFunc http.HandlerFunc) http.Handler {
-	// Return Next HTTP Handler Function, If Authentication is Valid
+	// Return Next HTTP Handler Function, If Authorization is Valid
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Parse HTTP Header Authorization
 		authHeader := strings.SplitN(r.Header.Get("Authorization"), " ", 2)

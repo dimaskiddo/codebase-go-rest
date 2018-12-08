@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// Function to Initialize Utils
+// Initialize Function in Utils
 func Initialize() {
 	// Initialize Configuration
 	log.Println("Initialize - Config")

@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-// Server Service Struct
+// Server Struct
 type Server struct {
 	srv *http.Server
 	wg  sync.WaitGroup
@@ -23,7 +23,7 @@ type serverConfig struct {
 // Server Configuration Variable
 var serverCfg serverConfig
 
-// Function to Initialize New Server
+// NewServer Function to Create a New Server Handler
 func NewServer(handler http.Handler) *Server {
 	// Initialize New Server
 	return &Server{
@@ -34,7 +34,7 @@ func NewServer(handler http.Handler) *Server {
 	}
 }
 
-// Method to Start Server
+// Start Method for Server
 func (s *Server) Start() {
 	// Initialize Context Handler Without Timeout
 	_, cancel := context.WithCancel(context.Background())
@@ -53,7 +53,7 @@ func (s *Server) Start() {
 	}()
 }
 
-// Method to Stop Server
+// Stop Method for Server
 func (s *Server) Stop() {
 	// Initialize Timeout
 	timeout := 5 * time.Second

@@ -9,19 +9,45 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
-type JWTCredentials struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
+// JWTResponse Struct
 type JWTResponse struct {
 	Status bool   `json:"status"`
 	Code   int    `json:"code"`
 	Token  string `json:"token"`
 }
 
+// JWTSigningKey Variable
 var jwtSigningKey string
 
+// AuthJWT Function as Midleware for JWT Authorization
+func AuthJWT(nextHandlerFunc http.HandlerFunc) http.Handler {
+	// Return Next HTTP Handler Function, If Authorization is Valid
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Get JWT Token From HTTP Header Authorization
+		token := r.Header.Get("Authorization")
+		token = strings.Replace(token, "Bearer ", "", 1)
+		if len(token) == 0 {
+			ResponseUnauthorized(w)
+			return
+		}
+
+		// Get Claims From JWT Token
+		claims, err := jwtClaims(token)
+		if err != nil {
+			ResponseUnauthorized(w)
+			return
+		}
+
+		// Set Extracted Claims to HTTP Header
+		r.Header.Set("JWT-Data", claims["data"].(string))
+		r.Header.Set("JWT-Expire", claims["expire"].(string))
+
+		// Call Next Handler Function With Current Request
+		nextHandlerFunc(w, r)
+	})
+}
+
+// GetJWTToken Function to Generate JWT Token
 func GetJWTToken(data interface{}) (string, error) {
 	// Convert Signing Key in Byte Format
 	signingKey := []byte(jwtSigningKey)
@@ -39,7 +65,8 @@ func GetJWTToken(data interface{}) (string, error) {
 	return tokenString, err
 }
 
-func GetJWTClaims(data string) (jwt.MapClaims, error) {
+// JWTClaims Function to Get JWT Claims Information
+func jwtClaims(data string) (jwt.MapClaims, error) {
 	// Convert Signing Key in Byte Format
 	signingKey := []byte(jwtSigningKey)
 
@@ -58,32 +85,4 @@ func GetJWTClaims(data string) (jwt.MapClaims, error) {
 
 	// Return The Claims and Error
 	return claims, err
-}
-
-// Function JWT Authentication as Middleware
-func AuthJWT(nextHandlerFunc http.HandlerFunc) http.Handler {
-	// Return Next HTTP Handler Function, If Authentication is Valid
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Get JWT Token From HTTP Header Authorization
-		token := r.Header.Get("Authorization")
-		token = strings.Replace(token, "Bearer ", "", 1)
-		if len(token) == 0 {
-			ResponseUnauthorized(w)
-			return
-		}
-
-		// Get Claims From JWT Token
-		claims, err := GetJWTClaims(token)
-		if err != nil {
-			ResponseUnauthorized(w)
-			return
-		}
-
-		// Set Extracted Claims to HTTP Header
-		r.Header.Set("JWT-Data", claims["data"].(string))
-		r.Header.Set("JWT-Expire", claims["expire"].(string))
-
-		// Call Next Handler Function With Current Request
-		nextHandlerFunc(w, r)
-	})
 }

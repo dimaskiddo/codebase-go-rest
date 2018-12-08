@@ -11,7 +11,7 @@ import (
 	"github.com/dimaskiddo/frame-go/utils"
 )
 
-// Function to Upload a File
+// AddUpload Function to Upload a File
 func AddUpload(w http.ResponseWriter, r *http.Request) {
 	// Limit Body Size with 1 MiB Margin
 	r.Body = http.MaxBytesReader(w, r.Body, (utils.Config.GetInt64("SERVER_UPLOAD_LIMIT")+1)*int64(math.Pow(1024, 2)))
@@ -31,15 +31,7 @@ func AddUpload(w http.ResponseWriter, r *http.Request) {
 		case "aws", "minio":
 			err := utils.StoreS3UploadFile(metaFileName, metaFileSize, metaFileType, mpFile)
 			if err == nil {
-				var response utils.Response
-
-				// Set Response Data
-				response.Status = true
-				response.Code = http.StatusOK
-				response.Message = "success"
-
-				// Write Response Data to HTTP
-				utils.ResponseWrite(w, response.Code, response)
+				utils.ResponseOK(w, "")
 			} else {
 				utils.ResponseInternalError(w, err.Error())
 				log.Println(err.Error())
@@ -49,18 +41,11 @@ func AddUpload(w http.ResponseWriter, r *http.Request) {
 			wrFile, err := os.OpenFile(utils.Config.GetString("SERVER_UPLOAD_PATH")+"/"+metaFileName, os.O_WRONLY|os.O_CREATE, 0666)
 			if err == nil {
 				defer wrFile.Close()
-				var response utils.Response
 
 				// Copy Uploaded File Data from Multipart Data
 				io.Copy(wrFile, mpFile)
 
-				// Set Response Data
-				response.Status = true
-				response.Code = http.StatusOK
-				response.Message = "success"
-
-				// Write Response Data to HTTP
-				utils.ResponseWrite(w, response.Code, response)
+				utils.ResponseOK(w, "")
 			} else {
 				utils.ResponseInternalError(w, err.Error())
 				log.Println(err.Error())

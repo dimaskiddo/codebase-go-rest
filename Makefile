@@ -15,6 +15,7 @@ git-pull:
 	git pull origin master
 
 go-dep:
+	rm -rf ./vendor
 	dep ensure -v
 
 go-dep-init:

@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-// Database Initialize Function
+// InitDB Function
 func initDB() {
 	// Database Configuration Value
 	switch strings.ToLower(Config.GetString("DB_DRIVER")) {

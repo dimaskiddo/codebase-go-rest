@@ -12,7 +12,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-// Get User Response Structure
+// ResponseGetUser Struct
 type ResponseGetUser struct {
 	Status  bool          `json:"status"`
 	Code    int           `json:"code"`
@@ -20,7 +20,7 @@ type ResponseGetUser struct {
 	Data    []models.User `json:"data"`
 }
 
-// Function to Get User
+// GetUser Function to Get All User Data
 func GetUser(w http.ResponseWriter, r *http.Request) {
 	var users []models.User
 
@@ -32,7 +32,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		// Set Response Data
 		response.Status = true
 		response.Code = http.StatusOK
-		response.Message = "success"
+		response.Message = "Success"
 		response.Data = users
 
 		// Write Response Data to HTTP
@@ -43,7 +43,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Function to Add User
+// AddUser Function to Add User Data
 func AddUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
 
@@ -57,23 +57,15 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	// Database Query
 	err := utils.Mongo.C("users").Insert(&user)
 	if err == nil {
-		var response utils.Response
-
-		// Set Response Data
-		response.Status = true
-		response.Code = http.StatusOK
-		response.Message = "success"
-
-		// Write Response Data to HTTP
-		utils.ResponseWrite(w, response.Code, response)
+		utils.ResponseOK(w, "")
 	} else {
 		utils.ResponseInternalError(w, err.Error())
 		log.Println(err.Error())
 	}
 }
 
-// Function to Get User By ID
-func GetUserById(w http.ResponseWriter, r *http.Request) {
+// GetUserByID Function to Get User Data By User ID
+func GetUserByID(w http.ResponseWriter, r *http.Request) {
 	// Get Parameters From URI
 	params := mux.Vars(r)
 
@@ -93,7 +85,7 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 			// Set Response Data
 			response.Status = true
 			response.Code = http.StatusOK
-			response.Message = "success"
+			response.Message = "Success"
 			response.Data = users
 
 			// Write Response Data to HTTP
@@ -108,8 +100,8 @@ func GetUserById(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Function to Update User By ID
-func PutUserById(w http.ResponseWriter, r *http.Request) {
+// PutUserByID Function to Update User Data By User ID
+func PutUserByID(w http.ResponseWriter, r *http.Request) {
 	// Get Parameters From URI
 	params := mux.Vars(r)
 
@@ -127,15 +119,7 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 		// Database Query
 		err := utils.Mongo.C("users").UpdateId(bson.ObjectIdHex(params["id"]), &user)
 		if err == nil {
-			var response utils.Response
-
-			// Set Response Data
-			response.Status = true
-			response.Code = http.StatusOK
-			response.Message = "success"
-
-			// Write Response Data to HTTP
-			utils.ResponseWrite(w, response.Code, response)
+			utils.ResponseOK(w, "")
 		} else {
 			utils.ResponseInternalError(w, err.Error())
 			log.Println(err.Error())
@@ -146,8 +130,8 @@ func PutUserById(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// Function to Delete User By ID
-func DelUserById(w http.ResponseWriter, r *http.Request) {
+// DelUserByID Function to Delete User Data By User ID
+func DelUserByID(w http.ResponseWriter, r *http.Request) {
 	// Get Parameters From URI
 	params := mux.Vars(r)
 
@@ -156,15 +140,7 @@ func DelUserById(w http.ResponseWriter, r *http.Request) {
 		// Database Query Delete User
 		err := utils.Mongo.C("users").RemoveId(bson.ObjectIdHex(params["id"]))
 		if err == nil {
-			var response utils.Response
-
-			// Set Response Data
-			response.Status = true
-			response.Code = http.StatusOK
-			response.Message = "success"
-
-			// Write Response Data to HTTP
-			utils.ResponseWrite(w, response.Code, response)
+			utils.ResponseOK(w, "")
 		} else {
 			utils.ResponseInternalError(w, err.Error())
 			log.Println(err.Error())

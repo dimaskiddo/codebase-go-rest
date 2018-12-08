@@ -10,7 +10,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// Database Configuration Struct
+// MySQL Configuration Struct
 type mysqlConfig struct {
 	Host     string
 	Port     string
@@ -19,26 +19,26 @@ type mysqlConfig struct {
 	Name     string
 }
 
-// Database Configuration Variable
+// MySQL Configuration Variable
 var mysqlCfg mysqlConfig
 
-// Database Connection Variable
+// MySQL Variable
 var MySQL *sql.DB
 
-// Database Connect Function
+// MySQL Connect Function
 func mysqlConnect() *sql.DB {
-	// Get Database Connection
-	db, err := sql.Open("mysql", mysqlCfg.User+":"+mysqlCfg.Password+"@tcp("+mysqlCfg.Host+":"+mysqlCfg.Port+")/"+mysqlCfg.Name)
+	// Initialize Connection
+	conn, err := sql.Open("mysql", mysqlCfg.User+":"+mysqlCfg.Password+"@tcp("+mysqlCfg.Host+":"+mysqlCfg.Port+")/"+mysqlCfg.Name)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	// Test Database Connection
-	err = db.Ping()
+	// Test Connection
+	err = conn.Ping()
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	// Return Current Connection
-	return db
+	// Return Connection
+	return conn
 }

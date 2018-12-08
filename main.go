@@ -14,7 +14,7 @@ import (
 // Main Server Variable
 var mainServer *utils.Server
 
-// Main Init Function
+// Init Function
 func init() {
 	// Initialize Utils
 	utils.Initialize()

@@ -8,10 +8,10 @@ import (
 	"github.com/spf13/viper"
 )
 
-// Configurator Variable
+// Config Variable
 var Config *viper.Viper
 
-// Configuration Initialize Function
+// InitConfig Function
 func initConfig() {
 	// Set Configuration File Value
 	configFile := os.Getenv("CONFIG_FILE")
@@ -61,6 +61,7 @@ func initConfig() {
 	configLoadValues()
 }
 
+// ConfigLoadFile Function to Load Configuration from File
 func configLoadFile() {
 	// Load Configuration File
 	err := Config.ReadInConfig()
@@ -69,6 +70,7 @@ func configLoadFile() {
 	}
 }
 
+// ConfigLoadValues Function to Load Configuration Values
 func configLoadValues() {
 	// Server IP Value
 	Config.SetDefault("SERVER_IP", "0.0.0.0")

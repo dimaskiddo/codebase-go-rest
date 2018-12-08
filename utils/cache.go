@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-// Cache Initialize Function
+// InitCache Function
 func initCache() {
 	// Cache Configuration Value
 	switch strings.ToLower(Config.GetString("CACHE_DRIVER")) {

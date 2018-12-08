@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-// Storage Initialize Function
+// InitStore Function
 func initStore() {
 	// Store Configuration Value
 	switch strings.ToLower(Config.GetString("STORAGE_DRIVER")) {
