@@ -9,6 +9,7 @@ import (
 func initRoutes() {
 	// Set Endpoint for Root Functions
 	utils.Router.HandleFunc("/", controllers.GetIndex).Methods("GET")
+	utils.Router.HandleFunc("/health", controllers.GetHealth).Methods("GET")
 
 	// Set Endpoint for Upload Functions
 	utils.Router.HandleFunc("/uploads", controllers.AddUpload).Methods("POST")

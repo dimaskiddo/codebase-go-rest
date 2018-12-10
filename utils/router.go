@@ -2,8 +2,10 @@ package utils
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -42,6 +44,42 @@ func initRouter() {
 		handlers.AllowedHeaders(routerCORSCfg.Headers),
 		handlers.AllowedOrigins(routerCORSCfg.Origins),
 		handlers.AllowedMethods(routerCORSCfg.Methods))(Router))
+}
+
+// HealthCheck Function
+func HealthCheck(w http.ResponseWriter) {
+	// Check Any Database Connections
+	if len(Config.GetString("DB_DRIVER")) != 0 {
+		switch strings.ToLower(Config.GetString("DB_DRIVER")) {
+		case "mysql":
+			err := MySQL.Ping()
+			if err != nil {
+				ResponseInternalError(w, "Database MySQL Connection Failed")
+				log.Fatalln("Database MySQL Connection Failed")
+			}
+		case "mongo":
+			err := MongoSession.Ping()
+			if err != nil {
+				ResponseInternalError(w, "Database Mongo Connection Failed")
+				log.Fatalln("Database Mongo Connection Failed")
+			}
+		}
+	}
+
+	// Check Any Cache Connections
+	if len(Config.GetString("CACHE_DRIVER")) != 0 {
+		switch strings.ToLower(Config.GetString("CACHE_DRIVER")) {
+		case "redis":
+			_, err := Redis.Ping().Result()
+			if err != nil {
+				ResponseInternalError(w, "Cache Redis Connection Failed")
+				log.Fatalln("Cache Redis Connection Failed")
+			}
+		}
+	}
+
+	// Return OK
+	ResponseOK(w, "")
 }
 
 // ResponseWrite Function
