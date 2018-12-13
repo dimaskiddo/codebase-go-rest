@@ -1,4 +1,4 @@
-package models
+package model
 
 // User Struct
 type User struct {
@@ -6,3 +6,6 @@ type User struct {
 	Name  string `json:"name"`
 	Email string `json:"email"`
 }
+
+// Users Array
+var Users []User

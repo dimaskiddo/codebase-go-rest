@@ -26,12 +26,12 @@
   version = "v1.4.7"
 
 [[projects]]
-  digest = "1:6295a00553abd595aa3c647d36b58eae91410f107ad554873aaaf7c71ca55855"
+  digest = "1:19ea97688477f0c05ef94e9ddf48c5a2d8837b4ba781a1014c068293dcca2e5b"
   name = "github.com/go-ini/ini"
   packages = ["."]
   pruneopts = "UT"
-  revision = "ffaaebdac6e54ce73b4e196b8406920921304ec9"
-  version = "v1.39.2"
+  revision = "f55231ca73a76c1d61eb05fe0d64a1ccebf93cba"
+  version = "v1.39.3"
 
 [[projects]]
   digest = "1:34a9a60fade37f8009ed4a19e02924198aba3eabfcc120ee5c6002b7de17212d"
@@ -232,7 +232,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:5c7a2e0446f371a8fd3a872f5b40a3d4d08faf3849dffd4522fbbb61d7ec99bf"
+  digest = "1:029feb511a8d6e2fff3561f57759ef22f6f5e89c45ebc2e56525da72cd317de0"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
@@ -240,7 +240,7 @@
     "windows",
   ]
   pruneopts = "UT"
-  revision = "2a47403f2ae58167c4d75973960ccc62b28cb0d8"
+  revision = "b05ddf57801d2239d6ab0ee35f9d981e0420f4ac"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"

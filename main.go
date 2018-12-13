@@ -8,16 +8,16 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/dimaskiddo/frame-go/utils"
+	svc "github.com/dimaskiddo/frame-go/service"
 )
 
 // Main Server Variable
-var mainServer *utils.Server
+var mainServer *svc.Server
 
 // Init Function
 func init() {
-	// Initialize Utils
-	utils.Initialize()
+	// Initialize service
+	svc.Initialize()
 
 	// Initialize Routes
 	log.Println("Initialize - Routes")
@@ -25,20 +25,20 @@ func init() {
 
 	// Initialize Server
 	log.Println("Initialize - Server")
-	mainServer = utils.NewServer(utils.RouterHandler)
+	mainServer = svc.NewServer(svc.RouterHandler)
 }
 
 // Main Function
 func main() {
 	// Starting Server
-	log.Println("Server - Starting")
 	mainServer.Start()
 
 	// Make Channel to Catch OS Signal
 	osSignal := make(chan os.Signal, 1)
 
 	// Catch OS Signal from Channel
-	signal.Notify(osSignal, os.Interrupt, syscall.SIGTERM)
+	signal.Notify(osSignal, os.Interrupt)
+	signal.Notify(osSignal, syscall.SIGTERM)
 
 	// Return OS Signal as Exit Code
 	<-osSignal
@@ -47,24 +47,23 @@ func main() {
 	fmt.Println("")
 
 	// Stopping Server
-	log.Println("Server - Stopping")
 	defer mainServer.Stop()
 
 	// Close Any Database Connections
-	if len(utils.Config.GetString("DB_DRIVER")) != 0 {
-		switch strings.ToLower(utils.Config.GetString("DB_DRIVER")) {
+	if len(svc.Config.GetString("DB_DRIVER")) != 0 {
+		switch strings.ToLower(svc.Config.GetString("DB_DRIVER")) {
 		case "mysql":
-			defer utils.MySQL.Close()
+			defer svc.MySQL.Close()
 		case "mongo":
-			defer utils.MongoSession.Close()
+			defer svc.MongoSession.Close()
 		}
 	}
 
 	// Close Any Cache Connections
-	if len(utils.Config.GetString("CACHE_DRIVER")) != 0 {
-		switch strings.ToLower(utils.Config.GetString("CACHE_DRIVER")) {
+	if len(svc.Config.GetString("CACHE_DRIVER")) != 0 {
+		switch strings.ToLower(svc.Config.GetString("CACHE_DRIVER")) {
 		case "redis":
-			defer utils.Redis.Close()
+			defer svc.Redis.Close()
 		}
 	}
 }

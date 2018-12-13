@@ -1,4 +1,4 @@
-package utils
+package service
 
 import (
 	"encoding/json"
@@ -37,7 +37,7 @@ var Router *mux.Router
 // InitRouter Function
 func initRouter() {
 	// Initialize Router
-	Router = mux.NewRouter()
+	Router = mux.NewRouter().StrictSlash(true)
 
 	// Set Router Handler with Logging & CORS Support
 	RouterHandler = handlers.LoggingHandler(os.Stdout, handlers.CORS(

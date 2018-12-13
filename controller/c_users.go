@@ -1,4 +1,4 @@
-package controllers
+package controller
 
 import (
 	"encoding/json"
@@ -6,18 +6,18 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/dimaskiddo/frame-go/models"
-	"github.com/dimaskiddo/frame-go/utils"
+	mdl "github.com/dimaskiddo/frame-go/model"
+	svc "github.com/dimaskiddo/frame-go/service"
 
 	"github.com/gorilla/mux"
 )
 
 // ResponseGetUser Struct
 type ResponseGetUser struct {
-	Status  bool          `json:"status"`
-	Code    int           `json:"code"`
-	Message string        `json:"message"`
-	Data    []models.User `json:"data"`
+	Status  bool       `json:"status"`
+	Code    int        `json:"code"`
+	Message string     `json:"message"`
+	Data    []mdl.User `json:"data"`
 }
 
 // GetUser Function to Get All User Data
@@ -28,27 +28,27 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	response.Status = true
 	response.Code = http.StatusOK
 	response.Message = "Success"
-	response.Data = models.Users
+	response.Data = mdl.Users
 
 	// Write Response Data to HTTP
-	utils.ResponseWrite(w, response.Code, response)
+	svc.ResponseWrite(w, response.Code, response)
 }
 
 // AddUser Function to Add User Data
 func AddUser(w http.ResponseWriter, r *http.Request) {
-	var user models.User
+	var user mdl.User
 
 	// Decode JSON from Request Body to User Data
 	// Use _ As Temporary Variable
 	_ = json.NewDecoder(r.Body).Decode(&user)
 
 	// Set User ID to Current Users Array Length + 1
-	user.ID = len(models.Users) + 1
+	user.ID = len(mdl.Users) + 1
 
 	// Insert User to Users Array
-	models.Users = append(models.Users, user)
+	mdl.Users = append(mdl.Users, user)
 
-	utils.ResponseOK(w, "")
+	svc.ResponseOK(w, "")
 }
 
 // GetUserByID Function to Get User Data By User ID
@@ -60,12 +60,12 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(params["id"])
 	if err == nil {
 		// Check if Requested Data in User Array Range
-		if len(models.Users) > 0 && userID <= len(models.Users) {
-			var users []models.User
+		if len(mdl.Users) > 0 && userID <= len(mdl.Users) {
+			var users []mdl.User
 			var response ResponseGetUser
 
 			// Convert Selected User from Users Array to Single User Array
-			users = append(users, models.Users[userID-1])
+			users = append(users, mdl.Users[userID-1])
 
 			// Set Response Data
 			response.Status = true
@@ -74,13 +74,13 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 			response.Data = users
 
 			// Write Response Data to HTTP
-			utils.ResponseWrite(w, response.Code, response)
+			svc.ResponseWrite(w, response.Code, response)
 		} else {
-			utils.ResponseBadRequest(w, "Invalid array index")
+			svc.ResponseBadRequest(w, "Invalid array index")
 			log.Println("Invalid array index")
 		}
 	} else {
-		utils.ResponseInternalError(w, err.Error())
+		svc.ResponseInternalError(w, err.Error())
 		log.Println(err.Error())
 	}
 }
@@ -94,24 +94,24 @@ func PutUserByID(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(params["id"])
 	if err == nil {
 		// Check if Requested Data in User Array Range
-		if len(models.Users) > 0 && userID <= len(models.Users) {
-			var user models.User
+		if len(mdl.Users) > 0 && userID <= len(mdl.Users) {
+			var user mdl.User
 
 			// Decode JSON from Request Body to User Data
 			// Use _ As Temporary Variable
 			_ = json.NewDecoder(r.Body).Decode(&user)
 
 			// Update User to Users Array
-			models.Users[userID-1].Name = user.Name
-			models.Users[userID-1].Email = user.Email
+			mdl.Users[userID-1].Name = user.Name
+			mdl.Users[userID-1].Email = user.Email
 
-			utils.ResponseOK(w, "")
+			svc.ResponseOK(w, "")
 		} else {
-			utils.ResponseBadRequest(w, "Invalid array index")
+			svc.ResponseBadRequest(w, "Invalid array index")
 			log.Println("Invalid array index")
 		}
 	} else {
-		utils.ResponseInternalError(w, err.Error())
+		svc.ResponseInternalError(w, err.Error())
 		log.Println(err.Error())
 	}
 }
@@ -125,17 +125,17 @@ func DelUserByID(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(params["id"])
 	if err == nil {
 		// Check if Requested Data in User Array Range
-		if len(models.Users) > 0 && userID <= len(models.Users) {
+		if len(mdl.Users) > 0 && userID <= len(mdl.Users) {
 			// Delete User Data from Users Array
-			models.Users = append(models.Users[:userID-1], models.Users[userID:]...)
+			mdl.Users = append(mdl.Users[:userID-1], mdl.Users[userID:]...)
 
-			utils.ResponseOK(w, "")
+			svc.ResponseOK(w, "")
 		} else {
-			utils.ResponseBadRequest(w, "Invalid array index")
+			svc.ResponseBadRequest(w, "Invalid array index")
 			log.Println("Invalid array index")
 		}
 	} else {
-		utils.ResponseInternalError(w, err.Error())
+		svc.ResponseInternalError(w, err.Error())
 		log.Println(err.Error())
 	}
 }

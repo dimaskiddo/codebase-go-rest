@@ -1,33 +1,32 @@
-package controllers
+package controller
 
 import (
 	"encoding/json"
 	"log"
 	"net/http"
 	"strconv"
-	"strings"
 
-	"github.com/dimaskiddo/frame-go/models"
-	"github.com/dimaskiddo/frame-go/utils"
+	mdl "github.com/dimaskiddo/frame-go/model"
+	svc "github.com/dimaskiddo/frame-go/service"
 
 	"github.com/gorilla/mux"
 )
 
 // ResponseGetUser Struct
 type ResponseGetUser struct {
-	Status  bool          `json:"status"`
-	Code    int           `json:"code"`
-	Message string        `json:"message"`
-	Data    []models.User `json:"data"`
+	Status  bool       `json:"status"`
+	Code    int        `json:"code"`
+	Message string     `json:"message"`
+	Data    []mdl.User `json:"data"`
 }
 
 // GetUser Function to Get All User Data
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	var user models.User
-	var users []models.User
+	var user mdl.User
+	var users []mdl.User
 
 	// Database Query
-	rows, err := utils.MySQL.Query("SELECT * FROM users")
+	rows, err := svc.MySQL.Query("SELECT * FROM users")
 	if err == nil {
 		var response ResponseGetUser
 
@@ -52,27 +51,27 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		response.Data = users
 
 		// Write Response Data to HTTP
-		utils.ResponseWrite(w, response.Code, response)
+		svc.ResponseWrite(w, response.Code, response)
 	} else {
-		utils.ResponseInternalError(w, err.Error())
+		svc.ResponseInternalError(w, err.Error())
 		log.Println(err.Error())
 	}
 }
 
 // AddUser Function to Add User Data
 func AddUser(w http.ResponseWriter, r *http.Request) {
-	var user models.User
+	var user mdl.User
 
 	// Decode JSON from Request Body to User Data
 	// Use _ As Temporary Variable
 	_ = json.NewDecoder(r.Body).Decode(&user)
 
 	// Database Query
-	_, err := utils.MySQL.Exec("INSERT INTO users (name, email) VALUE (?, ?)", user.Name, user.Email)
+	_, err := svc.MySQL.Exec("INSERT INTO users (name, email) VALUE (?, ?)", user.Name, user.Email)
 	if err == nil {
-		utils.ResponseOK(w, "")
+		svc.ResponseOK(w, "")
 	} else {
-		utils.ResponseInternalError(w, err.Error())
+		svc.ResponseInternalError(w, err.Error())
 		log.Println(err.Error())
 	}
 }
@@ -85,11 +84,11 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 	// Get ID Parameters From URI Then Convert it to Integer
 	userID, err := strconv.Atoi(params["id"])
 	if err == nil {
-		var user models.User
-		var users []models.User
+		var user mdl.User
+		var users []mdl.User
 
 		// Database Query
-		rows, err := utils.MySQL.Query("SELECT * FROM users WHERE id=? LIMIT 1", userID)
+		rows, err := svc.MySQL.Query("SELECT * FROM users WHERE id=? LIMIT 1", userID)
 		if err == nil {
 			var response ResponseGetUser
 
@@ -114,13 +113,13 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 			response.Data = users
 
 			// Write Response Data to HTTP
-			utils.ResponseWrite(w, response.Code, response)
+			svc.ResponseWrite(w, response.Code, response)
 		} else {
-			utils.ResponseInternalError(w, err.Error())
+			svc.ResponseInternalError(w, err.Error())
 			log.Println(err.Error())
 		}
 	} else {
-		utils.ResponseInternalError(w, err.Error())
+		svc.ResponseInternalError(w, err.Error())
 		log.Println(err.Error())
 	}
 }
@@ -133,22 +132,22 @@ func PutUserByID(w http.ResponseWriter, r *http.Request) {
 	// Get ID Parameters From URI Then Convert it to Integer
 	userID, err := strconv.Atoi(params["id"])
 	if err == nil {
-		var user models.User
+		var user mdl.User
 
 		// Decode JSON from Request Body to User Data
 		// Use _ As Temporary Variable
 		_ = json.NewDecoder(r.Body).Decode(&user)
 
 		// Database Query
-		_, err := utils.MySQL.Exec("UPDATE users SET name=?, email=? WHERE id=? LIMIT 1", user.Name, user.Email, userID)
+		_, err := svc.MySQL.Exec("UPDATE users SET name=?, email=? WHERE id=? LIMIT 1", user.Name, user.Email, userID)
 		if err == nil {
-			utils.ResponseOK(w, "")
+			svc.ResponseOK(w, "")
 		} else {
-			utils.ResponseInternalError(w, err.Error())
+			svc.ResponseInternalError(w, err.Error())
 			log.Println(err.Error())
 		}
 	} else {
-		utils.ResponseInternalError(w, err.Error())
+		svc.ResponseInternalError(w, err.Error())
 		log.Println(err.Error())
 	}
 }
@@ -162,15 +161,15 @@ func DelUserByID(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.Atoi(params["id"])
 	if err == nil {
 		// Database Query
-		_, err := utils.MySQL.Query("DELETE FROM users WHERE id=? LIMIT 1", userID)
+		_, err := svc.MySQL.Query("DELETE FROM users WHERE id=? LIMIT 1", userID)
 		if err == nil {
-			utils.ResponseOK(w, "")
+			svc.ResponseOK(w, "")
 		} else {
-			utils.ResponseInternalError(w, err.Error())
+			svc.ResponseInternalError(w, err.Error())
 			log.Println(err.Error())
 		}
 	} else {
-		utils.ResponseInternalError(w, err.Error())
+		svc.ResponseInternalError(w, err.Error())
 		log.Println(err.Error())
 	}
 }

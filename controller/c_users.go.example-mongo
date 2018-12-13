@@ -1,12 +1,12 @@
-package controllers
+package controller
 
 import (
 	"encoding/json"
 	"log"
 	"net/http"
 
-	"github.com/dimaskiddo/frame-go/models"
-	"github.com/dimaskiddo/frame-go/utils"
+	mdl "github.com/dimaskiddo/frame-go/model"
+	svc "github.com/dimaskiddo/frame-go/service"
 
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2/bson"
@@ -14,18 +14,18 @@ import (
 
 // ResponseGetUser Struct
 type ResponseGetUser struct {
-	Status  bool          `json:"status"`
-	Code    int           `json:"code"`
-	Message string        `json:"message"`
-	Data    []models.User `json:"data"`
+	Status  bool       `json:"status"`
+	Code    int        `json:"code"`
+	Message string     `json:"message"`
+	Data    []mdl.User `json:"data"`
 }
 
 // GetUser Function to Get All User Data
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	var users []models.User
+	var users []mdl.User
 
 	// Database Query
-	err := utils.Mongo.C("users").Find(bson.M{}).All(&users)
+	err := svc.Mongo.C("users").Find(bson.M{}).All(&users)
 	if err == nil {
 		var response ResponseGetUser
 
@@ -36,16 +36,16 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		response.Data = users
 
 		// Write Response Data to HTTP
-		utils.ResponseWrite(w, response.Code, response)
+		svc.ResponseWrite(w, response.Code, response)
 	} else {
-		utils.ResponseInternalError(w, err.Error())
+		svc.ResponseInternalError(w, err.Error())
 		log.Println(err.Error())
 	}
 }
 
 // AddUser Function to Add User Data
 func AddUser(w http.ResponseWriter, r *http.Request) {
-	var user models.User
+	var user mdl.User
 
 	// Decode JSON from Request Body to User Data
 	// Use _ As Temporary Variable
@@ -55,11 +55,11 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	user.ID = bson.NewObjectId()
 
 	// Database Query
-	err := utils.Mongo.C("users").Insert(&user)
+	err := svc.Mongo.C("users").Insert(&user)
 	if err == nil {
-		utils.ResponseOK(w, "")
+		svc.ResponseOK(w, "")
 	} else {
-		utils.ResponseInternalError(w, err.Error())
+		svc.ResponseInternalError(w, err.Error())
 		log.Println(err.Error())
 	}
 }
@@ -71,11 +71,11 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 
 	// Check if ID is Valid Object ID Hex
 	if bson.IsObjectIdHex(params["id"]) {
-		var user models.User
-		var users []models.User
+		var user mdl.User
+		var users []mdl.User
 
 		// Database Query
-		err := utils.Mongo.C("users").FindId(bson.ObjectIdHex(params["id"])).One(&user)
+		err := svc.Mongo.C("users").FindId(bson.ObjectIdHex(params["id"])).One(&user)
 		if err == nil {
 			var response ResponseGetUser
 
@@ -89,13 +89,13 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 			response.Data = users
 
 			// Write Response Data to HTTP
-			utils.ResponseWrite(w, response.Code, response)
+			svc.ResponseWrite(w, response.Code, response)
 		} else {
-			utils.ResponseInternalError(w, err.Error())
+			svc.ResponseInternalError(w, err.Error())
 			log.Println(err.Error())
 		}
 	} else {
-		utils.ResponseBadRequest(w, "Invalid object ids")
+		svc.ResponseBadRequest(w, "Invalid object ids")
 		log.Println("Invalid object ids")
 	}
 }
@@ -107,7 +107,7 @@ func PutUserByID(w http.ResponseWriter, r *http.Request) {
 
 	// Check if ID is Valid Object ID Hex
 	if bson.IsObjectIdHex(params["id"]) {
-		var user models.User
+		var user mdl.User
 
 		// Decode JSON from Request Body to User Data
 		// Use _ As Temporary Variable
@@ -117,15 +117,15 @@ func PutUserByID(w http.ResponseWriter, r *http.Request) {
 		user.ID = bson.ObjectIdHex(params["id"])
 
 		// Database Query
-		err := utils.Mongo.C("users").UpdateId(bson.ObjectIdHex(params["id"]), &user)
+		err := svc.Mongo.C("users").UpdateId(bson.ObjectIdHex(params["id"]), &user)
 		if err == nil {
-			utils.ResponseOK(w, "")
+			svc.ResponseOK(w, "")
 		} else {
-			utils.ResponseInternalError(w, err.Error())
+			svc.ResponseInternalError(w, err.Error())
 			log.Println(err.Error())
 		}
 	} else {
-		utils.ResponseBadRequest(w, "Invalid object ids")
+		svc.ResponseBadRequest(w, "Invalid object ids")
 		log.Println("Invalid object ids")
 	}
 }
@@ -138,15 +138,15 @@ func DelUserByID(w http.ResponseWriter, r *http.Request) {
 	// Check if ID is Valid Object ID Hex
 	if bson.IsObjectIdHex(params["id"]) {
 		// Database Query Delete User
-		err := utils.Mongo.C("users").RemoveId(bson.ObjectIdHex(params["id"]))
+		err := svc.Mongo.C("users").RemoveId(bson.ObjectIdHex(params["id"]))
 		if err == nil {
-			utils.ResponseOK(w, "")
+			svc.ResponseOK(w, "")
 		} else {
-			utils.ResponseInternalError(w, err.Error())
+			svc.ResponseInternalError(w, err.Error())
 			log.Println(err.Error())
 		}
 	} else {
-		utils.ResponseBadRequest(w, "Invalid object ids")
+		svc.ResponseBadRequest(w, "Invalid object ids")
 		log.Println("Invalid object ids")
 	}
 }

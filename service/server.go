@@ -1,8 +1,9 @@
-package utils
+package service
 
 import (
 	"context"
 	"log"
+	"net"
 	"net/http"
 	"sync"
 	"time"
@@ -28,7 +29,7 @@ func NewServer(handler http.Handler) *Server {
 	// Initialize New Server
 	return &Server{
 		srv: &http.Server{
-			Addr:    serverCfg.IP + ":" + serverCfg.Port,
+			Addr:    net.JoinHostPort(serverCfg.IP, serverCfg.Port),
 			Handler: handler,
 		},
 	}
@@ -46,7 +47,8 @@ func (s *Server) Start() {
 
 	// Start The Server
 	go func() {
-		log.Println("Server - Started at " + serverCfg.IP + ":" + serverCfg.Port)
+		log.Println("Server - Starting")
+		log.Println("Server - Started at " + net.JoinHostPort(serverCfg.IP, serverCfg.Port))
 		s.srv.ListenAndServe()
 
 		s.wg.Done()
@@ -70,5 +72,6 @@ func (s *Server) Stop() {
 		}
 	}
 	s.wg.Wait()
-	log.Println("Server - Stopped from " + serverCfg.IP + ":" + serverCfg.Port)
+	log.Println("Server - Stopping")
+	log.Println("Server - Stopped from " + net.JoinHostPort(serverCfg.IP, serverCfg.Port))
 }

@@ -1,16 +1,16 @@
-package controllers
+package controller
 
 import (
 	"encoding/json"
 	"log"
 	"net/http"
 
-	"github.com/dimaskiddo/frame-go/utils"
+	svc "github.com/dimaskiddo/frame-go/service"
 )
 
 // GetAuth Function to Get Authorization Token
 func GetAuth(w http.ResponseWriter, r *http.Request) {
-	var creds utils.BasicCredentials
+	var creds svc.BasicCredentials
 
 	// Decode JSON from Request Body to User Data
 	// Use _ As Temporary Variable
@@ -18,7 +18,7 @@ func GetAuth(w http.ResponseWriter, r *http.Request) {
 
 	// Make Sure Username and Password is Not Empty
 	if len(creds.Username) == 0 || len(creds.Password) == 0 {
-		utils.ResponseBadRequest(w, "Invalid authorization")
+		svc.ResponseBadRequest(w, "Invalid authorization")
 		log.Println("Invalid authorization")
 		return
 	}
@@ -26,20 +26,20 @@ func GetAuth(w http.ResponseWriter, r *http.Request) {
 	// Some Business Logic Here to Match The Username and Password
 	if creds.Username == "user" && creds.Password == "password" {
 		// Get JWT Token From Pre-Defined Function
-		token, err := utils.GetJWTToken(creds.Username)
+		token, err := svc.GetJWTToken(creds.Username)
 		if err != nil {
-			utils.ResponseInternalError(w, err.Error())
+			svc.ResponseInternalError(w, err.Error())
 			log.Println(err.Error())
 		} else {
-			var response utils.JWTResponse
+			var response svc.JWTResponse
 
 			response.Status = true
 			response.Code = http.StatusOK
 			response.Token = token
 
-			utils.ResponseWrite(w, response.Code, response)
+			svc.ResponseWrite(w, response.Code, response)
 		}
 	} else {
-		utils.ResponseUnauthorized(w)
+		svc.ResponseUnauthorized(w)
 	}
 }
