@@ -56,12 +56,14 @@ func HealthCheck(w http.ResponseWriter) {
 			if err != nil {
 				ResponseInternalError(w, "Database MySQL Connection Failed")
 				log.Fatalln("Database MySQL Connection Failed")
+				return
 			}
 		case "mongo":
 			err := MongoSession.Ping()
 			if err != nil {
 				ResponseInternalError(w, "Database Mongo Connection Failed")
 				log.Fatalln("Database Mongo Connection Failed")
+				return
 			}
 		}
 	}
@@ -74,6 +76,7 @@ func HealthCheck(w http.ResponseWriter) {
 			if err != nil {
 				ResponseInternalError(w, "Cache Redis Connection Failed")
 				log.Fatalln("Cache Redis Connection Failed")
+				return
 			}
 		}
 	}

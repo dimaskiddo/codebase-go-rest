@@ -34,7 +34,7 @@
   version = "v1.41.0"
 
 [[projects]]
-  digest = "1:424f6593024cdf0f6f90cba81bc69ca98df3758525e6fb248198ef15ead603a9"
+  digest = "1:ad53d1f710522a38d1f0e5e0a55a194b1c6b2cd8e84313568e43523271f0cf62"
   name = "github.com/go-redis/redis"
   packages = [
     ".",
@@ -43,12 +43,11 @@
     "internal/hashtag",
     "internal/pool",
     "internal/proto",
-    "internal/singleflight",
     "internal/util",
   ]
   pruneopts = "UT"
-  revision = "7f89fbac80bcc62ce920b6dbc6ca60238d7725d1"
-  version = "v6.15.0"
+  revision = "22be8a3eaf992c828cecb69dc07348313bf08d2e"
+  version = "v6.15.1"
 
 [[projects]]
   digest = "1:ec6f9bf5e274c833c911923c9193867f3f18788c461f76f05f62bb1510e0ae65"
@@ -118,7 +117,7 @@
   version = "v1.8.0"
 
 [[projects]]
-  digest = "1:ce1c41ebdf4761c8c1336e967b822568534342bf836ad56fee476b102653cec3"
+  digest = "1:037939a41d1cbd3e9e0fa81372144cce899fc3895122ff7b52b7a1ea7ead1d10"
   name = "github.com/minio/minio-go"
   packages = [
     ".",
@@ -129,8 +128,8 @@
     "pkg/set",
   ]
   pruneopts = "UT"
-  revision = "39381cf62425050629c7264228fc2f9e0c6616f6"
-  version = "v6.0.11"
+  revision = "98eaf5eab6d7935d2bd904c9229596328c90539a"
+  version = "v6.0.12"
 
 [[projects]]
   digest = "1:78bbb1ba5b7c3f2ed0ea1eab57bdd3859aec7e177811563edc41198a760b06af"
@@ -157,12 +156,12 @@
   version = "v1.2.0"
 
 [[projects]]
-  digest = "1:69b1cc331fca23d702bd72f860c6a647afd0aa9fcbc1d0659b1365e26546dd70"
+  digest = "1:87c2e02fb01c27060ccc5ba7c5a407cc91147726f8f40b70cceeedbc52b1f3a8"
   name = "github.com/sirupsen/logrus"
   packages = ["."]
   pruneopts = "UT"
-  revision = "bcd833dfe83d3cebad139e4a29ed79cb2318bf95"
-  version = "v1.2.0"
+  revision = "e1e72e9de974bd926e5c56f83753fba2df402ce5"
+  version = "v1.3.0"
 
 [[projects]]
   digest = "1:d707dbc1330c0ed177d4642d6ae102d5e2c847ebd0eb84562d0dc4f024531cfc"
@@ -221,18 +220,19 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:d85c27d6ba6e4025225eed536f3ff7c5455d0857a0585c80d7510f7eee6fc68e"
+  digest = "1:ed3efa0f4eb3ca16d1be3f83a1f11ce217b50e78aef5ca3f77bea8f28125670f"
   name = "golang.org/x/net"
   packages = [
     "http/httpguts",
     "idna",
+    "publicsuffix",
   ]
   pruneopts = "UT"
-  revision = "927f97764cc334a6575f4b7a1584a147864d5723"
+  revision = "915654e7eabcea33ae277abbecf52f0d8b7a9fdc"
 
 [[projects]]
   branch = "master"
-  digest = "1:396d4228b57507f3320229d47bb2d3d0f0a0a0ae27e193c2f36cb5c152d3dcab"
+  digest = "1:ea401bdef5ad0c76b72e731a1f564ae5260c146535ab1331a99d7116e3bcefc0"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
@@ -240,7 +240,7 @@
     "windows",
   ]
   pruneopts = "UT"
-  revision = "82a175fd1598e8a172e58ebdf5ed262bb29129e5"
+  revision = "a457fd036447854c0c02e89ea439481bdcf941a2"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
