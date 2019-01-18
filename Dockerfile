@@ -1,7 +1,7 @@
 FROM dimaskiddo/alpine:base
 MAINTAINER Dimas Restu Hidayanto <dimas.restu@student.upi.edu>
 
-ENV CONFIG_FILE PROD
+ENV CONFIG_FILE prod
 
 WORKDIR /usr/src/app
 COPY build/ .
