@@ -8,7 +8,7 @@ import (
 
 // GetIndex Function to Show API Information
 func GetIndex(w http.ResponseWriter, r *http.Request) {
-	svc.ResponseOK(w, "Simple API Go Framework is running")
+	svc.ResponseOK(w, "Go API Framework is running")
 }
 
 // GetHealth Function to Show Health Check Status

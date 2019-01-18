@@ -30,7 +30,7 @@ func storeS3Connect() *minio.Client {
 	// StoreS3 Compability Between AWS and Minio
 	switch strings.ToLower(Config.GetString("STORAGE_DRIVER")) {
 	case "aws":
-		conn, err := minio.New("s3.amazonaws.com", storeS3Cfg.AccessKey, storeS3Cfg.SecretKey, storeS3Cfg.UseSSL)
+		conn, err := minio.New("s3.amazonaws.com", storeS3Cfg.AccessKey, storeS3Cfg.SecretKey, true)
 		if err != nil {
 			log.Fatalln(err)
 		}

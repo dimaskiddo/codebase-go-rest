@@ -43,11 +43,17 @@ docker-build:
 docker-run:
 	docker run -d -p $(GO_EXPOSE_PORT):$(GO_EXPOSE_PORT) --name $(GO_OUTPUT) --rm $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
 
+docker-exec:
+	docker exec -it $(GO_OUTPUT) bash
+
 docker-stop:
 	docker stop $(GO_OUTPUT)
 
 docker-logs:
 	docker logs $(GO_OUTPUT)
+
+docker-push:
+	docker push $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
 
 docker-clean:
 	docker rmi -f $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)

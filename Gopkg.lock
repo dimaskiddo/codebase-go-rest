@@ -117,7 +117,7 @@
   version = "v1.8.0"
 
 [[projects]]
-  digest = "1:037939a41d1cbd3e9e0fa81372144cce899fc3895122ff7b52b7a1ea7ead1d10"
+  digest = "1:9923374af17cd3d787f47b88e0401e13ab1e62302650234fc0c0a497427723e5"
   name = "github.com/minio/minio-go"
   packages = [
     ".",
@@ -128,8 +128,8 @@
     "pkg/set",
   ]
   pruneopts = "UT"
-  revision = "98eaf5eab6d7935d2bd904c9229596328c90539a"
-  version = "v6.0.12"
+  revision = "e6694bcc4a6b0c1756797be85b8458635a65924e"
+  version = "v6.0.13"
 
 [[projects]]
   digest = "1:78bbb1ba5b7c3f2ed0ea1eab57bdd3859aec7e177811563edc41198a760b06af"
@@ -232,7 +232,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:ea401bdef5ad0c76b72e731a1f564ae5260c146535ab1331a99d7116e3bcefc0"
+  digest = "1:b9e94016f3758eb0bbe8f7883fed88136abce8d358ca9d159be34651e8172031"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
@@ -240,7 +240,7 @@
     "windows",
   ]
   pruneopts = "UT"
-  revision = "a457fd036447854c0c02e89ea439481bdcf941a2"
+  revision = "11f53e03133963fb11ae0588e08b5e0b85be8be5"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
