@@ -57,21 +57,21 @@ func StoreS3UploadFile(fileName string, fileSize int64, fileType string, fileStr
 			return err
 		}
 
+		// If Bucket Not Exists Then Create Bucket
 		if !bucketExists {
-			// If Bucket Not Exists Then Create Bucket
 			err := StoreS3.MakeBucket(storeS3Cfg.Bucket, storeS3Cfg.Region)
 			if err != nil {
 				return err
 			}
-		} else {
-			// If Bucket Exists Then Try to Upload File
-			n, err := StoreS3.PutObject(storeS3Cfg.Bucket, fileName, fileStream, fileSize, minio.PutObjectOptions{ContentType: fileType})
-			if err != nil {
-				return err
-			}
-			log.Printf("Successfully uploaded '%s', with size %d\n", fileName, n)
-			return nil
 		}
+
+		// Try to Upload File into Bucket
+		n, err := StoreS3.PutObject(storeS3Cfg.Bucket, fileName, fileStream, fileSize, minio.PutObjectOptions{ContentType: fileType})
+		if err != nil {
+			return err
+		}
+		log.Printf("Successfully uploaded '%s', with size %d\n", fileName, n)
+		return nil
 	}
 
 	// Default Return
