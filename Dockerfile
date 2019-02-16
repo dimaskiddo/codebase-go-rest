@@ -1,8 +1,8 @@
 FROM dimaskiddo/alpine:base
 MAINTAINER Dimas Restu Hidayanto <dimas.restu@student.upi.edu>
 
-ENV CONFIG_PATH=./configs \
-    CONFIG_ENV=PROD
+ENV CONFIG_ENV=PROD \
+    CONFIG_FILE_PATH=./configs
 
 WORKDIR /usr/src/app
 COPY build/ .
