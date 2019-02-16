@@ -43,11 +43,11 @@
 
 [[constraint]]
   name = "github.com/gorilla/mux"
-  version = "1.6.2"
+  version = "1.7.0"
 
 [[constraint]]
   name = "github.com/minio/minio-go"
-  version = "6.0.13"
+  version = "6.0.17"
 
 [[constraint]]
   name = "github.com/spf13/viper"

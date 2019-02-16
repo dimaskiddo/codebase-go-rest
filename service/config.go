@@ -20,30 +20,27 @@ func initConfig() {
 	}
 
 	// Set Configuration Path Value
-	configPath := os.Getenv("CONFIG_PATH")
-	if len(configPath) == 0 {
-		configPath = "./configs"
+	configFilePath := strings.ToLower(os.Getenv("CONFIG_FILE_PATH"))
+	if len(configFilePath) == 0 {
+		configFilePath = "./configs"
 	}
 
 	// Set Configuration Type Value
-	configType := strings.ToLower(os.Getenv("CONFIG_TYPE"))
-	if len(configType) == 0 {
-		configType = "yaml"
+	configFileType := strings.ToLower(os.Getenv("CONFIG_FILE_TYPE"))
+	if len(configFileType) == 0 {
+		configFileType = "yaml"
 	}
 
 	// Set Configuration Prefix Value
-	configPrefix := strings.ToUpper(os.Getenv("CONFIG_PREFIX"))
-	if len(configPrefix) == 0 {
-		configPrefix = "CONFIG"
-	}
+	configPrefix := strings.ToUpper(configEnv)
 
 	// Initialize Configuratior
 	Config = viper.New()
 
 	// Set Configuratior Configuration
 	Config.SetConfigName(configEnv)
-	Config.SetConfigType(configType)
-	Config.AddConfigPath(configPath)
+	Config.AddConfigPath(configFilePath)
+	Config.SetConfigType(configFileType)
 
 	// Set Configurator Environment
 	Config.SetEnvPrefix(configPrefix)
