@@ -83,16 +83,16 @@ func configLoadValues() {
 	// Server Upload Path Value
 	Config.SetDefault("SERVER_UPLOAD_LIMIT", 25)
 
-	// CORS Allowed Header Value
-	Config.SetDefault("CORS_ALLOWED_HEADER", "X-Requested-With")
-	routerCORSCfg.Headers = []string{Config.GetString("CORS_ALLOWED_HEADER")}
-
 	// CORS Allowed Origin Value
 	Config.SetDefault("CORS_ALLOWED_ORIGIN", "*")
 	routerCORSCfg.Origins = []string{Config.GetString("CORS_ALLOWED_ORIGIN")}
 
+	// CORS Allowed Header Value
+	Config.SetDefault("CORS_ALLOWED_HEADER", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
+	routerCORSCfg.Headers = []string{Config.GetString("CORS_ALLOWED_HEADER")}
+
 	// CORS Allowed Method Value
-	Config.SetDefault("CORS_ALLOWED_METHOD", "'HEAD', 'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'")
+	Config.SetDefault("CORS_ALLOWED_METHOD", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
 	routerCORSCfg.Methods = []string{Config.GetString("CORS_ALLOWED_METHOD")}
 
 	// JWT Signing Key Value

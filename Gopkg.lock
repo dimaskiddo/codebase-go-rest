@@ -258,12 +258,12 @@
   version = "v1.4.0"
 
 [[projects]]
-  digest = "1:8b4bb15de2e698d359eeec15c42453567c98972a70c8619946050360ec02ec32"
+  digest = "1:d37c61a335d13bc49b3f90e9e13c8686e4548839b69c58549e727afb2245c454"
   name = "gopkg.in/ini.v1"
   packages = ["."]
   pruneopts = "UT"
-  revision = "6ed8d5f64cd79a498d1f3fab5880cc376ce41bbe"
-  version = "v1.41.0"
+  revision = "c85607071cf08ca1adaf48319cd1aa322e81d8c1"
+  version = "v1.42.0"
 
 [[projects]]
   branch = "v2"
