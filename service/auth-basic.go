@@ -24,7 +24,7 @@ func AuthBasic(nextHandlerFunc http.HandlerFunc) http.Handler {
 		// Authorization Section Length Should Be 2
 		// The First Authorization Section Should Be "Basic"
 		if len(authHeader) != 2 || authHeader[0] != "Basic" {
-			ResponseAuthenticate(w)
+			ResponseUnauthorized(w)
 			return
 		}
 
