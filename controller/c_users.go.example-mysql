@@ -6,14 +6,14 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/gorilla/mux"
+
 	mdl "github.com/dimaskiddo/frame-go/model"
 	svc "github.com/dimaskiddo/frame-go/service"
-
-	"github.com/gorilla/mux"
 )
 
-// ResponseGetUser Struct
-type ResponseGetUser struct {
+// FormatGetUser Struct
+type FormatGetUser struct {
 	Status  bool       `json:"status"`
 	Code    int        `json:"code"`
 	Message string     `json:"message"`
@@ -28,7 +28,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	// Database Query
 	rows, err := svc.MySQL.Query("SELECT * FROM users")
 	if err == nil {
-		var response ResponseGetUser
+		var response FormatGetUser
 
 		// Populate Data
 		for rows.Next() {
@@ -69,7 +69,7 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	// Database Query
 	_, err := svc.MySQL.Exec("INSERT INTO users (name, email) VALUE (?, ?)", user.Name, user.Email)
 	if err == nil {
-		svc.ResponseOK(w, "")
+		svc.ResponseSuccess(w, "")
 	} else {
 		svc.ResponseInternalError(w, err.Error())
 		log.Println(err.Error())
@@ -90,7 +90,7 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 		// Database Query
 		rows, err := svc.MySQL.Query("SELECT * FROM users WHERE id=? LIMIT 1", userID)
 		if err == nil {
-			var response ResponseGetUser
+			var response FormatGetUser
 
 			// Populate Data
 			for rows.Next() {
@@ -141,7 +141,7 @@ func PutUserByID(w http.ResponseWriter, r *http.Request) {
 		// Database Query
 		_, err := svc.MySQL.Exec("UPDATE users SET name=?, email=? WHERE id=? LIMIT 1", user.Name, user.Email, userID)
 		if err == nil {
-			svc.ResponseOK(w, "")
+			svc.ResponseSuccess(w, "")
 		} else {
 			svc.ResponseInternalError(w, err.Error())
 			log.Println(err.Error())
@@ -163,7 +163,7 @@ func DelUserByID(w http.ResponseWriter, r *http.Request) {
 		// Database Query
 		_, err := svc.MySQL.Query("DELETE FROM users WHERE id=? LIMIT 1", userID)
 		if err == nil {
-			svc.ResponseOK(w, "")
+			svc.ResponseSuccess(w, "")
 		} else {
 			svc.ResponseInternalError(w, err.Error())
 			log.Println(err.Error())

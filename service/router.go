@@ -11,11 +11,19 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// Response Struct
-type Response struct {
+// FormatSuccess Struct
+type FormatSuccess struct {
 	Status  bool   `json:"status"`
 	Code    int    `json:"code"`
 	Message string `json:"message"`
+}
+
+// FormatError Struct
+type FormatError struct {
+	Status  bool   `json:"status"`
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Error   string `json:"error"`
 }
 
 // Router CORS Configuration Struct
@@ -82,7 +90,7 @@ func HealthCheck(w http.ResponseWriter) {
 	}
 
 	// Return OK
-	ResponseOK(w, "")
+	ResponseSuccess(w, "")
 }
 
 // ResponseWrite Function
@@ -95,9 +103,9 @@ func ResponseWrite(w http.ResponseWriter, responseCode int, responseData interfa
 	json.NewEncoder(w).Encode(responseData)
 }
 
-// ResponseOK Function
-func ResponseOK(w http.ResponseWriter, message string) {
-	var response Response
+// ResponseSuccess Function
+func ResponseSuccess(w http.ResponseWriter, message string) {
+	var response FormatSuccess
 
 	// Set Default Message
 	if len(message) == 0 {
@@ -115,7 +123,7 @@ func ResponseOK(w http.ResponseWriter, message string) {
 
 // ResponseBadRequest Function
 func ResponseBadRequest(w http.ResponseWriter, message string) {
-	var response Response
+	var response FormatError
 
 	// Set Default Message
 	if len(message) == 0 {
@@ -125,7 +133,8 @@ func ResponseBadRequest(w http.ResponseWriter, message string) {
 	// Set Response Data
 	response.Status = false
 	response.Code = http.StatusBadRequest
-	response.Message = message
+	response.Message = "Bad Request"
+	response.Error = message
 
 	// Set Response Data to HTTP
 	ResponseWrite(w, response.Code, response)
@@ -133,7 +142,7 @@ func ResponseBadRequest(w http.ResponseWriter, message string) {
 
 // ResponseInternalError Function
 func ResponseInternalError(w http.ResponseWriter, message string) {
-	var response Response
+	var response FormatError
 
 	// Set Default Message
 	if len(message) == 0 {
@@ -143,7 +152,8 @@ func ResponseInternalError(w http.ResponseWriter, message string) {
 	// Set Response Data
 	response.Status = false
 	response.Code = http.StatusInternalServerError
-	response.Message = message
+	response.Message = "Internal Server Error"
+	response.Error = message
 
 	// Set Response Data to HTTP
 	ResponseWrite(w, response.Code, response)
@@ -151,12 +161,13 @@ func ResponseInternalError(w http.ResponseWriter, message string) {
 
 // ResponseUnauthorized Function
 func ResponseUnauthorized(w http.ResponseWriter) {
-	var response Response
+	var response FormatError
 
 	// Set Response Data
 	response.Status = false
 	response.Code = http.StatusUnauthorized
 	response.Message = "Unauthorized"
+	response.Error = "Unaothorized"
 
 	// Set Response Data to HTTP
 	ResponseWrite(w, response.Code, response)
@@ -164,17 +175,6 @@ func ResponseUnauthorized(w http.ResponseWriter) {
 
 // ResponseAuthenticate Function
 func ResponseAuthenticate(w http.ResponseWriter) {
-	var response Response
-
-	// Set Response Data
-	response.Status = false
-	response.Code = http.StatusUnauthorized
-	response.Message = "Unauthorized"
-
-	// Write Response
 	w.Header().Set("WWW-Authenticate", `Basic realm="Authorization Required"`)
-	w.WriteHeader(response.Code)
-
-	// Write JSON to Response
-	json.NewEncoder(w).Encode(response)
+	ResponseUnauthorized(w)
 }

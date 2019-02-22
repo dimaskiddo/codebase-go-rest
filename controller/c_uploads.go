@@ -31,7 +31,7 @@ func AddUpload(w http.ResponseWriter, r *http.Request) {
 		case "aws", "minio":
 			err := svc.StoreS3UploadFile(metaFileName, metaFileSize, metaFileType, mpFile)
 			if err == nil {
-				svc.ResponseOK(w, "")
+				svc.ResponseSuccess(w, "")
 			} else {
 				svc.ResponseInternalError(w, err.Error())
 				log.Println(err.Error())
@@ -45,7 +45,7 @@ func AddUpload(w http.ResponseWriter, r *http.Request) {
 				// Copy Uploaded File Data from Multipart Data
 				io.Copy(wrFile, mpFile)
 
-				svc.ResponseOK(w, "")
+				svc.ResponseSuccess(w, "")
 			} else {
 				svc.ResponseInternalError(w, err.Error())
 				log.Println(err.Error())

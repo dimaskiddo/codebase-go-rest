@@ -1,5 +1,5 @@
 ## Server Configuration
-SERVER_IP: "0.0.0.0"
+SERVER_IP: "127.0.0.1"
 SERVER_PORT: "3000"
 SERVER_UPLOAD_PATH: "./build/uploads"
 SERVER_UPLOAD_LIMIT: 25

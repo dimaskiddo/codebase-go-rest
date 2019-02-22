@@ -6,14 +6,14 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/gorilla/mux"
+
 	mdl "github.com/dimaskiddo/frame-go/model"
 	svc "github.com/dimaskiddo/frame-go/service"
-
-	"github.com/gorilla/mux"
 )
 
-// ResponseGetUser Struct
-type ResponseGetUser struct {
+// FormatGetUser Struct
+type FormatGetUser struct {
 	Status  bool       `json:"status"`
 	Code    int        `json:"code"`
 	Message string     `json:"message"`
@@ -22,7 +22,7 @@ type ResponseGetUser struct {
 
 // GetUser Function to Get All User Data
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	var response ResponseGetUser
+	var response FormatGetUser
 
 	// Set Response Data
 	response.Status = true
@@ -48,7 +48,7 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	// Insert User to Users Array
 	mdl.Users = append(mdl.Users, user)
 
-	svc.ResponseOK(w, "")
+	svc.ResponseSuccess(w, "")
 }
 
 // GetUserByID Function to Get User Data By User ID
@@ -62,7 +62,7 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 		// Check if Requested Data in User Array Range
 		if len(mdl.Users) > 0 && userID <= len(mdl.Users) {
 			var users []mdl.User
-			var response ResponseGetUser
+			var response FormatGetUser
 
 			// Convert Selected User from Users Array to Single User Array
 			users = append(users, mdl.Users[userID-1])
@@ -105,7 +105,7 @@ func PutUserByID(w http.ResponseWriter, r *http.Request) {
 			mdl.Users[userID-1].Name = user.Name
 			mdl.Users[userID-1].Email = user.Email
 
-			svc.ResponseOK(w, "")
+			svc.ResponseSuccess(w, "")
 		} else {
 			svc.ResponseBadRequest(w, "Invalid array index")
 			log.Println("Invalid array index")
@@ -129,7 +129,7 @@ func DelUserByID(w http.ResponseWriter, r *http.Request) {
 			// Delete User Data from Users Array
 			mdl.Users = append(mdl.Users[:userID-1], mdl.Users[userID:]...)
 
-			svc.ResponseOK(w, "")
+			svc.ResponseSuccess(w, "")
 		} else {
 			svc.ResponseBadRequest(w, "Invalid array index")
 			log.Println("Invalid array index")

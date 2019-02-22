@@ -1,6 +1,7 @@
 package service
 
 import (
+	"encoding/base64"
 	"net/http"
 	"strconv"
 	"strings"
@@ -23,24 +24,34 @@ var jwtSigningKey string
 func AuthJWT(nextHandlerFunc http.HandlerFunc) http.Handler {
 	// Return Next HTTP Handler Function, If Authorization is Valid
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Get JWT Token From HTTP Header Authorization
-		token := r.Header.Get("Authorization")
-		token = strings.Replace(token, "Bearer ", "", 1)
-		if len(token) == 0 {
+		// Parse HTTP Header Authorization
+		authHeader := strings.SplitN(r.Header.Get("Authorization"), " ", 2)
+
+		// Check HTTP Header Authorization Section
+		// Authorization Section Length Should Be 2
+		// The First Authorization Section Should Be "Bearer"
+		if len(authHeader) != 2 || authHeader[0] != "Bearer" {
 			ResponseUnauthorized(w)
 			return
 		}
 
-		// Get Claims From JWT Token
-		claims, err := jwtClaims(token)
+		// The Second Authorization Section Should Be The Credentials Payload
+		authPayload := authHeader[1]
+		if len(authPayload) == 0 {
+			ResponseUnauthorized(w)
+			return
+		}
+
+		// Get Authorization Claims From JWT Token
+		authClaims, err := jwtClaims(authPayload)
 		if err != nil {
 			ResponseUnauthorized(w)
 			return
 		}
 
-		// Set Extracted Claims to HTTP Header
-		r.Header.Set("JWT-Data", claims["data"].(string))
-		r.Header.Set("JWT-Expire", claims["expire"].(string))
+		// Set Extracted Authorization Claims to HTTP Header
+		// With Base64 Format
+		r.Header.Set("X-JWT-Claims", base64.StdEncoding.EncodeToString([]byte(authClaims["data"].(string))))
 
 		// Call Next Handler Function With Current Request
 		nextHandlerFunc(w, r)

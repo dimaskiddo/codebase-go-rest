@@ -23,23 +23,18 @@ func GetAuth(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Some Business Logic Here to Match The Username and Password
-	if creds.Username == "user" && creds.Password == "password" {
-		// Get JWT Token From Pre-Defined Function
-		token, err := svc.GetJWTToken(creds.Username)
-		if err != nil {
-			svc.ResponseInternalError(w, err.Error())
-			log.Println(err.Error())
-		} else {
-			var response svc.JWTResponse
-
-			response.Status = true
-			response.Code = http.StatusOK
-			response.Token = token
-
-			svc.ResponseWrite(w, response.Code, response)
-		}
+	// Get JWT Token From Pre-Defined Function
+	token, err := svc.GetJWTToken(creds.Username)
+	if err != nil {
+		svc.ResponseInternalError(w, err.Error())
+		log.Println(err.Error())
 	} else {
-		svc.ResponseUnauthorized(w)
+		var response svc.JWTResponse
+
+		response.Status = true
+		response.Code = http.StatusOK
+		response.Token = token
+
+		svc.ResponseWrite(w, response.Code, response)
 	}
 }
