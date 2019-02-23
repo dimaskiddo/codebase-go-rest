@@ -29,11 +29,14 @@ func GetAuth(w http.ResponseWriter, r *http.Request) {
 		svc.ResponseInternalError(w, err.Error())
 		log.Println(err.Error())
 	} else {
-		var response svc.JWTResponse
+		jsonToken := map[string]string{"token": token}
+
+		var response svc.FormatGetJWT
 
 		response.Status = true
 		response.Code = http.StatusOK
-		response.Token = token
+		response.Message = "Success"
+		response.Data = jsonToken
 
 		svc.ResponseWrite(w, response.Code, response)
 	}

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -63,12 +64,14 @@ func configLoadFile() {
 	// Load Configuration File
 	err := Config.ReadInConfig()
 	if err != nil {
-		log.Println(err)
+		log.Println(err.Error())
 	}
 }
 
 // ConfigLoadValues Function to Load Configuration Values
 func configLoadValues() {
+	var err error
+
 	// Server IP Value
 	Config.SetDefault("SERVER_IP", "0.0.0.0")
 	serverCfg.IP = Config.GetString("SERVER_IP")
@@ -83,6 +86,10 @@ func configLoadValues() {
 	// Server Upload Path Value
 	Config.SetDefault("SERVER_UPLOAD_LIMIT", 25)
 
+	// Router Base Path
+	Config.SetDefault("ROUTER_BASE_PATH", "/")
+	RouterBasePath = Config.GetString("ROUTER_BASE_PATH")
+
 	// CORS Allowed Origin Value
 	Config.SetDefault("CORS_ALLOWED_ORIGIN", "*")
 	routerCORSCfg.Origins = []string{Config.GetString("CORS_ALLOWED_ORIGIN")}
@@ -95,7 +102,17 @@ func configLoadValues() {
 	Config.SetDefault("CORS_ALLOWED_METHOD", "GET, POST, PUT, PATCH, DELETE, OPTIONS")
 	routerCORSCfg.Methods = []string{Config.GetString("CORS_ALLOWED_METHOD")}
 
-	// JWT Signing Key Value
-	Config.SetDefault("JWT_SIGNING_KEY", "secrets")
-	jwtSigningKey = Config.GetString("JWT_SIGNING_KEY")
+	// JWT Private Key File Value
+	Config.SetDefault("JWT_PRIVATE_KEY_FILE", "./private.key")
+	jwtKeysCfg.Private, err = ioutil.ReadFile(Config.GetString("JWT_PRIVATE_KEY_FILE"))
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
+
+	// JWT Public Key File Value
+	Config.SetDefault("JWT_PUBLIC_KEY_FILE", "./public.key")
+	jwtKeysCfg.Public, err = ioutil.ReadFile(Config.GetString("JWT_PUBLIC_KEY_FILE"))
+	if err != nil {
+		log.Fatalln(err.Error())
+	}
 }

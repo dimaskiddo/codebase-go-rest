@@ -36,6 +36,9 @@ type routerCORSConfig struct {
 // Router CORS Configuration Variable
 var routerCORSCfg routerCORSConfig
 
+// RouterBasePath Variable
+var RouterBasePath string
+
 // RouterHandler Variable
 var RouterHandler http.Handler
 
@@ -52,6 +55,11 @@ func initRouter() {
 		handlers.AllowedHeaders(routerCORSCfg.Headers),
 		handlers.AllowedOrigins(routerCORSCfg.Origins),
 		handlers.AllowedMethods(routerCORSCfg.Methods))(Router))
+
+	// Set Router Default Not Found Handler
+	Router.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		ResponseNotFound(w)
+	})
 }
 
 // HealthCheck Function
@@ -116,6 +124,20 @@ func ResponseSuccess(w http.ResponseWriter, message string) {
 	response.Status = true
 	response.Code = http.StatusOK
 	response.Message = message
+
+	// Set Response Data to HTTP
+	ResponseWrite(w, response.Code, response)
+}
+
+// ResponseNotFound Function
+func ResponseNotFound(w http.ResponseWriter) {
+	var response FormatError
+
+	// Set Response Data
+	response.Status = false
+	response.Code = http.StatusNotFound
+	response.Message = "Not Found"
+	response.Error = "Not Found"
 
 	// Set Response Data to HTTP
 	ResponseWrite(w, response.Code, response)

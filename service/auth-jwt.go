@@ -3,22 +3,28 @@ package service
 import (
 	"encoding/base64"
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 )
 
-// JWTResponse Struct
-type JWTResponse struct {
-	Status bool   `json:"status"`
-	Code   int    `json:"code"`
-	Token  string `json:"token"`
+// FormatGetJWT Struct
+type FormatGetJWT struct {
+	Status  bool              `json:"status"`
+	Code    int               `json:"code"`
+	Message string            `json:"message"`
+	Data    map[string]string `json:"data"`
 }
 
-// JWTSigningKey Variable
-var jwtSigningKey string
+// jwtKeysConfig Struct
+type jwtKeysConfig struct {
+	Private []byte
+	Public  []byte
+}
+
+// jwtKeysConfig Variable
+var jwtKeysCfg jwtKeysConfig
 
 // AuthJWT Function as Midleware for JWT Authorization
 func AuthJWT(nextHandlerFunc http.HandlerFunc) http.Handler {
@@ -59,27 +65,36 @@ func AuthJWT(nextHandlerFunc http.HandlerFunc) http.Handler {
 }
 
 // GetJWTToken Function to Generate JWT Token
-func GetJWTToken(data interface{}) (string, error) {
+func GetJWTToken(payload interface{}) (string, error) {
 	// Convert Signing Key in Byte Format
-	signingKey := []byte(jwtSigningKey)
+	signingKey, err := jwt.ParseRSAPrivateKeyFromPEM(jwtKeysCfg.Private)
+	if err != nil {
+		return "", err
+	}
 
-	// Create JWT Token With HS256 Method and Set Claims
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"data":   data.(string),
-		"expire": strconv.FormatInt(time.Now().Add(time.Hour*24).Unix(), 10),
+	// Create JWT Token With RS256 Method And Set JWT Claims
+	token := jwt.NewWithClaims(jwt.SigningMethodRS256, jwt.MapClaims{
+		"data": payload.(string),
+		"exp":  time.Now().Add(time.Hour * 24).Unix(),
 	})
 
 	// Generate JWT Token String With Signing Key
 	tokenString, err := token.SignedString(signingKey)
+	if err != nil {
+		return "", err
+	}
 
 	// Return The JWT Token String and Error
-	return tokenString, err
+	return tokenString, nil
 }
 
 // JWTClaims Function to Get JWT Claims Information
 func jwtClaims(data string) (jwt.MapClaims, error) {
 	// Convert Signing Key in Byte Format
-	signingKey := []byte(jwtSigningKey)
+	signingKey, err := jwt.ParseRSAPublicKeyFromPEM(jwtKeysCfg.Public)
+	if err != nil {
+		return nil, err
+	}
 
 	// Parse JWT Token, If Token is Not Valid Then Return The Signing Key
 	token, err := jwt.Parse(data, func(token *jwt.Token) (interface{}, error) {
