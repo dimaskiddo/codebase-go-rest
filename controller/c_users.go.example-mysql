@@ -28,7 +28,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	// Database Query
 	rows, err := svc.MySQL.Query("SELECT * FROM users")
 	if err == nil {
-		var response FormatGetUser
+		var response formatGetUser
 
 		// Populate Data
 		for rows.Next() {
@@ -90,7 +90,7 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 		// Database Query
 		rows, err := svc.MySQL.Query("SELECT * FROM users WHERE id=? LIMIT 1", userID)
 		if err == nil {
-			var response FormatGetUser
+			var response formatGetUser
 
 			// Populate Data
 			for rows.Next() {

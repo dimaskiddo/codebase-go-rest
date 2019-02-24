@@ -27,7 +27,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	// Database Query
 	err := svc.Mongo.C("users").Find(bson.M{}).All(&users)
 	if err == nil {
-		var response FormatGetUser
+		var response formatGetUser
 
 		// Set Response Data
 		response.Status = true
@@ -77,7 +77,7 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 		// Database Query
 		err := svc.Mongo.C("users").FindId(bson.ObjectIdHex(params["id"])).One(&user)
 		if err == nil {
-			var response FormatGetUser
+			var response formatGetUser
 
 			// Convert Selected User from Users Array to Single User Array
 			users = append(users, user)

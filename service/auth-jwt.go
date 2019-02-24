@@ -17,6 +17,12 @@ type FormatGetJWT struct {
 	Data    map[string]string `json:"data"`
 }
 
+// jwtClaimsData Struct
+type jwtClaimsData struct {
+	Data string `json:"data"`
+	jwt.StandardClaims
+}
+
 // jwtKeysConfig Struct
 type jwtKeysConfig struct {
 	Private []byte
@@ -56,7 +62,7 @@ func AuthJWT(nextHandlerFunc http.HandlerFunc) http.Handler {
 		}
 
 		// Set Extracted Authorization Claims to HTTP Header
-		// With Base64 Format
+		// And Encode it to Base64 String
 		r.Header.Set("X-JWT-Claims", base64.StdEncoding.EncodeToString([]byte(authClaims["data"].(string))))
 
 		// Call Next Handler Function With Current Request
@@ -73,9 +79,11 @@ func GetJWTToken(payload interface{}) (string, error) {
 	}
 
 	// Create JWT Token With RS256 Method And Set JWT Claims
-	token := jwt.NewWithClaims(jwt.SigningMethodRS256, jwt.MapClaims{
-		"data": payload.(string),
-		"exp":  time.Now().Add(time.Hour * 24).Unix(),
+	token := jwt.NewWithClaims(jwt.SigningMethodRS256, jwtClaimsData{
+		payload.(string),
+		jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
+		},
 	})
 
 	// Generate JWT Token String With Signing Key
@@ -86,6 +94,18 @@ func GetJWTToken(payload interface{}) (string, error) {
 
 	// Return The JWT Token String and Error
 	return tokenString, nil
+}
+
+// GetJWTClaims Function to Get JWT Claims in Plain Text
+func GetJWTClaims(data string) (string, error) {
+	// Decode from Base64 String to JWT Claims
+	claims, err := base64.StdEncoding.DecodeString(data)
+	if err != nil {
+		return "", err
+	}
+
+	// Return The JWT Claims in Plain Text and Error
+	return string(claims), nil
 }
 
 // JWTClaims Function to Get JWT Claims Information

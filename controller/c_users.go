@@ -12,7 +12,7 @@ import (
 	svc "github.com/dimaskiddo/frame-go/service"
 )
 
-// FormatGetUser Struct
+// formatGetUser Struct
 type formatGetUser struct {
 	Status  bool       `json:"status"`
 	Code    int        `json:"code"`
@@ -22,7 +22,7 @@ type formatGetUser struct {
 
 // GetUser Function to Get All User Data
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	var response FormatGetUser
+	var response formatGetUser
 
 	// Set Response Data
 	response.Status = true
@@ -62,7 +62,7 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 		// Check if Requested Data in User Array Range
 		if len(mdl.Users) > 0 && userID <= len(mdl.Users) {
 			var users []mdl.User
-			var response FormatGetUser
+			var response formatGetUser
 
 			// Convert Selected User from Users Array to Single User Array
 			users = append(users, mdl.Users[userID-1])
