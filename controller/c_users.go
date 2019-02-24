@@ -13,7 +13,7 @@ import (
 )
 
 // FormatGetUser Struct
-type FormatGetUser struct {
+type formatGetUser struct {
 	Status  bool       `json:"status"`
 	Code    int        `json:"code"`
 	Message string     `json:"message"`

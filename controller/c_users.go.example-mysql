@@ -12,8 +12,8 @@ import (
 	svc "github.com/dimaskiddo/frame-go/service"
 )
 
-// FormatGetUser Struct
-type FormatGetUser struct {
+// formatGetUser Struct
+type formatGetUser struct {
 	Status  bool       `json:"status"`
 	Code    int        `json:"code"`
 	Message string     `json:"message"`
