@@ -57,7 +57,7 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	// Database Query
 	err := svc.Mongo.C("users").Insert(&user)
 	if err == nil {
-		svc.ResponseSuccess(w, "")
+		svc.ResponseCreated(w)
 	} else {
 		svc.ResponseInternalError(w, err.Error())
 		log.Println(err.Error())
@@ -119,7 +119,7 @@ func PutUserByID(w http.ResponseWriter, r *http.Request) {
 		// Database Query
 		err := svc.Mongo.C("users").UpdateId(bson.ObjectIdHex(params["id"]), &user)
 		if err == nil {
-			svc.ResponseSuccess(w, "")
+			svc.ResponseUpdated(w)
 		} else {
 			svc.ResponseInternalError(w, err.Error())
 			log.Println(err.Error())

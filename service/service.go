@@ -11,6 +11,10 @@ func Initialize() {
 	log.Println("Initialize - Config")
 	initConfig()
 
+	// Initialize Cryptography
+	log.Println("Initialize - Cryptography")
+	initCrypt()
+
 	// Initialize Database
 	if len(strings.ToLower(Config.GetString("DB_DRIVER"))) != 0 {
 		log.Println("Initialize - Database")

@@ -30,7 +30,11 @@ func AuthBasic(nextHandlerFunc http.HandlerFunc) http.Handler {
 
 		// The Second Authorization Section Should Be The Credentials Payload
 		// But We Should Decode it First From Base64 Encoding
-		authPayload, _ := base64.StdEncoding.DecodeString(authHeader[1])
+		authPayload, err := base64.StdEncoding.DecodeString(authHeader[1])
+		if err != nil {
+			ResponseInternalError(w, err.Error())
+			return
+		}
 
 		// Split Decoded Authorization Payload Into Username and Password Credentials
 		authCredentials := strings.SplitN(string(authPayload), ":", 2)
@@ -38,7 +42,7 @@ func AuthBasic(nextHandlerFunc http.HandlerFunc) http.Handler {
 		// Check Credentials Section
 		// It Should Have 2 Section, Username and Password
 		if len(authCredentials) != 2 {
-			ResponseUnauthorized(w)
+			ResponseBadRequest(w, "")
 			return
 		}
 

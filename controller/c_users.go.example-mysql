@@ -69,7 +69,7 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	// Database Query
 	_, err := svc.MySQL.Exec("INSERT INTO users (name, email) VALUE (?, ?)", user.Name, user.Email)
 	if err == nil {
-		svc.ResponseSuccess(w, "")
+		svc.ResponseCreated(w)
 	} else {
 		svc.ResponseInternalError(w, err.Error())
 		log.Println(err.Error())
@@ -141,7 +141,7 @@ func PutUserByID(w http.ResponseWriter, r *http.Request) {
 		// Database Query
 		_, err := svc.MySQL.Exec("UPDATE users SET name=?, email=? WHERE id=? LIMIT 1", user.Name, user.Email, userID)
 		if err == nil {
-			svc.ResponseSuccess(w, "")
+			svc.ResponseUpdated(w)
 		} else {
 			svc.ResponseInternalError(w, err.Error())
 			log.Println(err.Error())

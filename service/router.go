@@ -129,6 +129,32 @@ func ResponseSuccess(w http.ResponseWriter, message string) {
 	ResponseWrite(w, response.Code, response)
 }
 
+// ResponseCreated Function
+func ResponseCreated(w http.ResponseWriter) {
+	var response FormatSuccess
+
+	// Set Response Data
+	response.Status = true
+	response.Code = http.StatusCreated
+	response.Message = "Created"
+
+	// Set Response Data to HTTP
+	ResponseWrite(w, response.Code, response)
+}
+
+// ResponseUpdated Function
+func ResponseUpdated(w http.ResponseWriter) {
+	var response FormatSuccess
+
+	// Set Response Data
+	response.Status = true
+	response.Code = http.StatusOK
+	response.Message = "Updated"
+
+	// Set Response Data to HTTP
+	ResponseWrite(w, response.Code, response)
+}
+
 // ResponseNotFound Function
 func ResponseNotFound(w http.ResponseWriter, message string) {
 	var response FormatError

@@ -1,7 +1,6 @@
 package service
 
 import (
-	"encoding/base64"
 	"net/http"
 	"strings"
 	"time"
@@ -17,20 +16,11 @@ type FormatGetJWT struct {
 	Data    map[string]string `json:"data"`
 }
 
-// jwtClaimsData Struct
+// JWT Claims Data Struct
 type jwtClaimsData struct {
 	Data string `json:"data"`
 	jwt.StandardClaims
 }
-
-// jwtKeysConfig Struct
-type jwtKeysConfig struct {
-	Private []byte
-	Public  []byte
-}
-
-// jwtKeysConfig Variable
-var jwtKeysCfg jwtKeysConfig
 
 // AuthJWT Function as Midleware for JWT Authorization
 func AuthJWT(nextHandlerFunc http.HandlerFunc) http.Handler {
@@ -50,20 +40,26 @@ func AuthJWT(nextHandlerFunc http.HandlerFunc) http.Handler {
 		// The Second Authorization Section Should Be The Credentials Payload
 		authPayload := authHeader[1]
 		if len(authPayload) == 0 {
-			ResponseUnauthorized(w)
+			ResponseBadRequest(w, "")
 			return
 		}
 
 		// Get Authorization Claims From JWT Token
 		authClaims, err := jwtClaims(authPayload)
 		if err != nil {
-			ResponseUnauthorized(w)
+			ResponseInternalError(w, err.Error())
 			return
 		}
 
-		// Set Extracted Authorization Claims to HTTP Header
-		// And Encode it to Base64 String
-		r.Header.Set("X-JWT-Claims", base64.StdEncoding.EncodeToString([]byte(authClaims["data"].(string))))
+		// Encrypt Claims Using RSA Encryption
+		claimsEncrypted, err := EncryptWithRSA(authClaims["data"].(string))
+		if err != nil {
+			ResponseInternalError(w, err.Error())
+			return
+		}
+
+		// Set Encrypted Claims to HTTP Header
+		r.Header.Set("X-JWT-Claims", claimsEncrypted)
 
 		// Call Next Handler Function With Current Request
 		nextHandlerFunc(w, r)
@@ -73,7 +69,7 @@ func AuthJWT(nextHandlerFunc http.HandlerFunc) http.Handler {
 // GetJWTToken Function to Generate JWT Token
 func GetJWTToken(payload interface{}) (string, error) {
 	// Convert Signing Key in Byte Format
-	signingKey, err := jwt.ParseRSAPrivateKeyFromPEM(jwtKeysCfg.Private)
+	signingKey, err := jwt.ParseRSAPrivateKeyFromPEM(keyRSACfg.BytePrivate)
 	if err != nil {
 		return "", err
 	}
@@ -82,7 +78,7 @@ func GetJWTToken(payload interface{}) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodRS256, jwtClaimsData{
 		payload.(string),
 		jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
+			ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
 		},
 	})
 
@@ -98,20 +94,20 @@ func GetJWTToken(payload interface{}) (string, error) {
 
 // GetJWTClaims Function to Get JWT Claims in Plain Text
 func GetJWTClaims(data string) (string, error) {
-	// Decode from Base64 String to JWT Claims
-	claims, err := base64.StdEncoding.DecodeString(data)
+	// Decrypt Encrypted Claims Using RSA Encryption
+	claims, err := DecryptWithRSA(data)
 	if err != nil {
 		return "", err
 	}
 
-	// Return The JWT Claims in Plain Text and Error
+	// Return Decrypted Claims and Error
 	return string(claims), nil
 }
 
 // JWTClaims Function to Get JWT Claims Information
 func jwtClaims(data string) (jwt.MapClaims, error) {
 	// Convert Signing Key in Byte Format
-	signingKey, err := jwt.ParseRSAPublicKeyFromPEM(jwtKeysCfg.Public)
+	signingKey, err := jwt.ParseRSAPublicKeyFromPEM(keyRSACfg.BytePublic)
 	if err != nil {
 		return nil, err
 	}

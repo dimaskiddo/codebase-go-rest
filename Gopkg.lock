@@ -101,7 +101,7 @@
   version = "v1.8.0"
 
 [[projects]]
-  digest = "1:f61c15d1c6291542b6e224e379d81510cf1d583482a5989f24592a711f99f6d2"
+  digest = "1:a26f1226b5c210196d96adc4985e8d7c2ff4dd766031704ba7e76564f5720d4d"
   name = "github.com/minio/minio-go"
   packages = [
     ".",
@@ -116,7 +116,7 @@
   version = "v6.0.17"
 
 [[projects]]
-  digest = "1:5d231480e1c64a726869bc4142d270184c419749d34f167646baa21008eb0a79"
+  digest = "1:a26f1226b5c210196d96adc4985e8d7c2ff4dd766031704ba7e76564f5720d4d"
   name = "github.com/mitchellh/go-homedir"
   packages = ["."]
   pruneopts = "UT"
@@ -140,7 +140,7 @@
   version = "v1.2.0"
 
 [[projects]]
-  digest = "1:87c2e02fb01c27060ccc5ba7c5a407cc91147726f8f40b70cceeedbc52b1f3a8"
+  digest = "1:a26f1226b5c210196d96adc4985e8d7c2ff4dd766031704ba7e76564f5720d4d"
   name = "github.com/sirupsen/logrus"
   packages = ["."]
   pruneopts = "UT"
@@ -200,7 +200,7 @@
     "ssh/terminal",
   ]
   pruneopts = "UT"
-  revision = "ffb98f73852f696ea2bb21a617a5c4b3e067a439"
+  revision = "7f87c0fbb88b590338857bcb720678c2583d4dea"
 
 [[projects]]
   branch = "master"
@@ -224,7 +224,7 @@
     "windows",
   ]
   pruneopts = "UT"
-  revision = "cd391775e71e684db52b63df9affd58269495083"
+  revision = "cc5685c2db1239775905f3911f0067c0fa74762f"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
