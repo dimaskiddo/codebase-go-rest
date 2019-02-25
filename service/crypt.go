@@ -19,7 +19,7 @@ type keyRSAConfig struct {
 	KeyPublic   *rsa.PublicKey
 }
 
-// RSAConfig Variable
+// Key RSA Config Variable
 var keyRSACfg keyRSAConfig
 
 // InitCrypt Function

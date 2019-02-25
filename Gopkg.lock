@@ -101,7 +101,7 @@
   version = "v1.8.0"
 
 [[projects]]
-  digest = "1:a26f1226b5c210196d96adc4985e8d7c2ff4dd766031704ba7e76564f5720d4d"
+  digest = "1:f61c15d1c6291542b6e224e379d81510cf1d583482a5989f24592a711f99f6d2"
   name = "github.com/minio/minio-go"
   packages = [
     ".",
@@ -116,7 +116,7 @@
   version = "v6.0.17"
 
 [[projects]]
-  digest = "1:a26f1226b5c210196d96adc4985e8d7c2ff4dd766031704ba7e76564f5720d4d"
+  digest = "1:5d231480e1c64a726869bc4142d270184c419749d34f167646baa21008eb0a79"
   name = "github.com/mitchellh/go-homedir"
   packages = ["."]
   pruneopts = "UT"
@@ -140,7 +140,7 @@
   version = "v1.2.0"
 
 [[projects]]
-  digest = "1:a26f1226b5c210196d96adc4985e8d7c2ff4dd766031704ba7e76564f5720d4d"
+  digest = "1:87c2e02fb01c27060ccc5ba7c5a407cc91147726f8f40b70cceeedbc52b1f3a8"
   name = "github.com/sirupsen/logrus"
   packages = ["."]
   pruneopts = "UT"
