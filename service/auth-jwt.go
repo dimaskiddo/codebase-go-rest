@@ -95,13 +95,13 @@ func GetJWTToken(payload interface{}) (string, error) {
 // GetJWTClaims Function to Get JWT Claims in Plain Text
 func GetJWTClaims(data string) (string, error) {
 	// Decrypt Encrypted Claims Using RSA Encryption
-	claims, err := DecryptWithRSA(data)
+	claimsDecrypted, err := DecryptWithRSA(data)
 	if err != nil {
 		return "", err
 	}
 
 	// Return Decrypted Claims and Error
-	return string(claims), nil
+	return claimsDecrypted, nil
 }
 
 // JWTClaims Function to Get JWT Claims Information
