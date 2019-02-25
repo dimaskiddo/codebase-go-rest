@@ -6,10 +6,10 @@ ENV CONFIG_ENV=PROD \
 
 WORKDIR /usr/src/app
 COPY build/ .
-RUN chmod 777 uploads
+RUN chmod 777 stores uploads
 
 EXPOSE 3000
 HEALTHCHECK --interval=3s --timeout=3s CMD ["curl", "http://127.0.0.1:3000/health"] || exit 1
 
-VOLUME ["/usr/src/app/uploads"]
+VOLUME ["/usr/src/app/stores","/usr/src/app/uploads"]
 CMD ["./main"]
