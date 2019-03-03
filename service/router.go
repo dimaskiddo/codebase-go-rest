@@ -2,24 +2,22 @@ package service
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"os"
-	"strings"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 )
 
-// FormatSuccess Struct
-type FormatSuccess struct {
+// ResSuccess Struct
+type ResSuccess struct {
 	Status  bool   `json:"status"`
 	Code    int    `json:"code"`
 	Message string `json:"message"`
 }
 
-// FormatError Struct
-type FormatError struct {
+// ResError Struct
+type ResError struct {
 	Status  bool   `json:"status"`
 	Code    int    `json:"code"`
 	Message string `json:"message"`
@@ -64,40 +62,7 @@ func initRouter() {
 
 // HealthCheck Function
 func HealthCheck(w http.ResponseWriter) {
-	// Check Any Database Connections
-	if len(Config.GetString("DB_DRIVER")) != 0 {
-		switch strings.ToLower(Config.GetString("DB_DRIVER")) {
-		case "mysql":
-			err := MySQL.Ping()
-			if err != nil {
-				ResponseInternalError(w, "Database MySQL Connection Failed")
-				log.Fatalln("Database MySQL Connection Failed")
-				return
-			}
-		case "mongo":
-			err := MongoSession.Ping()
-			if err != nil {
-				ResponseInternalError(w, "Database Mongo Connection Failed")
-				log.Fatalln("Database Mongo Connection Failed")
-				return
-			}
-		}
-	}
-
-	// Check Any Cache Connections
-	if len(Config.GetString("CACHE_DRIVER")) != 0 {
-		switch strings.ToLower(Config.GetString("CACHE_DRIVER")) {
-		case "redis":
-			_, err := Redis.Ping().Result()
-			if err != nil {
-				ResponseInternalError(w, "Cache Redis Connection Failed")
-				log.Fatalln("Cache Redis Connection Failed")
-				return
-			}
-		}
-	}
-
-	// Return OK
+	// Return Success
 	ResponseSuccess(w, "")
 }
 
@@ -113,7 +78,7 @@ func ResponseWrite(w http.ResponseWriter, responseCode int, responseData interfa
 
 // ResponseSuccess Function
 func ResponseSuccess(w http.ResponseWriter, message string) {
-	var response FormatSuccess
+	var response ResSuccess
 
 	// Set Default Message
 	if len(message) == 0 {
@@ -131,7 +96,7 @@ func ResponseSuccess(w http.ResponseWriter, message string) {
 
 // ResponseCreated Function
 func ResponseCreated(w http.ResponseWriter) {
-	var response FormatSuccess
+	var response ResSuccess
 
 	// Set Response Data
 	response.Status = true
@@ -144,7 +109,7 @@ func ResponseCreated(w http.ResponseWriter) {
 
 // ResponseUpdated Function
 func ResponseUpdated(w http.ResponseWriter) {
-	var response FormatSuccess
+	var response ResSuccess
 
 	// Set Response Data
 	response.Status = true
@@ -157,7 +122,7 @@ func ResponseUpdated(w http.ResponseWriter) {
 
 // ResponseNotFound Function
 func ResponseNotFound(w http.ResponseWriter, message string) {
-	var response FormatError
+	var response ResError
 
 	// Set Default Message
 	if len(message) == 0 {
@@ -168,7 +133,7 @@ func ResponseNotFound(w http.ResponseWriter, message string) {
 	response.Status = false
 	response.Code = http.StatusNotFound
 	response.Message = "Not Found"
-	response.Error = "Not Found"
+	response.Error = message
 
 	// Set Response Data to HTTP
 	ResponseWrite(w, response.Code, response)
@@ -176,7 +141,7 @@ func ResponseNotFound(w http.ResponseWriter, message string) {
 
 // ResponseBadRequest Function
 func ResponseBadRequest(w http.ResponseWriter, message string) {
-	var response FormatError
+	var response ResError
 
 	// Set Default Message
 	if len(message) == 0 {
@@ -195,7 +160,7 @@ func ResponseBadRequest(w http.ResponseWriter, message string) {
 
 // ResponseInternalError Function
 func ResponseInternalError(w http.ResponseWriter, message string) {
-	var response FormatError
+	var response ResError
 
 	// Set Default Message
 	if len(message) == 0 {
@@ -214,7 +179,7 @@ func ResponseInternalError(w http.ResponseWriter, message string) {
 
 // ResponseUnauthorized Function
 func ResponseUnauthorized(w http.ResponseWriter) {
-	var response FormatError
+	var response ResError
 
 	// Set Response Data
 	response.Status = false

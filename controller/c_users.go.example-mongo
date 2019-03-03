@@ -2,7 +2,6 @@ package controller
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -12,8 +11,8 @@ import (
 	svc "github.com/dimaskiddo/frame-go/service"
 )
 
-// formatGetUser Struct
-type formatGetUser struct {
+// resGetUsers Struct
+type resGetUsers struct {
 	Status  bool       `json:"status"`
 	Code    int        `json:"code"`
 	Message string     `json:"message"`
@@ -26,21 +25,21 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	// Database Query
 	err := svc.Mongo.C("users").Find(bson.M{}).All(&users)
-	if err == nil {
-		var response formatGetUser
-
-		// Set Response Data
-		response.Status = true
-		response.Code = http.StatusOK
-		response.Message = "Success"
-		response.Data = users
-
-		// Write Response Data to HTTP
-		svc.ResponseWrite(w, response.Code, response)
-	} else {
+	if err != nil {
 		svc.ResponseInternalError(w, err.Error())
-		log.Println(err.Error())
+		return
 	}
+
+	var response resGetUsers
+
+	// Set Response Data
+	response.Status = true
+	response.Code = http.StatusOK
+	response.Message = "Success"
+	response.Data = users
+
+	// Write Response Data to HTTP
+	svc.ResponseWrite(w, response.Code, response)
 }
 
 // AddUser Function to Add User Data
@@ -56,12 +55,12 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 
 	// Database Query
 	err := svc.Mongo.C("users").Insert(&user)
-	if err == nil {
-		svc.ResponseCreated(w)
-	} else {
+	if err != nil {
 		svc.ResponseInternalError(w, err.Error())
-		log.Println(err.Error())
+		return
 	}
+
+	svc.ResponseCreated(w)
 }
 
 // GetUserByID Function to Get User Data By User ID
@@ -70,34 +69,34 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
 	// Check if ID is Valid Object ID Hex
-	if bson.IsObjectIdHex(params["id"]) {
-		var user mdl.User
-		var users []mdl.User
-
-		// Database Query
-		err := svc.Mongo.C("users").FindId(bson.ObjectIdHex(params["id"])).One(&user)
-		if err == nil {
-			var response formatGetUser
-
-			// Convert Selected User from Users Array to Single User Array
-			users = append(users, user)
-
-			// Set Response Data
-			response.Status = true
-			response.Code = http.StatusOK
-			response.Message = "Success"
-			response.Data = users
-
-			// Write Response Data to HTTP
-			svc.ResponseWrite(w, response.Code, response)
-		} else {
-			svc.ResponseInternalError(w, err.Error())
-			log.Println(err.Error())
-		}
-	} else {
+	if !bson.IsObjectIdHex(params["id"]) {
 		svc.ResponseBadRequest(w, "Invalid object ids")
-		log.Println("Invalid object ids")
+		return
 	}
+
+	var user mdl.User
+
+	// Database Query
+	err := svc.Mongo.C("users").FindId(bson.ObjectIdHex(params["id"])).One(&user)
+	if err != nil {
+		svc.ResponseInternalError(w, err.Error())
+		return
+	}
+
+	var users []mdl.User
+	var response resGetUsers
+
+	// Convert Selected User from Users Array to Single User Array
+	users = append(users, user)
+
+	// Set Response Data
+	response.Status = true
+	response.Code = http.StatusOK
+	response.Message = "Success"
+	response.Data = users
+
+	// Write Response Data to HTTP
+	svc.ResponseWrite(w, response.Code, response)
 }
 
 // PutUserByID Function to Update User Data By User ID
@@ -106,28 +105,28 @@ func PutUserByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
 	// Check if ID is Valid Object ID Hex
-	if bson.IsObjectIdHex(params["id"]) {
-		var user mdl.User
-
-		// Decode JSON from Request Body to User Data
-		// Use _ As Temporary Variable
-		_ = json.NewDecoder(r.Body).Decode(&user)
-
-		// Set User ID to Requested ID
-		user.ID = bson.ObjectIdHex(params["id"])
-
-		// Database Query
-		err := svc.Mongo.C("users").UpdateId(bson.ObjectIdHex(params["id"]), &user)
-		if err == nil {
-			svc.ResponseUpdated(w)
-		} else {
-			svc.ResponseInternalError(w, err.Error())
-			log.Println(err.Error())
-		}
-	} else {
+	if !bson.IsObjectIdHex(params["id"]) {
 		svc.ResponseBadRequest(w, "Invalid object ids")
-		log.Println("Invalid object ids")
+		return
 	}
+
+	var user mdl.User
+
+	// Decode JSON from Request Body to User Data
+	// Use _ As Temporary Variable
+	_ = json.NewDecoder(r.Body).Decode(&user)
+
+	// Set User ID to Requested ID
+	user.ID = bson.ObjectIdHex(params["id"])
+
+	// Database Query
+	err := svc.Mongo.C("users").UpdateId(bson.ObjectIdHex(params["id"]), &user)
+	if err != nil {
+		svc.ResponseInternalError(w, err.Error())
+		return
+	}
+
+	svc.ResponseUpdated(w)
 }
 
 // DelUserByID Function to Delete User Data By User ID
@@ -136,17 +135,17 @@ func DelUserByID(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
 	// Check if ID is Valid Object ID Hex
-	if bson.IsObjectIdHex(params["id"]) {
-		// Database Query Delete User
-		err := svc.Mongo.C("users").RemoveId(bson.ObjectIdHex(params["id"]))
-		if err == nil {
-			svc.ResponseSuccess(w, "")
-		} else {
-			svc.ResponseInternalError(w, err.Error())
-			log.Println(err.Error())
-		}
-	} else {
+	if !bson.IsObjectIdHex(params["id"]) {
 		svc.ResponseBadRequest(w, "Invalid object ids")
-		log.Println("Invalid object ids")
+		return
 	}
+
+	// Database Query Delete User
+	err := svc.Mongo.C("users").RemoveId(bson.ObjectIdHex(params["id"]))
+	if err != nil {
+		svc.ResponseInternalError(w, err.Error())
+		return
+	}
+
+	svc.ResponseSuccess(w, "")
 }

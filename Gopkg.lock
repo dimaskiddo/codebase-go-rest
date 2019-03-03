@@ -26,7 +26,7 @@
   version = "v1.4.7"
 
 [[projects]]
-  digest = "1:ad53d1f710522a38d1f0e5e0a55a194b1c6b2cd8e84313568e43523271f0cf62"
+  digest = "1:33082c63746b464db3d1c2c07a1396d860484d97fe857ef9e8668a9b406db09f"
   name = "github.com/go-redis/redis"
   packages = [
     ".",
@@ -38,8 +38,8 @@
     "internal/util",
   ]
   pruneopts = "UT"
-  revision = "22be8a3eaf992c828cecb69dc07348313bf08d2e"
-  version = "v6.15.1"
+  revision = "d22fde8721cc915a55aeb6b00944a76a92bfeb6e"
+  version = "v6.15.2"
 
 [[projects]]
   digest = "1:ec6f9bf5e274c833c911923c9193867f3f18788c461f76f05f62bb1510e0ae65"
@@ -85,12 +85,12 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:0a69a1c0db3591fcefb47f115b224592c8dfa4368b7ba9fae509d5e16cdc95c8"
+  digest = "1:31e761d97c76151dde79e9d28964a812c46efc5baee4085b86f68f0c654450de"
   name = "github.com/konsorten/go-windows-terminal-sequences"
   packages = ["."]
   pruneopts = "UT"
-  revision = "5c8c8bd35d3832f5d134ae1e1e375b69a4d25242"
-  version = "v1.0.1"
+  revision = "f55edac94c9bbba5d6182a4be46d86a2c9b5b50e"
+  version = "v1.0.2"
 
 [[projects]]
   digest = "1:c568d7727aa262c32bdf8a3f7db83614f7af0ed661474b24588de635c20024c7"
@@ -101,7 +101,7 @@
   version = "v1.8.0"
 
 [[projects]]
-  digest = "1:f61c15d1c6291542b6e224e379d81510cf1d583482a5989f24592a711f99f6d2"
+  digest = "1:21902573f9cb2111c903cdd0b340d0df7fa2cbcef5649ea90e367f8df91adf66"
   name = "github.com/minio/minio-go"
   packages = [
     ".",
@@ -112,8 +112,8 @@
     "pkg/set",
   ]
   pruneopts = "UT"
-  revision = "34f2b94c43ca6460e42b83624ad10308dbc9fa05"
-  version = "v6.0.17"
+  revision = "008c7aa71fc17e11bf980c209a4f8c4d687fc884"
+  version = "v6.0.18"
 
 [[projects]]
   digest = "1:5d231480e1c64a726869bc4142d270184c419749d34f167646baa21008eb0a79"
@@ -167,12 +167,12 @@
   version = "v1.3.0"
 
 [[projects]]
-  digest = "1:68ea4e23713989dc20b1bded5d9da2c5f9be14ff9885beef481848edd18c26cb"
+  digest = "1:1b753ec16506f5864d26a28b43703c58831255059644351bbcb019b843950900"
   name = "github.com/spf13/jwalterweatherman"
   packages = ["."]
   pruneopts = "UT"
-  revision = "4a4406e478ca629068e7768fc33f3f044173c0a6"
-  version = "v1.0.0"
+  revision = "94f6ae3ed3bceceafa716478c5fbf8d29ca601a1"
+  version = "v1.1.0"
 
 [[projects]]
   digest = "1:c1b1102241e7f645bc8e0c22ae352e8f0dc6484b6cb4d132fa9f24174e0119e2"
@@ -192,7 +192,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:06231d1ce743be1bd5a9a56afbaca3d66b4c7846f958a949b965dbefe8e5fb48"
+  digest = "1:0fca977d9fb7ed0e5389fa8dbaeeb4bc30bcc56464e44846a8f03bfad825462b"
   name = "golang.org/x/crypto"
   packages = [
     "argon2",
@@ -200,23 +200,25 @@
     "ssh/terminal",
   ]
   pruneopts = "UT"
-  revision = "7f87c0fbb88b590338857bcb720678c2583d4dea"
+  revision = "8dd112bcdc25174059e45e07517d9fc663123347"
 
 [[projects]]
   branch = "master"
-  digest = "1:ed3efa0f4eb3ca16d1be3f83a1f11ce217b50e78aef5ca3f77bea8f28125670f"
+  digest = "1:bd8c3e1883873ffedd7170742a24fc9343a4d32bc7f86c02cda93244b95c1245"
   name = "golang.org/x/net"
   packages = [
     "http/httpguts",
+    "http2",
+    "http2/hpack",
     "idna",
     "publicsuffix",
   ]
   pruneopts = "UT"
-  revision = "3a22650c66bd7f4fb6d1e8072ffd7b75c8a27898"
+  revision = "16b79f2e4e95ea23b2bf9903c9809ff7b013ce85"
 
 [[projects]]
   branch = "master"
-  digest = "1:bdec0cac19c2981f8962586869eab879a5abb7adde65f71715a40a66edcf37d9"
+  digest = "1:3e05d78c0f71922115e3f0bc4740e8e46e0919c27551be4b51d05a3ba998a948"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
@@ -224,7 +226,7 @@
     "windows",
   ]
   pruneopts = "UT"
-  revision = "cc5685c2db1239775905f3911f0067c0fa74762f"
+  revision = "d455e41777fca6e8a5a79e34a14b8368bc11d9ba"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"

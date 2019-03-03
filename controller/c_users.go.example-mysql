@@ -12,8 +12,8 @@ import (
 	svc "github.com/dimaskiddo/frame-go/service"
 )
 
-// formatGetUser Struct
-type formatGetUser struct {
+// resGetUsers Struct
+type resGetUsers struct {
 	Status  bool       `json:"status"`
 	Code    int        `json:"code"`
 	Message string     `json:"message"`
@@ -22,40 +22,39 @@ type formatGetUser struct {
 
 // GetUser Function to Get All User Data
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	var user mdl.User
-	var users []mdl.User
-
 	// Database Query
 	rows, err := svc.MySQL.Query("SELECT * FROM users")
-	if err == nil {
-		var response formatGetUser
-
-		// Populate Data
-		for rows.Next() {
-			// Match / Binding Database Field with Struct
-			err := rows.Scan(&user.ID, &user.Name, &user.Email)
-			if err == nil {
-				// Append User Struct to Users Array of Struct
-				users = append(users, user)
-			} else {
-				// Print Log Error to Router Log Handler
-				log.Println(err.Error())
-			}
-		}
-		defer rows.Close()
-
-		// Set Response Data
-		response.Status = true
-		response.Code = http.StatusOK
-		response.Message = "Success"
-		response.Data = users
-
-		// Write Response Data to HTTP
-		svc.ResponseWrite(w, response.Code, response)
-	} else {
+	if err != nil {
 		svc.ResponseInternalError(w, err.Error())
-		log.Println(err.Error())
+		return
 	}
+
+	var user mdl.User
+	var users []mdl.User
+	var response resGetUsers
+
+	// Populate Data
+	for rows.Next() {
+		// Match / Binding Database Field with Struct
+		err := rows.Scan(&user.ID, &user.Name, &user.Email)
+		if err == nil {
+			// Append User Struct to Users Array of Struct
+			users = append(users, user)
+		} else {
+			// Print Log Error to Router Log Handler
+			log.Println(err.Error())
+		}
+	}
+	defer rows.Close()
+
+	// Set Response Data
+	response.Status = true
+	response.Code = http.StatusOK
+	response.Message = "Success"
+	response.Data = users
+
+	// Write Response Data to HTTP
+	svc.ResponseWrite(w, response.Code, response)
 }
 
 // AddUser Function to Add User Data
@@ -68,12 +67,12 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 
 	// Database Query
 	_, err := svc.MySQL.Exec("INSERT INTO users (name, email) VALUE (?, ?)", user.Name, user.Email)
-	if err == nil {
-		svc.ResponseCreated(w)
-	} else {
+	if err != nil {
 		svc.ResponseInternalError(w, err.Error())
-		log.Println(err.Error())
+		return
 	}
+
+	svc.ResponseCreated(w)
 }
 
 // GetUserByID Function to Get User Data By User ID
@@ -83,45 +82,44 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 
 	// Get ID Parameters From URI Then Convert it to Integer
 	userID, err := strconv.Atoi(params["id"])
-	if err == nil {
-		var user mdl.User
-		var users []mdl.User
+	if err != nil {
+		svc.ResponseInternalError(w, err.Error())
+		return
+	}
 
-		// Database Query
-		rows, err := svc.MySQL.Query("SELECT * FROM users WHERE id=? LIMIT 1", userID)
+	// Database Query
+	rows, err := svc.MySQL.Query("SELECT * FROM users WHERE id=? LIMIT 1", userID)
+	if err != nil {
+		svc.ResponseInternalError(w, err.Error())
+		return
+	}
+
+	var user mdl.User
+	var users []mdl.User
+	var response resGetUsers
+
+	// Populate Data
+	for rows.Next() {
+		// Match / Binding Database Field with Struct
+		err := rows.Scan(&user.ID, &user.Name, &user.Email)
 		if err == nil {
-			var response formatGetUser
-
-			// Populate Data
-			for rows.Next() {
-				// Match / Binding Database Field with Struct
-				err := rows.Scan(&user.ID, &user.Name, &user.Email)
-				if err == nil {
-					// Append User Struct to Users Array of Struct
-					users = append(users, user)
-				} else {
-					// Print Log Error to Router Log Handler
-					log.Println(err.Error())
-				}
-			}
-			defer rows.Close()
-
-			// Set Response Data
-			response.Status = true
-			response.Code = http.StatusOK
-			response.Message = "Success"
-			response.Data = users
-
-			// Write Response Data to HTTP
-			svc.ResponseWrite(w, response.Code, response)
+			// Append User Struct to Users Array of Struct
+			users = append(users, user)
 		} else {
-			svc.ResponseInternalError(w, err.Error())
+			// Print Log Error to Router Log Handler
 			log.Println(err.Error())
 		}
-	} else {
-		svc.ResponseInternalError(w, err.Error())
-		log.Println(err.Error())
 	}
+	defer rows.Close()
+
+	// Set Response Data
+	response.Status = true
+	response.Code = http.StatusOK
+	response.Message = "Success"
+	response.Data = users
+
+	// Write Response Data to HTTP
+	svc.ResponseWrite(w, response.Code, response)
 }
 
 // PutUserByID Function to Update User Data By User ID
@@ -131,25 +129,25 @@ func PutUserByID(w http.ResponseWriter, r *http.Request) {
 
 	// Get ID Parameters From URI Then Convert it to Integer
 	userID, err := strconv.Atoi(params["id"])
-	if err == nil {
-		var user mdl.User
-
-		// Decode JSON from Request Body to User Data
-		// Use _ As Temporary Variable
-		_ = json.NewDecoder(r.Body).Decode(&user)
-
-		// Database Query
-		_, err := svc.MySQL.Exec("UPDATE users SET name=?, email=? WHERE id=? LIMIT 1", user.Name, user.Email, userID)
-		if err == nil {
-			svc.ResponseUpdated(w)
-		} else {
-			svc.ResponseInternalError(w, err.Error())
-			log.Println(err.Error())
-		}
-	} else {
+	if err != nil {
 		svc.ResponseInternalError(w, err.Error())
-		log.Println(err.Error())
+		return
 	}
+
+	var user mdl.User
+
+	// Decode JSON from Request Body to User Data
+	// Use _ As Temporary Variable
+	_ = json.NewDecoder(r.Body).Decode(&user)
+
+	// Database Query
+	_, err := svc.MySQL.Exec("UPDATE users SET name=?, email=? WHERE id=? LIMIT 1", user.Name, user.Email, userID)
+	if err != nil {
+		svc.ResponseInternalError(w, err.Error())
+		return
+	}
+
+	svc.ResponseUpdated(w)
 }
 
 // DelUserByID Function to Delete User Data By User ID
@@ -159,17 +157,17 @@ func DelUserByID(w http.ResponseWriter, r *http.Request) {
 
 	// Get ID Parameters From URI Then Convert it to Integer
 	userID, err := strconv.Atoi(params["id"])
-	if err == nil {
-		// Database Query
-		_, err := svc.MySQL.Query("DELETE FROM users WHERE id=? LIMIT 1", userID)
-		if err == nil {
-			svc.ResponseSuccess(w, "")
-		} else {
-			svc.ResponseInternalError(w, err.Error())
-			log.Println(err.Error())
-		}
-	} else {
+	if err != nil {
 		svc.ResponseInternalError(w, err.Error())
-		log.Println(err.Error())
+		return
 	}
+
+	// Database Query
+	_, err := svc.MySQL.Query("DELETE FROM users WHERE id=? LIMIT 1", userID)
+	if err != nil {
+		svc.ResponseInternalError(w, err.Error())
+		return
+	}
+
+	svc.ResponseSuccess(w, "")
 }
