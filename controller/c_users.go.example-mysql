@@ -31,7 +31,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 	var user mdl.User
 	var users []mdl.User
-	var response resGetUsers
 
 	// Populate Data
 	for rows.Next() {
@@ -46,6 +45,8 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	defer rows.Close()
+
+	var response resGetUsers
 
 	// Set Response Data
 	response.Status = true
@@ -96,7 +97,6 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 
 	var user mdl.User
 	var users []mdl.User
-	var response resGetUsers
 
 	// Populate Data
 	for rows.Next() {
@@ -111,6 +111,8 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	defer rows.Close()
+
+	var response resGetUsers
 
 	// Set Response Data
 	response.Status = true
