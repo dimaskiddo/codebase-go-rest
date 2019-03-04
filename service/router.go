@@ -70,7 +70,9 @@ func initRouter() {
 // LogsRouter Function
 func logsRouter(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		Log("info", "http-access", "access method "+r.Method+" at URI "+r.RequestURI)
+		if r.RequestURI != "/favicon.ico" {
+			Log("info", "http-access", "access method "+r.Method+" at URI "+r.RequestURI)
+		}
 		next.ServeHTTP(w, r)
 	})
 }
