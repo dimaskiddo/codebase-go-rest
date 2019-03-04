@@ -1,39 +1,42 @@
 package service
 
 import (
-	"log"
 	"strings"
 )
 
 // Initialize Function in Utils
 func Initialize() {
+	// Initialize Logger
+	initLog()
+	Log("info", "service-initialize", "initialize log")
+
 	// Initialize Configuration
-	log.Println("Initialize - Config")
+	Log("info", "service-initialize", "initialize config")
 	initConfig()
 
 	// Initialize Cryptography
-	log.Println("Initialize - Crypto")
+	Log("info", "service-initialize", "initialize crypto")
 	initCrypt()
 
 	// Initialize Database
 	if len(strings.ToLower(Config.GetString("DB_DRIVER"))) != 0 {
-		log.Println("Initialize - Database")
+		Log("info", "service-initialize", "initialize database")
 		initDB()
 	}
 
 	// Initialize Cache
 	if len(strings.ToLower(Config.GetString("CACHE_DRIVER"))) != 0 {
-		log.Println("Initialize - Cache")
+		Log("info", "service-initialize", "initialize cache")
 		initCache()
 	}
 
 	// Initialize Storage
 	if len(strings.ToLower(Config.GetString("STORAGE_DRIVER"))) != 0 {
-		log.Println("Initialize - Storage")
+		Log("info", "service-initialize", "initialize storage")
 		initStore()
 	}
 
 	// Initialize Router
-	log.Println("Initialize - Router")
+	Log("info", "service-initialize", "initialize router")
 	initRouter()
 }

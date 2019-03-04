@@ -1,8 +1,6 @@
 package service
 
 import (
-	"log"
-
 	"github.com/go-redis/redis"
 )
 
@@ -32,7 +30,7 @@ func redisConnect() *redis.Client {
 	// Test Connection
 	_, err := conn.Ping().Result()
 	if err != nil {
-		log.Fatalln(err)
+		Log("fatal", "redis-connect", err.Error())
 	}
 
 	// Return Connection

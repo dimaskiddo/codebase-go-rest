@@ -124,7 +124,7 @@
   version = "v1.1.0"
 
 [[projects]]
-  digest = "1:53bc4cd4914cd7cd52139990d5170d6dc99067ae31c56530621b18b35fc30318"
+  digest = "1:a26f1226b5c210196d96adc4985e8d7c2ff4dd766031704ba7e76564f5720d4d"
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
   pruneopts = "UT"
@@ -218,7 +218,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:3e05d78c0f71922115e3f0bc4740e8e46e0919c27551be4b51d05a3ba998a948"
+  digest = "1:8c41805cf4d0776e4e4aaedd60cb7b184113a265054433bc39644f289f7c86cc"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
@@ -226,7 +226,7 @@
     "windows",
   ]
   pruneopts = "UT"
-  revision = "d455e41777fca6e8a5a79e34a14b8368bc11d9ba"
+  revision = "c2f5717e611cf8e89a852a41081355194d80c943"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
@@ -299,6 +299,7 @@
     "github.com/gorilla/handlers",
     "github.com/gorilla/mux",
     "github.com/minio/minio-go",
+    "github.com/sirupsen/logrus",
     "github.com/spf13/viper",
     "gopkg.in/mgo.v2",
   ]

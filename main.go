@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"os/signal"
 	"strings"
@@ -20,11 +19,11 @@ func init() {
 	svc.Initialize()
 
 	// Initialize Routes
-	log.Println("Initialize - Routes")
+	svc.Log("info", "service-initialize", "initialize routes")
 	initRoutes()
 
 	// Initialize Server
-	log.Println("Initialize - Server")
+	svc.Log("info", "service-initialize", "initialize server")
 	mainServer = svc.NewServer(svc.RouterHandler)
 }
 

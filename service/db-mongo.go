@@ -1,8 +1,6 @@
 package service
 
 import (
-	"log"
-
 	// Set Alias for Mongo Driver Package
 	// To mgo Since This Package Has Different Name
 	// With It's Repository
@@ -32,13 +30,13 @@ func mongoConnect() (*mgo.Session, *mgo.Database) {
 	// Initialize Connection
 	conn, err := mgo.Dial(mongoCfg.User + ":" + mongoCfg.Password + "@" + mongoCfg.Host + ":" + mongoCfg.Port + "/" + mongoCfg.Name)
 	if err != nil {
-		log.Fatalln(err)
+		Log("fatal", "mongo-connect", err.Error())
 	}
 
 	// Test Connection
 	err = conn.Ping()
 	if err != nil {
-		log.Fatalln(err)
+		Log("fatal", "mongo-connect", err.Error())
 	}
 
 	// Set Connection to Monotonic

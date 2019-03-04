@@ -32,7 +32,7 @@ go-build:
 	CGO_ENABLED=0 GOOS=linux go build -a -o ./build/$(GO_OUTPUT) *.go
 
 go-run:
-	CONFIG_ENV="DEV" CONFIG_FILE_PATH="./build/configs" go run *.go
+	CONFIG_ENV="DEV" CONFIG_FILE_PATH="./build/configs" CONFIG_SERVICE_NAME="$(GO_OUTPUT)" CONFIG_LOG_LEVEL="debug" go run *.go
 
 go-clean:
 	rm -f ./build/$(GO_OUTPUT)

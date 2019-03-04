@@ -2,7 +2,6 @@ package controller
 
 import (
 	"io"
-	"log"
 	"math"
 	"net/http"
 	"os"
@@ -34,7 +33,6 @@ func AddUpload(w http.ResponseWriter, r *http.Request) {
 				svc.ResponseSuccess(w, "")
 			} else {
 				svc.ResponseInternalError(w, err.Error())
-				log.Println(err.Error())
 			}
 		default:
 			// Default Save Uploaded File to Local Storage
@@ -48,11 +46,9 @@ func AddUpload(w http.ResponseWriter, r *http.Request) {
 				svc.ResponseSuccess(w, "")
 			} else {
 				svc.ResponseInternalError(w, err.Error())
-				log.Println(err.Error())
 			}
 		}
 	} else {
 		svc.ResponseBadRequest(w, err.Error())
-		log.Println(err.Error())
 	}
 }

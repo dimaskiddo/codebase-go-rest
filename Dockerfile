@@ -3,6 +3,8 @@ MAINTAINER Dimas Restu Hidayanto <dimas.restu@student.upi.edu>
 
 ENV CONFIG_ENV=PROD \
     CONFIG_FILE_PATH=./configs
+    CONFIG_SERVICE_NAME="frame-go" \
+    CONFIG_LOG_LEVEL="info"
 
 WORKDIR /usr/src/app
 COPY build/ .

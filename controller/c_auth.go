@@ -2,7 +2,6 @@ package controller
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 
 	svc "github.com/dimaskiddo/frame-go/service"
@@ -18,8 +17,7 @@ func GetAuth(w http.ResponseWriter, r *http.Request) {
 
 	// Make Sure Username and Password is Not Empty
 	if len(reqBody.Username) == 0 || len(reqBody.Password) == 0 {
-		svc.ResponseBadRequest(w, "Invalid authorization")
-		log.Println("Invalid authorization")
+		svc.ResponseBadRequest(w, "invalid authorization")
 		return
 	}
 

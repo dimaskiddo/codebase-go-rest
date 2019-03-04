@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"log"
 	"mime/multipart"
 	"strings"
 
@@ -31,13 +30,13 @@ func storeS3Connect() *minio.Client {
 	case "aws":
 		conn, err := minio.New("s3.amazonaws.com", storeS3Cfg.AccessKey, storeS3Cfg.SecretKey, true)
 		if err != nil {
-			log.Fatalln(err)
+			Log("fatal", "store-s3-connect", err.Error())
 		}
 		return conn
 	case "minio":
 		conn, err := minio.New(storeS3Cfg.Endpoint, storeS3Cfg.AccessKey, storeS3Cfg.SecretKey, storeS3Cfg.UseSSL)
 		if err != nil {
-			log.Fatalln(err)
+			Log("fatal", "store-s3-connect", err.Error())
 		}
 		return conn
 	default:

@@ -2,7 +2,6 @@ package service
 
 import (
 	"database/sql"
-	"log"
 
 	// Set Alias for MySQL Driver Package
 	// To _ Since This Package Only Used in
@@ -30,13 +29,13 @@ func mysqlConnect() *sql.DB {
 	// Initialize Connection
 	conn, err := sql.Open("mysql", mysqlCfg.User+":"+mysqlCfg.Password+"@tcp("+mysqlCfg.Host+":"+mysqlCfg.Port+")/"+mysqlCfg.Name)
 	if err != nil {
-		log.Fatalln(err)
+		Log("fatal", "mysql-connect", err.Error())
 	}
 
 	// Test Connection
 	err = conn.Ping()
 	if err != nil {
-		log.Fatalln(err)
+		Log("fatal", "mysql-connect", err.Error())
 	}
 
 	// Return Connection
