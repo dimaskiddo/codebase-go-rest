@@ -64,7 +64,7 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 
 	// Check if Requested Data in User Array Range
 	if len(mdl.Users) <= 0 && userID > len(mdl.Users) {
-		svc.ResponseBadRequest(w, "Invalid array index")
+		svc.ResponseBadRequest(w, "invalid array index")
 		return
 	}
 
@@ -98,7 +98,7 @@ func PutUserByID(w http.ResponseWriter, r *http.Request) {
 
 	// Check if Requested Data in User Array Range
 	if len(mdl.Users) <= 0 && userID > len(mdl.Users) {
-		svc.ResponseBadRequest(w, "Invalid array index")
+		svc.ResponseBadRequest(w, "invalid array index")
 		return
 	}
 
@@ -129,7 +129,7 @@ func DelUserByID(w http.ResponseWriter, r *http.Request) {
 
 	// Check if Requested Data in User Array Range
 	if len(mdl.Users) <= 0 && userID > len(mdl.Users) {
-		svc.ResponseBadRequest(w, "Invalid array index")
+		svc.ResponseBadRequest(w, "invalid array index")
 		return
 	}
 

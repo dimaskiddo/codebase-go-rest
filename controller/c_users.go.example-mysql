@@ -2,7 +2,6 @@ package controller
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -36,12 +35,12 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		// Match / Binding Database Field with Struct
 		err := rows.Scan(&user.ID, &user.Name, &user.Email)
-		if err == nil {
+		if err != nil {
+			// Print Log Error
+			svc.Log("error", "get-user", err.Error())
+		} else {
 			// Append User Struct to Users Array of Struct
 			users = append(users, user)
-		} else {
-			// Print Log Error to Router Log Handler
-			log.Println(err.Error())
 		}
 	}
 	defer rows.Close()
@@ -102,12 +101,12 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 	for rows.Next() {
 		// Match / Binding Database Field with Struct
 		err := rows.Scan(&user.ID, &user.Name, &user.Email)
-		if err == nil {
+		if err != nil {
+			// Print Log Error
+			svc.Log("error", "get-user", err.Error())
+		} else {
 			// Append User Struct to Users Array of Struct
 			users = append(users, user)
-		} else {
-			// Print Log Error to Router Log Handler
-			log.Println(err.Error())
 		}
 	}
 	defer rows.Close()

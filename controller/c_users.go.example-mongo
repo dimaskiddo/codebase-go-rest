@@ -70,7 +70,7 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 
 	// Check if ID is Valid Object ID Hex
 	if !bson.IsObjectIdHex(params["id"]) {
-		svc.ResponseBadRequest(w, "Invalid object ids")
+		svc.ResponseBadRequest(w, "invalid object ids")
 		return
 	}
 
@@ -106,7 +106,7 @@ func PutUserByID(w http.ResponseWriter, r *http.Request) {
 
 	// Check if ID is Valid Object ID Hex
 	if !bson.IsObjectIdHex(params["id"]) {
-		svc.ResponseBadRequest(w, "Invalid object ids")
+		svc.ResponseBadRequest(w, "invalid object ids")
 		return
 	}
 
@@ -136,7 +136,7 @@ func DelUserByID(w http.ResponseWriter, r *http.Request) {
 
 	// Check if ID is Valid Object ID Hex
 	if !bson.IsObjectIdHex(params["id"]) {
-		svc.ResponseBadRequest(w, "Invalid object ids")
+		svc.ResponseBadRequest(w, "invalid object ids")
 		return
 	}
 

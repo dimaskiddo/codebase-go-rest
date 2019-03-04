@@ -124,7 +124,7 @@
   version = "v1.1.0"
 
 [[projects]]
-  digest = "1:a26f1226b5c210196d96adc4985e8d7c2ff4dd766031704ba7e76564f5720d4d"
+  digest = "1:53bc4cd4914cd7cd52139990d5170d6dc99067ae31c56530621b18b35fc30318"
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
   pruneopts = "UT"
