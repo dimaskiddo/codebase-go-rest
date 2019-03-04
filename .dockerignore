@@ -1,6 +1,7 @@
-build/*
 build/stores/*
 build/uploads/*
+controller
+model
+service
 vendor
-!build/*.key
 !*.gitkeep
