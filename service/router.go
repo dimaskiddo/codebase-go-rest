@@ -64,7 +64,7 @@ func initRouter() {
 	})
 
 	// Set No Content for /favicon.ico
-	Router.HandleFunc("/favicon.ico", faviconRouter).Methods("GET")
+	Router.HandleFunc("/favicon.ico", favIconRouter).Methods("GET")
 }
 
 // LogsRouter Function
@@ -75,8 +75,8 @@ func logsRouter(next http.Handler) http.Handler {
 	})
 }
 
-// faviconRouter Function
-func faviconRouter(w http.ResponseWriter, r *http.Request) {
+// FavIconRouter Function
+func favIconRouter(w http.ResponseWriter, r *http.Request) {
 	ResponseNoContent(w)
 }
 
