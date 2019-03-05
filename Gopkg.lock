@@ -101,7 +101,7 @@
   version = "v1.8.0"
 
 [[projects]]
-  digest = "1:21902573f9cb2111c903cdd0b340d0df7fa2cbcef5649ea90e367f8df91adf66"
+  digest = "1:523ffd935398ef4979acbf085e52c624a82f49643bc6dadbe5ea824904cd49be"
   name = "github.com/minio/minio-go"
   packages = [
     ".",
@@ -112,8 +112,8 @@
     "pkg/set",
   ]
   pruneopts = "UT"
-  revision = "008c7aa71fc17e11bf980c209a4f8c4d687fc884"
-  version = "v6.0.18"
+  revision = "59af836a7e6d99cbefa093475fbde0a4552d483f"
+  version = "v6.0.19"
 
 [[projects]]
   digest = "1:5d231480e1c64a726869bc4142d270184c419749d34f167646baa21008eb0a79"
@@ -252,7 +252,7 @@
   version = "v0.3.0"
 
 [[projects]]
-  digest = "1:c25289f43ac4a68d88b02245742347c94f1e108c534dda442188015ff80669b3"
+  digest = "1:a26f1226b5c210196d96adc4985e8d7c2ff4dd766031704ba7e76564f5720d4d"
   name = "google.golang.org/appengine"
   packages = ["cloudsql"]
   pruneopts = "UT"

@@ -47,7 +47,7 @@
 
 [[constraint]]
   name = "github.com/minio/minio-go"
-  version = "6.0.18"
+  version = "6.0.19"
 
 [[constraint]]
   name = "github.com/sirupsen/logrus"
