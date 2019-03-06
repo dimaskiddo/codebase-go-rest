@@ -20,4 +20,7 @@ func initRoutes() {
 	svc.Router.Handle(svc.RouterBasePath+"/users/{id}", svc.AuthJWT(ctl.GetUserByID)).Methods("GET")
 	svc.Router.Handle(svc.RouterBasePath+"/users/{id}", svc.AuthJWT(ctl.PutUserByID)).Methods("PUT", "PATCH")
 	svc.Router.Handle(svc.RouterBasePath+"/users/{id}", svc.AuthJWT(ctl.DelUserByID)).Methods("DELETE")
+
+	// Set Endpoint for Upload Function
+	svc.Router.Handle(svc.RouterBasePath+"/upload", svc.AuthJWT(ctl.UploadFile)).Methods("POST")
 }

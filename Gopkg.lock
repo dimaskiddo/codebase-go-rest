@@ -218,7 +218,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:3c6850367cb28ce062f931fd1036659a275959eb9017979812e2cc5a3cff2ee3"
+  digest = "1:0a44755d19c966bae0754059838b56f9af6c22a7dbe7511e2e58a28ed25d45c1"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
@@ -226,7 +226,7 @@
     "windows",
   ]
   pruneopts = "UT"
-  revision = "e844e0132e93db857c984c24fd4fc86815e43be3"
+  revision = "a98ae47d97a5abb3a3e9045da36315f9f8312970"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
@@ -252,7 +252,7 @@
   version = "v0.3.0"
 
 [[projects]]
-  digest = "1:a26f1226b5c210196d96adc4985e8d7c2ff4dd766031704ba7e76564f5720d4d"
+  digest = "1:c25289f43ac4a68d88b02245742347c94f1e108c534dda442188015ff80669b3"
   name = "google.golang.org/appengine"
   packages = ["cloudsql"]
   pruneopts = "UT"
