@@ -7,8 +7,8 @@ import (
 
 	"github.com/gorilla/mux"
 
-	mdl "github.com/dimaskiddo/frame-go/model"
-	svc "github.com/dimaskiddo/frame-go/service"
+	mdl "github.com/dimaskiddo/codebase-go-rest/model"
+	svc "github.com/dimaskiddo/codebase-go-rest/service"
 )
 
 // resGetUsers Struct

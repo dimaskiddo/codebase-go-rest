@@ -1,8 +1,8 @@
 package main
 
 import (
-	ctl "github.com/dimaskiddo/frame-go/controller"
-	svc "github.com/dimaskiddo/frame-go/service"
+	ctl "github.com/dimaskiddo/codebase-go-rest/controller"
+	svc "github.com/dimaskiddo/codebase-go-rest/service"
 )
 
 // Routes Initialization Function

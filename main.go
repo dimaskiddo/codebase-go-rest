@@ -7,7 +7,7 @@ import (
 	"strings"
 	"syscall"
 
-	svc "github.com/dimaskiddo/frame-go/service"
+	svc "github.com/dimaskiddo/codebase-go-rest/service"
 )
 
 // Main Server Variable

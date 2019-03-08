@@ -7,7 +7,7 @@ import (
 	"os"
 	"strings"
 
-	svc "github.com/dimaskiddo/frame-go/service"
+	svc "github.com/dimaskiddo/codebase-go-rest/service"
 )
 
 // UploadFile Function to Upload a File
