@@ -55,7 +55,7 @@ Currently the test is not ready yet :)
 
 ## Deployment
 
-To deploy your application in any environment, since this is a codebase please make sure that there is no more package related with this repository *github.com/dimaskiddo/codebase-go-rest* in your go script, change it to your own repository
+To deploy your application in any environment, since this is a codebase please make sure that there is no more package related with this repository **github.com/dimaskiddo/codebase-go-rest** in your go script, change it to your own repository
 
 ## Built With
 
