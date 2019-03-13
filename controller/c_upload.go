@@ -2,7 +2,6 @@ package controller
 
 import (
 	"io"
-	"math"
 	"net/http"
 	"os"
 	"strings"
@@ -12,8 +11,8 @@ import (
 
 // UploadFile Function to Upload a File
 func UploadFile(w http.ResponseWriter, r *http.Request) {
-	// Limit Body Size with 1 MiB Margin
-	err := r.ParseMultipartForm((svc.Config.GetInt64("SERVER_UPLOAD_LIMIT") + 1) * int64(math.Pow(1024, 2)))
+	// Parse Multipart Form Data
+	err := r.ParseMultipartForm(svc.Config.GetInt64("SERVER_UPLOAD_LIMIT"))
 	if err != nil {
 		svc.ResponseInternalError(w, err.Error())
 		return

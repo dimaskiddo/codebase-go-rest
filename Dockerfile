@@ -1,7 +1,7 @@
 FROM dimaskiddo/alpine:base
 MAINTAINER Dimas Restu Hidayanto <dimas.restu@student.upi.edu>
 
-ARG SERVICE_NAME="frame-go"
+ARG SERVICE_NAME="codebase-go-rest"
 
 ENV CONFIG_ENV="PROD" \
     CONFIG_FILE_PATH="./configs" \

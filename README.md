@@ -10,14 +10,14 @@ See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
-Prequisites package:
+Prequisites packages:
 * Go (Go Programming Language)
-* Dep (For Go Dependencies Management Tool)
-* Make (For Automated Execution using Makefile)
+* Dep (Go Dependencies Management Tool)
+* Make (Automated Execution using Makefile)
 
-Optional package:
-* GoReleaser (Optional, For Go Automated Binaries Build)
-* Docker (Optional, For Application Containerization)
+Optional packages:
+* GoReleaser (Go Automated Binaries Build)
+* Docker (Application Containerization)
 
 ### Installing
 
@@ -38,15 +38,16 @@ git clone -b master https://github.com/dimaskiddo/codebase-go-rest.git .
 ```
 * Run following command to change the codebase repository URL to your own
 ```
-make git-rebase GIT_REBASE_URL="<your_repository_domain>/<your_username>/<your_repository>"
+make rebase REBASE_URL="<your_repository_domain>/<your_username>/<your_repository>"
 ```
 * Run following command to renew and pull dependecies package
 ```
-make go-dep-init
+make init
+make ensure
 ```
 - Until this step you already can run this code by using this command
 ```
-make go-run
+make run
 ```
 
 ## Running The Tests
@@ -58,7 +59,7 @@ Currently the test is not ready yet :)
 **Make sure your your go script does not relate to github.com/dimaskiddo/codebase-go-rest anymore**.
 To build this codebase to binaries for distribution purposes you can run following command:
 ```
-make go-build
+make build
 ```
 The build result will shown in build directory
 
@@ -68,7 +69,7 @@ The build result will shown in build directory
 * [Dep](https://github.com/golang/dep) - Go Dependency Management Tool
 * [GoReleaser](https://github.com/goreleaser/goreleaser) - Go Automated Binaries Build
 * [Make](https://www.gnu.org/software/make/) - GNU Make Automated Execution
-* [Docker](https://www.docker.com) - Application Containerization
+* [Docker](https://www.docker.com/) - Application Containerization
 
 ## Authors
 
