@@ -4,8 +4,8 @@ import (
 	"strings"
 )
 
-// InitCache Function
-func initCache() {
+// CacheInit Function
+func cacheInit() {
 	// Cache Configuration Value
 	switch strings.ToLower(Config.GetString("CACHE_DRIVER")) {
 	case "redis":

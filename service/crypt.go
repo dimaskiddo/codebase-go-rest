@@ -21,8 +21,8 @@ type keyRSAConfig struct {
 // Key RSA Config Variable
 var keyRSACfg keyRSAConfig
 
-// InitCrypt Function
-func initCrypt() {
+// CryptInit Function
+func cryptInit() {
 	var err error
 
 	// Load RSA Private Key as Bytes From Private Key File

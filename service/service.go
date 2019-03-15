@@ -7,29 +7,29 @@ import (
 // Initialize Function in Utils
 func Initialize() {
 	// Initialize Logger
-	initLog()
+	logInit()
 
 	// Initialize Configuration
-	initConfig()
+	configInit()
 
 	// Initialize Cryptography
-	initCrypt()
+	cryptInit()
 
 	// Initialize Database
 	if len(strings.ToLower(Config.GetString("DB_DRIVER"))) != 0 {
-		initDB()
+		dbInit()
 	}
 
 	// Initialize Cache
 	if len(strings.ToLower(Config.GetString("CACHE_DRIVER"))) != 0 {
-		initCache()
+		cacheInit()
 	}
 
 	// Initialize Storage
 	if len(strings.ToLower(Config.GetString("STORAGE_DRIVER"))) != 0 {
-		initStore()
+		storeInit()
 	}
 
 	// Initialize Router
-	initRouter()
+	routerInit()
 }

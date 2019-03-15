@@ -26,6 +26,14 @@
   version = "v1.4.7"
 
 [[projects]]
+  digest = "1:1c70b4d7285f792bd387c1adac08825715147fa210b3d2826ffd2bf56be9455b"
+  name = "github.com/go-chi/chi"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "da24bba8dcd4021cafac38724bf10dccc97c3e36"
+  version = "v4.0.2"
+
+[[projects]]
   digest = "1:33082c63746b464db3d1c2c07a1396d860484d97fe857ef9e8668a9b406db09f"
   name = "github.com/go-redis/redis"
   packages = [
@@ -48,22 +56,6 @@
   pruneopts = "UT"
   revision = "72cd26f257d44c1114970e19afddcd812016007e"
   version = "v1.4.1"
-
-[[projects]]
-  digest = "1:664d37ea261f0fc73dd17f4a1f5f46d01fbb0b0d75f6375af064824424109b7d"
-  name = "github.com/gorilla/handlers"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "7e0847f9db758cdebd26c149d0ae9d5d0b9c98ce"
-  version = "v1.4.0"
-
-[[projects]]
-  digest = "1:ca59b1175189b3f0e9f1793d2c350114be36eaabbe5b9f554b35edee1de50aea"
-  name = "github.com/gorilla/mux"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "a7962380ca08b5a188038c69871b8d3fbdf31e89"
-  version = "v1.7.0"
 
 [[projects]]
   digest = "1:c0d19ab64b32ce9fe5cf4ddceba78d5bc9807f0016db6b1183599da3dcc24d10"
@@ -101,7 +93,7 @@
   version = "v1.8.0"
 
 [[projects]]
-  digest = "1:523ffd935398ef4979acbf085e52c624a82f49643bc6dadbe5ea824904cd49be"
+  digest = "1:c70f3fece365ee3e884eeff6829879fcd3fc9d9ed41371514c6af1b0e3dd525e"
   name = "github.com/minio/minio-go"
   packages = [
     ".",
@@ -112,8 +104,8 @@
     "pkg/set",
   ]
   pruneopts = "UT"
-  revision = "59af836a7e6d99cbefa093475fbde0a4552d483f"
-  version = "v6.0.19"
+  revision = "5df22878d3cdee48fbb086449268b1a465147c7d"
+  version = "v6.0.20"
 
 [[projects]]
   digest = "1:5d231480e1c64a726869bc4142d270184c419749d34f167646baa21008eb0a79"
@@ -183,12 +175,12 @@
   version = "v1.0.3"
 
 [[projects]]
-  digest = "1:de37e343c64582d7026bf8ab6ac5b22a72eac54f3a57020db31524affed9f423"
+  digest = "1:1b773526998f3dbde3a51a4a5881680c4d237d3600f570d900f97ac93c7ba0a8"
   name = "github.com/spf13/viper"
   packages = ["."]
   pruneopts = "UT"
-  revision = "6d33b5a963d922d182c91e8a1c88d81fd150cfd4"
-  version = "v1.3.1"
+  revision = "9e56dacc08fbbf8c9ee2dbc717553c758ce42bc9"
+  version = "v1.3.2"
 
 [[projects]]
   branch = "master"
@@ -214,7 +206,7 @@
     "publicsuffix",
   ]
   pruneopts = "UT"
-  revision = "d8887717615a059821345a5c23649351b52a1c0b"
+  revision = "9f648a60d9775ef5c977e7669d1673a7a67bef33"
 
 [[projects]]
   branch = "master"
@@ -294,10 +286,9 @@
   analyzer-version = 1
   input-imports = [
     "github.com/dgrijalva/jwt-go",
+    "github.com/go-chi/chi",
     "github.com/go-redis/redis",
     "github.com/go-sql-driver/mysql",
-    "github.com/gorilla/handlers",
-    "github.com/gorilla/mux",
     "github.com/minio/minio-go",
     "github.com/sirupsen/logrus",
     "github.com/spf13/viper",

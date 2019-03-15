@@ -4,8 +4,8 @@ import (
 	"strings"
 )
 
-// InitStore Function
-func initStore() {
+// StoreInit Function
+func storeInit() {
 	// Store Configuration Value
 	switch strings.ToLower(Config.GetString("STORAGE_DRIVER")) {
 	case "aws":

@@ -5,22 +5,23 @@ import (
 	svc "github.com/dimaskiddo/codebase-go-rest/service"
 )
 
-// Routes Initialization Function
-func initRoutes() {
+// RoutesInit Function
+func routesInit() {
 	// Set Endpoint for Root Functions
-	svc.Router.HandleFunc(svc.RouterBasePath+"/", ctl.GetIndex).Methods("GET")
-	svc.Router.HandleFunc(svc.RouterBasePath+"/health", ctl.GetHealth).Methods("GET")
+	svc.Router.Get(svc.RouterBasePath+"/", ctl.GetIndex)
+	svc.Router.Get(svc.RouterBasePath+"/health", ctl.GetHealth)
 
 	// Set Endpoint for Authorization Functions
-	svc.Router.Handle(svc.RouterBasePath+"/auth", svc.AuthBasic(ctl.GetAuth)).Methods("GET", "POST")
+	svc.Router.With(svc.AuthBasic).Get(svc.RouterBasePath+"/auth", ctl.GetAuth)
 
 	// Set Endpoint for User Functions
-	svc.Router.Handle(svc.RouterBasePath+"/users", svc.AuthJWT(ctl.GetUser)).Methods("GET")
-	svc.Router.Handle(svc.RouterBasePath+"/users", svc.AuthJWT(ctl.AddUser)).Methods("POST")
-	svc.Router.Handle(svc.RouterBasePath+"/users/{id}", svc.AuthJWT(ctl.GetUserByID)).Methods("GET")
-	svc.Router.Handle(svc.RouterBasePath+"/users/{id}", svc.AuthJWT(ctl.PutUserByID)).Methods("PUT", "PATCH")
-	svc.Router.Handle(svc.RouterBasePath+"/users/{id}", svc.AuthJWT(ctl.DelUserByID)).Methods("DELETE")
+	svc.Router.With(svc.AuthJWT).Get(svc.RouterBasePath+"/users", ctl.GetUser)
+	svc.Router.With(svc.AuthJWT).Post(svc.RouterBasePath+"/users", ctl.AddUser)
+	svc.Router.With(svc.AuthJWT).Get(svc.RouterBasePath+"/users/{id}", ctl.GetUserByID)
+	svc.Router.With(svc.AuthJWT).Put(svc.RouterBasePath+"/users/{id}", ctl.PutUserByID)
+	svc.Router.With(svc.AuthJWT).Patch(svc.RouterBasePath+"/users/{id}", ctl.PutUserByID)
+	svc.Router.With(svc.AuthJWT).Delete(svc.RouterBasePath+"/users/{id}", ctl.DelUserByID)
 
 	// Set Endpoint for Upload Function
-	svc.Router.Handle(svc.RouterBasePath+"/upload", svc.AuthJWT(ctl.UploadFile)).Methods("POST")
+	svc.Router.With(svc.AuthJWT).Post(svc.RouterBasePath+"/upload", ctl.UploadFile)
 }

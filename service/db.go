@@ -4,8 +4,8 @@ import (
 	"strings"
 )
 
-// InitDB Function
-func initDB() {
+// DBInit Function
+func dbInit() {
 	// Database Configuration Value
 	switch strings.ToLower(Config.GetString("DB_DRIVER")) {
 	case "mysql":

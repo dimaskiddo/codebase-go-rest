@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi"
 
 	mdl "github.com/dimaskiddo/codebase-go-rest/model"
 	svc "github.com/dimaskiddo/codebase-go-rest/service"
@@ -53,17 +53,17 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 // GetUserByID Function to Get User Data By User ID
 func GetUserByID(w http.ResponseWriter, r *http.Request) {
 	// Get Parameters From URI
-	params := mux.Vars(r)
+	paramID := chi.URLParam(r, "id")
 
 	// Get ID Parameters From URI Then Convert it to Integer
-	userID, err := strconv.Atoi(params["id"])
+	userID, err := strconv.Atoi(paramID)
 	if err != nil {
 		svc.ResponseInternalError(w, err.Error())
 		return
 	}
 
 	// Check if Requested Data in User Array Range
-	if len(mdl.Users) <= 0 && userID > len(mdl.Users) {
+	if userID <= 0 || userID > len(mdl.Users) {
 		svc.ResponseBadRequest(w, "invalid array index")
 		return
 	}
@@ -87,17 +87,17 @@ func GetUserByID(w http.ResponseWriter, r *http.Request) {
 // PutUserByID Function to Update User Data By User ID
 func PutUserByID(w http.ResponseWriter, r *http.Request) {
 	// Get Parameters From URI
-	params := mux.Vars(r)
+	paramID := chi.URLParam(r, "id")
 
 	// Get ID Parameters From URI Then Convert it to Integer
-	userID, err := strconv.Atoi(params["id"])
+	userID, err := strconv.Atoi(paramID)
 	if err != nil {
 		svc.ResponseInternalError(w, err.Error())
 		return
 	}
 
 	// Check if Requested Data in User Array Range
-	if len(mdl.Users) <= 0 && userID > len(mdl.Users) {
+	if userID <= 0 || userID > len(mdl.Users) {
 		svc.ResponseBadRequest(w, "invalid array index")
 		return
 	}
@@ -118,17 +118,17 @@ func PutUserByID(w http.ResponseWriter, r *http.Request) {
 // DelUserByID Function to Delete User Data By User ID
 func DelUserByID(w http.ResponseWriter, r *http.Request) {
 	// Get Parameters From URI
-	params := mux.Vars(r)
+	paramID := chi.URLParam(r, "id")
 
 	// Get ID Parameters From URI Then Convert it to Integer
-	userID, err := strconv.Atoi(params["id"])
+	userID, err := strconv.Atoi(paramID)
 	if err != nil {
 		svc.ResponseInternalError(w, err.Error())
 		return
 	}
 
 	// Check if Requested Data in User Array Range
-	if len(mdl.Users) <= 0 && userID > len(mdl.Users) {
+	if userID <= 0 || userID > len(mdl.Users) {
 		svc.ResponseBadRequest(w, "invalid array index")
 		return
 	}
