@@ -45,7 +45,7 @@ make rebase REBASE_URL="<your_repository_domain>/<your_username>/<your_repositor
 make init
 make ensure
 ```
-- Until this step you already can run this code by using this command
+* Until this step you already can run this code by using this command
 ```
 make run
 ```
