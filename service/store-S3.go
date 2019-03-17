@@ -3,6 +3,7 @@ package service
 import (
 	"errors"
 	"mime/multipart"
+	"strconv"
 	"strings"
 
 	minio "github.com/minio/minio-go"
@@ -63,12 +64,12 @@ func StoreS3UploadFile(fileName string, fileSize int64, fileType string, fileStr
 		}
 
 		// Try to Upload File into Bucket
-		n, err := StoreS3.PutObject(storeS3Cfg.Bucket, fileName, fileStream, fileSize, minio.PutObjectOptions{ContentType: fileType})
+		nSize, err := StoreS3.PutObject(storeS3Cfg.Bucket, fileName, fileStream, fileSize, minio.PutObjectOptions{ContentType: fileType})
 		if err != nil {
 			return err
 		}
 
-		log.Printf("Successfully uploaded '%s', with size %d\n", fileName, n)
+		Log("info", "store-s3-upload-file", "successfully uploaded '"+fileName+"' with size "+strconv.FormatInt(nSize, 10))
 		return nil
 	default:
 		return errors.New("No storage driver defined")
