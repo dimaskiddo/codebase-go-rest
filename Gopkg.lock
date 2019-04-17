@@ -93,7 +93,7 @@
   version = "v1.8.0"
 
 [[projects]]
-  digest = "1:c70f3fece365ee3e884eeff6829879fcd3fc9d9ed41371514c6af1b0e3dd525e"
+  digest = "1:664d72d015ba58e2dfb6a195b87c546412e3a0f5c3c533ecdfe13e6b0967ee79"
   name = "github.com/minio/minio-go"
   packages = [
     ".",
@@ -104,8 +104,8 @@
     "pkg/set",
   ]
   pruneopts = "UT"
-  revision = "5df22878d3cdee48fbb086449268b1a465147c7d"
-  version = "v6.0.20"
+  revision = "b6091056d7c591c791974489ca13b8f8ba2b47e9"
+  version = "v6.0.22"
 
 [[projects]]
   digest = "1:5d231480e1c64a726869bc4142d270184c419749d34f167646baa21008eb0a79"
@@ -124,31 +124,31 @@
   version = "v1.1.2"
 
 [[projects]]
-  digest = "1:95741de3af260a92cc5c7f3f3061e85273f5a81b5db20d4bd68da74bd521675e"
+  digest = "1:e0f50a07c0def90588d69f77178712c6fdc67eb6576365f551cce98b44b501bf"
   name = "github.com/pelletier/go-toml"
   packages = ["."]
   pruneopts = "UT"
-  revision = "c01d1270ff3e442a8a57cddc1c92dc1138598194"
-  version = "v1.2.0"
+  revision = "63909f0a90ab0f36909e8e044e46ace10cf13ba2"
+  version = "v1.3.0"
 
 [[projects]]
-  digest = "1:e4c72127d910a96daf869a44f3dd563b86dbe6931a172863a0e99c5ff04b59e4"
+  digest = "1:fd61cf4ae1953d55df708acb6b91492d538f49c305b364a014049914495db426"
   name = "github.com/sirupsen/logrus"
   packages = ["."]
   pruneopts = "UT"
-  revision = "dae0fa8d5b0c810a8ab733fbd5510c7cae84eca4"
-  version = "v1.4.0"
+  revision = "8bdbc7bcc01dcbb8ec23dc8a28e332258d25251f"
+  version = "v1.4.1"
 
 [[projects]]
-  digest = "1:3e39bafd6c2f4bf3c76c3bfd16a2e09e016510ad5db90dc02b88e2f565d6d595"
+  digest = "1:bb495ec276ab82d3dd08504bbc0594a65de8c3b22c6f2aaa92d05b73fbf3a82e"
   name = "github.com/spf13/afero"
   packages = [
     ".",
     "mem",
   ]
   pruneopts = "UT"
-  revision = "f4711e4db9e9a1d3887343acb72b2bbfc2f686f5"
-  version = "v1.2.1"
+  revision = "588a75ec4f32903aa5e39a2619ba6a4631e28424"
+  version = "v1.2.2"
 
 [[projects]]
   digest = "1:08d65904057412fc0270fc4812a1c90c594186819243160dc779a402d4b6d0bc"
@@ -184,19 +184,18 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:0fca977d9fb7ed0e5389fa8dbaeeb4bc30bcc56464e44846a8f03bfad825462b"
+  digest = "1:d4df67cef5e20015feb306724296fde6155f2451e87ec3152d8d4963bf841c06"
   name = "golang.org/x/crypto"
   packages = [
     "argon2",
     "blake2b",
-    "ssh/terminal",
   ]
   pruneopts = "UT"
-  revision = "a1f597ede03a7bef967a422b5b3a5bd08805a01e"
+  revision = "88737f569e3a9c7ab309cdc09a07fe7fc87233c3"
 
 [[projects]]
   branch = "master"
-  digest = "1:bd8c3e1883873ffedd7170742a24fc9343a4d32bc7f86c02cda93244b95c1245"
+  digest = "1:9bcb806d8141fa6f87a79d76023892f510bcb247e3eb4a0049de4123080ee45a"
   name = "golang.org/x/net"
   packages = [
     "http/httpguts",
@@ -206,19 +205,18 @@
     "publicsuffix",
   ]
   pruneopts = "UT"
-  revision = "9f648a60d9775ef5c977e7669d1673a7a67bef33"
+  revision = "1da14a5a36f220ea3f03470682b737b1dfd5de22"
 
 [[projects]]
   branch = "master"
-  digest = "1:450becdbf6739398b40a71ea3416b67c74547e808849dbbd85f01a3b98e42417"
+  digest = "1:38aa494d309ed1454312b7c19f869ce99edcc5a4ee61f599090a8d15b6c2d4e6"
   name = "golang.org/x/sys"
   packages = [
     "cpu",
     "unix",
-    "windows",
   ]
   pruneopts = "UT"
-  revision = "a2f829d7f35f2ed1c3520c553a6226495455cae0"
+  revision = "12500544f89f9420afe9529ba8940bf72d294972"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
@@ -248,8 +246,8 @@
   name = "google.golang.org/appengine"
   packages = ["cloudsql"]
   pruneopts = "UT"
-  revision = "e9657d882bb81064595ca3b56cbe2546bbabf7b1"
-  version = "v1.4.0"
+  revision = "54a98f90d1c46b7731eb8fb305d2a321c30ef610"
+  version = "v1.5.0"
 
 [[projects]]
   digest = "1:d37c61a335d13bc49b3f90e9e13c8686e4548839b69c58549e727afb2245c454"
