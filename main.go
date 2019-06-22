@@ -15,9 +15,6 @@ var svr *svc.Server
 
 // Init Function
 func init() {
-	// Initialize Service
-	svc.Initialize()
-
 	// Initialize Routes
 	routesInit()
 
