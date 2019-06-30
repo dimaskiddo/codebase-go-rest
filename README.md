@@ -59,7 +59,7 @@ Currently the test is not ready yet :)
 **Make sure your your go script does not relate to github.com/dimaskiddo/codebase-go-rest anymore**.
 To build this codebase to binaries for distribution purposes you can run following command:
 ```
-make compile
+make release
 ```
 The build result will shown in build directory
 

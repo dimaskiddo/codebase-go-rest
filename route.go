@@ -1,27 +1,28 @@
 package main
 
 import (
-	ctl "github.com/dimaskiddo/codebase-go-rest/controller"
-	svc "github.com/dimaskiddo/codebase-go-rest/service"
+	"github.com/dimaskiddo/codebase-go-rest/ctl"
+	"github.com/dimaskiddo/codebase-go-rest/hlp/auth"
+	"github.com/dimaskiddo/codebase-go-rest/hlp/router"
 )
 
-// RoutesInit Function
-func routesInit() {
+// Initialize Function in Main Route
+func init() {
 	// Set Endpoint for Root Functions
-	svc.Router.Get(svc.RouterBasePath+"/", ctl.GetIndex)
-	svc.Router.Get(svc.RouterBasePath+"/health", ctl.GetHealth)
+	router.Router.Get(router.RouterBasePath+"/", ctl.GetIndex)
+	router.Router.Get(router.RouterBasePath+"/health", ctl.GetHealth)
 
 	// Set Endpoint for Authorization Functions
-	svc.Router.With(svc.AuthBasic).Get(svc.RouterBasePath+"/auth", ctl.GetAuth)
+	router.Router.With(auth.Basic).Get(router.RouterBasePath+"/auth", ctl.GetAuth)
 
 	// Set Endpoint for User Functions
-	svc.Router.With(svc.AuthJWT).Get(svc.RouterBasePath+"/users", ctl.GetUser)
-	svc.Router.With(svc.AuthJWT).Post(svc.RouterBasePath+"/users", ctl.AddUser)
-	svc.Router.With(svc.AuthJWT).Get(svc.RouterBasePath+"/users/{id}", ctl.GetUserByID)
-	svc.Router.With(svc.AuthJWT).Put(svc.RouterBasePath+"/users/{id}", ctl.PutUserByID)
-	svc.Router.With(svc.AuthJWT).Patch(svc.RouterBasePath+"/users/{id}", ctl.PutUserByID)
-	svc.Router.With(svc.AuthJWT).Delete(svc.RouterBasePath+"/users/{id}", ctl.DelUserByID)
+	router.Router.With(auth.JWT).Get(router.RouterBasePath+"/users", ctl.GetUser)
+	router.Router.With(auth.JWT).Post(router.RouterBasePath+"/users", ctl.AddUser)
+	router.Router.With(auth.JWT).Get(router.RouterBasePath+"/users/{id}", ctl.GetUserByID)
+	router.Router.With(auth.JWT).Put(router.RouterBasePath+"/users/{id}", ctl.PutUserByID)
+	router.Router.With(auth.JWT).Patch(router.RouterBasePath+"/users/{id}", ctl.PutUserByID)
+	router.Router.With(auth.JWT).Delete(router.RouterBasePath+"/users/{id}", ctl.DelUserByID)
 
 	// Set Endpoint for Upload Function
-	svc.Router.With(svc.AuthJWT).Post(svc.RouterBasePath+"/upload", ctl.UploadFile)
+	router.Router.With(auth.JWT).Post(router.RouterBasePath+"/upload", ctl.UploadFile)
 }

@@ -1,5 +1,3 @@
-BUILD_OS           := linux
-BUILD_OUTPUT       := main
 SERVICE_NAME       := codebase-go-rest
 SERVICE_PORT       := 3000
 IMAGE_NAME         := codebase-go-rest
@@ -15,20 +13,30 @@ init:
 	make clean
 	dep init -v
 
+init-dist:
+	mkdir -p dist
+	touch dist/.gitkeep
+
 ensure:
 	make clean
 	dep ensure -v
 
-compile:
+release:
 	make ensure
-	CGO_ENABLED=0 GOOS=$(BUILD_OS) go build -a -o ./build/$(BUILD_OUTPUT) *.go
-	echo "Build complete please check build directory."
+	goreleaser --snapshot --skip-publish --rm-dist
+	make init-dist
+	echo "Build complete please check dist directory."
+
+publish:
+	GITHUB_TOKEN=$(GITHUB_TOKEN) gorelease --rm-dist
+	make init-dist
 
 run:
-	CONFIG_ENV="DEV" CONFIG_FILE_PATH="./build/configs" CONFIG_LOG_LEVEL="DEBUG" CONFIG_LOG_SERVICE="$(SERVICE_NAME)" go run *.go
+	go run *.go
 
 clean:
-	rm -f ./build/$(BUILD_OUTPUT)
+	rm -rf ./dist/*
+	make init-dist
 	rm -rf ./vendor
 
 commit:
@@ -54,7 +62,7 @@ c-build:
 
 c-run:
 	docker run -d -p $(SERVICE_PORT):$(SERVICE_PORT) --name $(SERVICE_NAME) --rm $(IMAGE_NAME):$(IMAGE_TAG)
-	make docker-logs
+	make c-logs
 
 c-shell:
 	docker exec -it $(SERVICE_NAME) bash

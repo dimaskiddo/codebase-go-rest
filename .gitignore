@@ -1,6 +1,4 @@
-build/*
-build/stores/*
-build/uploads/*
+dist/*
 vendor
-!build/*.key
+*.DS_Store
 !*.gitkeep

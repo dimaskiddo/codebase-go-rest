@@ -7,19 +7,19 @@ import (
 	"strings"
 	"syscall"
 
-	svc "github.com/dimaskiddo/codebase-go-rest/service"
+	"github.com/dimaskiddo/codebase-go-rest/hlp"
+	"github.com/dimaskiddo/codebase-go-rest/hlp/cache"
+	"github.com/dimaskiddo/codebase-go-rest/hlp/db"
+	"github.com/dimaskiddo/codebase-go-rest/hlp/router"
 )
 
 // Server Variable
-var svr *svc.Server
+var svr *hlp.Server
 
 // Init Function
 func init() {
-	// Initialize Routes
-	routesInit()
-
 	// Initialize Server
-	svr = svc.NewServer(svc.Router)
+	svr = hlp.NewServer(router.Router)
 }
 
 // Main Function
@@ -45,20 +45,20 @@ func main() {
 	defer svr.Stop()
 
 	// Close Any Database Connections
-	if len(svc.Config.GetString("DB_DRIVER")) != 0 {
-		switch strings.ToLower(svc.Config.GetString("DB_DRIVER")) {
+	if len(hlp.Config.GetString("DB_DRIVER")) != 0 {
+		switch strings.ToLower(hlp.Config.GetString("DB_DRIVER")) {
 		case "mysql":
-			defer svc.MySQL.Close()
+			defer db.MySQL.Close()
 		case "mongo":
-			defer svc.MongoSession.Close()
+			defer db.MongoSession.Close()
 		}
 	}
 
 	// Close Any Cache Connections
-	if len(svc.Config.GetString("CACHE_DRIVER")) != 0 {
-		switch strings.ToLower(svc.Config.GetString("CACHE_DRIVER")) {
+	if len(hlp.Config.GetString("CACHE_DRIVER")) != 0 {
+		switch strings.ToLower(hlp.Config.GetString("CACHE_DRIVER")) {
 		case "redis":
-			defer svc.Redis.Close()
+			defer cache.Redis.Close()
 		}
 	}
 }
