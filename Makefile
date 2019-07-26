@@ -28,7 +28,7 @@ release:
 	echo "Build complete please check dist directory."
 
 publish:
-	GITHUB_TOKEN=$(GITHUB_TOKEN) gorelease --rm-dist
+	GITHUB_TOKEN=$(GITHUB_TOKEN) goreleaser --rm-dist
 	make init-dist
 
 run:
