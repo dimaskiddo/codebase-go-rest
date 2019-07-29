@@ -16,13 +16,13 @@ func init() {
 	// Set Configuration File Value
 	configEnv := strings.ToLower(os.Getenv("CONFIG_ENV"))
 	if len(configEnv) == 0 {
-		configEnv = "dev"
+		configEnv = "development"
 	}
 
 	// Set Configuration Path Value
 	configFilePath := strings.ToLower(os.Getenv("CONFIG_FILE_PATH"))
 	if len(configFilePath) == 0 {
-		configFilePath = "./misc/configs"
+		configFilePath = "./share/etc"
 	}
 
 	// Set Configuration Type Value
@@ -81,10 +81,10 @@ func configLoadValues() {
 	serverCfg.Port = Config.GetString("SERVER_PORT")
 
 	// Server Store Path Value
-	Config.SetDefault("SERVER_STORE_PATH", "./misc/stores")
+	Config.SetDefault("SERVER_STORE_PATH", "./share/store")
 
 	// Server Upload Path Value
-	Config.SetDefault("SERVER_UPLOAD_PATH", "./misc/uploads")
+	Config.SetDefault("SERVER_UPLOAD_PATH", "./share/upload")
 
 	// Server Upload Limit Value
 	Config.SetDefault("SERVER_UPLOAD_LIMIT", 8)
@@ -106,8 +106,8 @@ func configLoadValues() {
 	Config.SetDefault("CORS_ALLOWED_HEADER", "Origin, X-Requested-With, Content-Type, Accept, Authorization")
 
 	// Crypt RSA Private Key File Value
-	Config.SetDefault("CRYPT_PRIVATE_KEY_FILE", "./misc/private.key")
+	Config.SetDefault("CRYPT_PRIVATE_KEY_FILE", "./share/private.key")
 
 	// Crypt RSA Public Key File Value
-	Config.SetDefault("CRYPT_PUBLIC_KEY_FILE", "./misc/public.key")
+	Config.SetDefault("CRYPT_PUBLIC_KEY_FILE", "./share/public.key")
 }

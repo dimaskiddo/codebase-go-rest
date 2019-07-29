@@ -23,14 +23,14 @@ archives:
     amd64: 64-bit
   format: zip
   files:
-    - misc/*
-    - misc/**/*
+    - README.md
+    - share/*
+    - share/**/*
 checksum:
   name_template: 'checksums.txt'
 snapshot:
   name_template: "{{ .Version }}_{{ .ShortCommit }}"
 changelog:
-  sort: asc
   filters:
     exclude:
     - '^docs:'

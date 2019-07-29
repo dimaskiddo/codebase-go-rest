@@ -8,7 +8,7 @@ import (
 
 // GetIndex Function to Show API Information
 func GetIndex(w http.ResponseWriter, r *http.Request) {
-	router.ResponseSuccess(w, "Go API Framework is running")
+	router.ResponseSuccess(w, "Codebase Go REST is running")
 }
 
 // GetHealth Function to Show Health Check Status
