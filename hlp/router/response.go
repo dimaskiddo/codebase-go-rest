@@ -172,7 +172,7 @@ func ResponseUnauthorized(w http.ResponseWriter) {
 	response.Status = false
 	response.Code = http.StatusUnauthorized
 	response.Message = "Unauthorized"
-	response.Error = "Unaothorized"
+	response.Error = "Unauthorized"
 
 	// Set Response Data to HTTP
 	ResponseWrite(w, response.Code, response)
