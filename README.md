@@ -43,7 +43,7 @@ make rebase REBASE_URL="<your_repository_domain>/<your_username>/<your_repositor
 * Run following command to renew and pull dependecies package
 ```
 make init
-make ensure
+make vendor
 ```
 * Until this step you already can run this code by using this command
 ```
