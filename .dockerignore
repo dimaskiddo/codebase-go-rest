@@ -1,0 +1,8 @@
+ctl
+hlp
+mdl
+share/stores/*
+share/uploads/*
+vendor
+**/.DS_Store
+**/.gitkeep
