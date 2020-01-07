@@ -1,8 +1,8 @@
 ctl
 hlp
 mdl
-misc/stores/*
-misc/uploads/*
+share/stores/*
+share/uploads/*
 vendor
 **/.DS_Store
 **/.gitkeep
