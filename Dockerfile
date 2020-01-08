@@ -9,7 +9,7 @@ WORKDIR /usr/src/app
 COPY share/ ./share
 COPY dist/${SERVICE_NAME}_linux_amd64/main ./main
 
-RUN chmod 777 share/stores share/uploads
+RUN chmod 777 share/store share/upload
 
 EXPOSE 3000
 HEALTHCHECK --interval=5s --timeout=3s CMD ["curl", "http://127.0.0.1:3000/health"] || exit 1

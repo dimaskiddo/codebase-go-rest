@@ -1,6 +1,6 @@
 before:
   hooks:
-    - make ensure
+    - make vendor
 builds:
 - binary: main
   env:
