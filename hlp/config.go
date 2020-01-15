@@ -110,4 +110,7 @@ func configLoadValues() {
 
 	// Crypt RSA Public Key File Value
 	Config.SetDefault("CRYPT_PUBLIC_KEY_FILE", "./share/public.key")
+
+	// JWT Expiration Time Value
+	Config.SetDefault("JWT_EXPIRATION_TIME_HOURS", 24)
 }
