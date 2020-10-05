@@ -11,37 +11,35 @@ COMMIT_MSG         := "update improvement"
 
 init:
 	make clean
-	go mod init
+	GO111MODULE=on go mod init
 
 init-dist:
 	mkdir -p dist
-	touch dist/.gitkeep
 
 vendor:
 	make clean
-	go mod vendor
+	GO111MODULE=on go mod vendor
 
 release:
 	make vendor
+	make clean-dist
 	goreleaser --snapshot --skip-publish --rm-dist
-	make init-dist
 	echo "Release complete please check dist directory."
 
 publish:
-	GITHUB_TOKEN=$(GITHUB_TOKEN) goreleaser --rm-dist
 	make clean-dist
+	GITHUB_TOKEN=$(GITHUB_TOKEN) goreleaser --rm-dist
 	echo "Publish complete please check your repository releases."
 
 run:
-	go run *.go
+	go run cmd/main/*.go
 
 clean-dist:
-	rm -rf ./dist/*
-	make init-dist
+	rm -rf dist
 
 clean:
 	make clean-dist
-	rm -rf ./vendor
+	rm -rf vendor
 
 commit:
 	make vendor

@@ -1,0 +1,39 @@
+## Server Configuration
+SERVER_NAME: "codebase-go-rest"
+SERVER_IP: "127.0.0.1"
+SERVER_PORT: "3000"
+SERVER_STORE_PATH: "./config/stores"
+SERVER_UPLOAD_PATH: "./config/uploads"
+SERVER_UPLOAD_LIMIT: 8
+SERVER_LOG_LEVEL: "debug"
+
+## Router Configuration
+ROUTER_BASE_PATH: ""
+
+## Cryptography Configuration
+CRYPT_PRIVATE_KEY_FILE: "./config/keys/private.key"
+CRYPT_PUBLIC_KEY_FILE: "./config/keys/public.key"
+
+## Database Configuration
+# DB_DRIVER: "mongo"
+# DB_HOST: "127.0.0.1"
+# DB_PORT: "27017"
+# DB_USER: "user"
+# DB_PASSWORD: "password"
+# DB_NAME: "db"
+
+## Cache Configuration
+# CACHE_DRIVER: "redis"
+# CACHE_HOST: "127.0.0.1"
+# CACHE_PORT: "6379"
+# CACHE_PASSWORD: "password"
+# CACHE_NAME: 0
+
+## Storage Configuration
+# STORAGE_DRIVER: "minio"
+# STORAGE_USE_SSL: true
+# STORAGE_ENDPOINT: ""
+# STORAGE_ACCESS_KEY: ""
+# STORAGE_SECRET_KEY: ""
+# STORAGE_REGION: ""
+# STORAGE_BUCKET: ""

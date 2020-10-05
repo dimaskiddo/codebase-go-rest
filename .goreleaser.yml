@@ -2,7 +2,7 @@ before:
   hooks:
     - make vendor
 builds:
-- binary: main
+- main: ./cmd/main/main.go
   env:
     - CGO_ENABLED=0
   ldflags:
@@ -24,8 +24,8 @@ archives:
   format: zip
   files:
     - README.md
-    - share/*
-    - share/**/*
+    - config/*
+    - config/**/*
 checksum:
   name_template: 'checksums.txt'
 snapshot:
