@@ -1,8 +1,5 @@
-ctl
-hlp
-mdl
-share/stores/*
-share/uploads/*
+config/stores/*
+config/uploads/*
 vendor
 **/.DS_Store
 **/.gitkeep
